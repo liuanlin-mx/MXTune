@@ -33,9 +33,9 @@
 
 /*****************************************************************************/
 
-#include "ladspa.h"
-
+#include "lv2.h"
 #include "mayer_fft.h"
+
 
 // Variables for FFT routine
 typedef struct {
@@ -174,38 +174,38 @@ void fft_inverse(fft_vars* membvars, float* input_re, float* input_im, float* ou
 
 typedef struct {
 
-	LADSPA_Data* m_pfTune;
-	LADSPA_Data* m_pfFixed;
-	LADSPA_Data* m_pfPull;
-	LADSPA_Data* m_pfA;
-	LADSPA_Data* m_pfBb;
-	LADSPA_Data* m_pfB;
-	LADSPA_Data* m_pfC;
-	LADSPA_Data* m_pfDb;
-	LADSPA_Data* m_pfD;
-	LADSPA_Data* m_pfEb;
-	LADSPA_Data* m_pfE;
-	LADSPA_Data* m_pfF;
-	LADSPA_Data* m_pfGb;
-	LADSPA_Data* m_pfG;
-	LADSPA_Data* m_pfAb;
-	LADSPA_Data* m_pfAmount;
-	LADSPA_Data* m_pfSmooth;
-	LADSPA_Data* m_pfShift;
-	LADSPA_Data* m_pfScwarp;
-	LADSPA_Data* m_pfLfoamp;
-	LADSPA_Data* m_pfLforate;
-	LADSPA_Data* m_pfLfoshape;
-	LADSPA_Data* m_pfLfosymm;
-	LADSPA_Data* m_pfLfoquant;
-	LADSPA_Data* m_pfFcorr;
-	LADSPA_Data* m_pfFwarp;
-	LADSPA_Data* m_pfMix;
-	LADSPA_Data* m_pfPitch;
-	LADSPA_Data* m_pfConf;
-	LADSPA_Data* m_pfInputBuffer1;
-	LADSPA_Data* m_pfOutputBuffer1;
-	LADSPA_Data* m_pfLatency;
+	float* m_pfTune;
+	float* m_pfFixed;
+	float* m_pfPull;
+	float* m_pfA;
+	float* m_pfBb;
+	float* m_pfB;
+	float* m_pfC;
+	float* m_pfDb;
+	float* m_pfD;
+	float* m_pfEb;
+	float* m_pfE;
+	float* m_pfF;
+	float* m_pfGb;
+	float* m_pfG;
+	float* m_pfAb;
+	float* m_pfAmount;
+	float* m_pfSmooth;
+	float* m_pfShift;
+	float* m_pfScwarp;
+	float* m_pfLfoamp;
+	float* m_pfLforate;
+	float* m_pfLfoshape;
+	float* m_pfLfosymm;
+	float* m_pfLfoquant;
+	float* m_pfFcorr;
+	float* m_pfFwarp;
+	float* m_pfMix;
+	float* m_pfPitch;
+	float* m_pfConf;
+	float* m_pfInputBuffer1;
+	float* m_pfOutputBuffer1;
+	float* m_pfLatency;
 	fft_vars* fmembvars; // member variables for fft routine
 
 	unsigned long fs; // Sample rate
@@ -280,18 +280,18 @@ typedef struct {
  *  THE CONSTRUCTOR *
  ********************/
 
-LADSPA_Handle instantiateAutotalent(const LADSPA_Descriptor* Descriptor, unsigned long SampleRate)
+static LV2_Handle instantiate(const LV2_Descriptor* descriptor, double rate,
+                                            const char* bundle_path, const LV2_Feature* const* features)
 {
-
 	unsigned long ti;
 
 	Autotalent* membvars = malloc(sizeof(Autotalent));
 
 	membvars->aref = 440;
 
-	membvars->fs = SampleRate;
+	membvars->fs = rate;
 
-	if(SampleRate >= 88200) {
+	if(rate >= 88200) {
 		membvars->cbsize = 4096;
 	} else {
 		membvars->cbsize = 2048;
@@ -301,11 +301,11 @@ LADSPA_Handle instantiateAutotalent(const LADSPA_Descriptor* Descriptor, unsigne
 	membvars->pmax = 1 / (float)70;  // max and min periods (ms)
 	membvars->pmin = 1 / (float)700; // eventually may want to bring these out as sliders
 
-	membvars->nmax = (unsigned long)(SampleRate * membvars->pmax);
+	membvars->nmax = (unsigned long)(rate * membvars->pmax);
 	if(membvars->nmax > membvars->corrsize) {
 		membvars->nmax = membvars->corrsize;
 	}
-	membvars->nmin = (unsigned long)(SampleRate * membvars->pmin);
+	membvars->nmin = (unsigned long)(rate * membvars->pmin);
 
 	membvars->cbi = calloc(membvars->cbsize, sizeof(float));
 	membvars->cbf = calloc(membvars->cbsize, sizeof(float));
@@ -318,8 +318,8 @@ LADSPA_Handle instantiateAutotalent(const LADSPA_Descriptor* Descriptor, unsigne
 
 	// Initialize formant corrector
 	membvars->ford = 7; // should be sufficient to capture formants
-	membvars->falph = pow(0.001, (float)80 / (SampleRate));
-	membvars->flamb = -(0.8517 * sqrt(atan(0.06583 * SampleRate)) - 0.1916); // or about -0.88 @ 44.1kHz
+	membvars->falph = pow(0.001, (float)80 / (rate));
+	membvars->flamb = -(0.8517 * sqrt(atan(0.06583 * rate)) - 0.1916); // or about -0.88 @ 44.1kHz
 	membvars->fk = calloc(membvars->ford, sizeof(float));
 	membvars->fb = calloc(membvars->ford, sizeof(float));
 	membvars->fc = calloc(membvars->ford, sizeof(float));
@@ -329,14 +329,14 @@ LADSPA_Handle instantiateAutotalent(const LADSPA_Descriptor* Descriptor, unsigne
 	membvars->fsmooth = calloc(membvars->ford, sizeof(float));
 	membvars->fhp = 0;
 	membvars->flp = 0;
-	membvars->flpa = pow(0.001, (float)10 / (SampleRate));
+	membvars->flpa = pow(0.001, (float)10 / (rate));
 	membvars->fbuff = (float**)malloc((membvars->ford) * sizeof(float*));
 	for(ti = 0; ti < membvars->ford; ti++) {
 		membvars->fbuff[ti] = calloc(membvars->cbsize, sizeof(float));
 	}
 	membvars->ftvec = calloc(membvars->ford, sizeof(float));
 	membvars->fmute = 1;
-	membvars->fmutealph = pow(0.001, (float)1 / (SampleRate));
+	membvars->fmutealph = pow(0.001, (float)1 / (rate));
 
 	// Standard raised cosine window, max height at N/2
 	membvars->hannwindow = calloc(membvars->cbsize, sizeof(float));
@@ -389,7 +389,7 @@ LADSPA_Handle instantiateAutotalent(const LADSPA_Descriptor* Descriptor, unsigne
 
 	// Pitch shifter initialization
 	membvars->phprdd = 0.01; // Default period
-	membvars->inphinc = (float)1 / (membvars->phprdd * SampleRate);
+	membvars->inphinc = (float)1 / (membvars->phprdd * rate);
 	membvars->phincfact = 1;
 	membvars->phasein = 0;
 	membvars->phaseout = 0;
@@ -400,119 +400,120 @@ LADSPA_Handle instantiateAutotalent(const LADSPA_Descriptor* Descriptor, unsigne
 }
 
 //  Connect port
-void connectPortToAutotalent(LADSPA_Handle Instance, unsigned long Port, LADSPA_Data* DataLocation)
+static void connect_port(LV2_Handle instance, uint32_t port, void* data)
 {
-
 	Autotalent* psAutotalent;
 
-	psAutotalent = (Autotalent*)Instance;
-	switch(Port) {
+	psAutotalent = (Autotalent*)instance;
+	switch(port) {
 	case AT_TUNE:
-		psAutotalent->m_pfTune = DataLocation;
+		psAutotalent->m_pfTune = data;
 		break;
 	case AT_FIXED:
-		psAutotalent->m_pfFixed = DataLocation;
+		psAutotalent->m_pfFixed = data;
 		break;
 	case AT_PULL:
-		psAutotalent->m_pfPull = DataLocation;
+		psAutotalent->m_pfPull = data;
 		break;
 	case AT_A:
-		psAutotalent->m_pfA = DataLocation;
+		psAutotalent->m_pfA = data;
 		break;
 	case AT_Bb:
-		psAutotalent->m_pfBb = DataLocation;
+		psAutotalent->m_pfBb = data;
 		break;
 	case AT_B:
-		psAutotalent->m_pfB = DataLocation;
+		psAutotalent->m_pfB = data;
 		break;
 	case AT_C:
-		psAutotalent->m_pfC = DataLocation;
+		psAutotalent->m_pfC = data;
 		break;
 	case AT_Db:
-		psAutotalent->m_pfDb = DataLocation;
+		psAutotalent->m_pfDb = data;
 		break;
 	case AT_D:
-		psAutotalent->m_pfD = DataLocation;
+		psAutotalent->m_pfD = data;
 		break;
 	case AT_Eb:
-		psAutotalent->m_pfEb = DataLocation;
+		psAutotalent->m_pfEb = data;
 		break;
 	case AT_E:
-		psAutotalent->m_pfE = DataLocation;
+		psAutotalent->m_pfE = data;
 		break;
 	case AT_F:
-		psAutotalent->m_pfF = DataLocation;
+		psAutotalent->m_pfF = data;
 		break;
 	case AT_Gb:
-		psAutotalent->m_pfGb = DataLocation;
+		psAutotalent->m_pfGb = data;
 		break;
 	case AT_G:
-		psAutotalent->m_pfG = DataLocation;
+		psAutotalent->m_pfG = data;
 		break;
 	case AT_Ab:
-		psAutotalent->m_pfAb = DataLocation;
+		psAutotalent->m_pfAb = data;
 		break;
 	case AT_AMOUNT:
-		psAutotalent->m_pfAmount = DataLocation;
+		psAutotalent->m_pfAmount = data;
 		break;
 	case AT_SMOOTH:
-		psAutotalent->m_pfSmooth = DataLocation;
+		psAutotalent->m_pfSmooth = data;
 		break;
 	case AT_SHIFT:
-		psAutotalent->m_pfShift = DataLocation;
+		psAutotalent->m_pfShift = data;
 		break;
 	case AT_SCWARP:
-		psAutotalent->m_pfScwarp = DataLocation;
+		psAutotalent->m_pfScwarp = data;
 		break;
 	case AT_LFOAMP:
-		psAutotalent->m_pfLfoamp = DataLocation;
+		psAutotalent->m_pfLfoamp = data;
 		break;
 	case AT_LFORATE:
-		psAutotalent->m_pfLforate = DataLocation;
+		psAutotalent->m_pfLforate = data;
 		break;
 	case AT_LFOSHAPE:
-		psAutotalent->m_pfLfoshape = DataLocation;
+		psAutotalent->m_pfLfoshape = data;
 		break;
 	case AT_LFOSYMM:
-		psAutotalent->m_pfLfosymm = DataLocation;
+		psAutotalent->m_pfLfosymm = data;
 		break;
 	case AT_LFOQUANT:
-		psAutotalent->m_pfLfoquant = DataLocation;
+		psAutotalent->m_pfLfoquant = data;
 		break;
 	case AT_FCORR:
-		psAutotalent->m_pfFcorr = DataLocation;
+		psAutotalent->m_pfFcorr = data;
 		break;
 	case AT_FWARP:
-		psAutotalent->m_pfFwarp = DataLocation;
+		psAutotalent->m_pfFwarp = data;
 		break;
 	case AT_MIX:
-		psAutotalent->m_pfMix = DataLocation;
+		psAutotalent->m_pfMix = data;
 		break;
 	case AT_PITCH:
-		psAutotalent->m_pfPitch = DataLocation;
+		psAutotalent->m_pfPitch = data;
 		break;
 	case AT_CONF:
-		psAutotalent->m_pfConf = DataLocation;
+		psAutotalent->m_pfConf = data;
 		break;
 	case AT_INPUT1:
-		psAutotalent->m_pfInputBuffer1 = DataLocation;
+		psAutotalent->m_pfInputBuffer1 = data;
 		break;
 	case AT_OUTPUT1:
-		psAutotalent->m_pfOutputBuffer1 = DataLocation;
+		psAutotalent->m_pfOutputBuffer1 = data;
 		break;
 	case AT_LATENCY:
-		psAutotalent->m_pfLatency = DataLocation;
-		*(psAutotalent->m_pfLatency) = psAutotalent->cbsize - 1;
+		psAutotalent->m_pfLatency = data;
+        if (psAutotalent->m_pfLatency)
+        {
+            *(psAutotalent->m_pfLatency) = psAutotalent->cbsize - 1;
+        }
 		break;
 	}
 }
 
 // Called every time we get a new chunk of audio
-void runAutotalent(LADSPA_Handle Instance, unsigned long SampleCount)
+static void run(LV2_Handle instance, uint32_t n_samples)
 {
-
-	LADSPA_Data* pfInput;
-	LADSPA_Data* pfOutput;
+	float* pfInput;
+	float* pfOutput;
 	float fAmount;
 	float fSmooth;
 	int iNotes[12];
@@ -583,7 +584,7 @@ void runAutotalent(LADSPA_Handle Instance, unsigned long SampleCount)
 	float f0resp;
 	float flpa;
 	int ford;
-	psAutotalent = (Autotalent*)Instance;
+	psAutotalent = (Autotalent*)instance;
 
 	pfInput = psAutotalent->m_pfInputBuffer1;
 	pfOutput = psAutotalent->m_pfOutputBuffer1;
@@ -670,7 +671,7 @@ void runAutotalent(LADSPA_Handle Instance, unsigned long SampleCount)
 	/*******************
 	 *  MAIN DSP LOOP  *
 	 *******************/
-	for(lSampleIndex = 0; lSampleIndex < SampleCount; lSampleIndex++) {
+	for(lSampleIndex = 0; lSampleIndex < n_samples; lSampleIndex++) {
 
 		// load data into circular buffer
 		tf = (float)*(pfInput++);
@@ -802,8 +803,8 @@ void runAutotalent(LADSPA_Handle Instance, unsigned long SampleCount)
 			}
 			psAutotalent->conf = conf;
 
-			*(psAutotalent->m_pfPitch) = (LADSPA_Data)inpitch;
-			*(psAutotalent->m_pfConf) = (LADSPA_Data)conf;
+			*(psAutotalent->m_pfPitch) = (float)inpitch;
+			*(psAutotalent->m_pfConf) = (float)conf;
 
 			//  ---- END Calculate pitch and confidence ----
 
@@ -1100,287 +1101,75 @@ void runAutotalent(LADSPA_Handle Instance, unsigned long SampleCount)
 
 		// Write audio to output of plugin
 		// Mix (blend between original (delayed) =0 and processed =1)
-		*(pfOutput++) = (LADSPA_Data)fMix * tf + (1 - fMix) * psAutotalent->cbi[ti4];
+		*(pfOutput++) = (float)fMix * tf + (1 - fMix) * psAutotalent->cbi[ti4];
 	}
 
 	// Tell the host the algorithm latency
-	*(psAutotalent->m_pfLatency) = (LADSPA_Data)(N - 1);
+	*(psAutotalent->m_pfLatency) = (float)(N - 1);
+}
+
+static void activate(LV2_Handle instance)
+{
+}
+
+static void deactivate(LV2_Handle instance)
+{
 }
 
 /********************
  *  THE DESTRUCTOR! *
  ********************/
-void cleanupAutotalent(LADSPA_Handle Instance)
+static void cleanup(LV2_Handle instance)
 {
 	int ti;
-	fft_des(((Autotalent*)Instance)->fmembvars);
-	free(((Autotalent*)Instance)->cbi);
-	free(((Autotalent*)Instance)->cbf);
-	free(((Autotalent*)Instance)->cbo);
-	free(((Autotalent*)Instance)->cbwindow);
-	free(((Autotalent*)Instance)->hannwindow);
-	free(((Autotalent*)Instance)->acwinv);
-	free(((Autotalent*)Instance)->frag);
-	free(((Autotalent*)Instance)->ffttime);
-	free(((Autotalent*)Instance)->fftfreqre);
-	free(((Autotalent*)Instance)->fftfreqim);
-	free(((Autotalent*)Instance)->fk);
-	free(((Autotalent*)Instance)->fb);
-	free(((Autotalent*)Instance)->fc);
-	free(((Autotalent*)Instance)->frb);
-	free(((Autotalent*)Instance)->frc);
-	free(((Autotalent*)Instance)->fsmooth);
-	free(((Autotalent*)Instance)->fsig);
-	for(ti = 0; ti < ((Autotalent*)Instance)->ford; ti++) {
-		free(((Autotalent*)Instance)->fbuff[ti]);
+	fft_des(((Autotalent*)instance)->fmembvars);
+	free(((Autotalent*)instance)->cbi);
+	free(((Autotalent*)instance)->cbf);
+	free(((Autotalent*)instance)->cbo);
+	free(((Autotalent*)instance)->cbwindow);
+	free(((Autotalent*)instance)->hannwindow);
+	free(((Autotalent*)instance)->acwinv);
+	free(((Autotalent*)instance)->frag);
+	free(((Autotalent*)instance)->ffttime);
+	free(((Autotalent*)instance)->fftfreqre);
+	free(((Autotalent*)instance)->fftfreqim);
+	free(((Autotalent*)instance)->fk);
+	free(((Autotalent*)instance)->fb);
+	free(((Autotalent*)instance)->fc);
+	free(((Autotalent*)instance)->frb);
+	free(((Autotalent*)instance)->frc);
+	free(((Autotalent*)instance)->fsmooth);
+	free(((Autotalent*)instance)->fsig);
+	for(ti = 0; ti < ((Autotalent*)instance)->ford; ti++) {
+		free(((Autotalent*)instance)->fbuff[ti]);
 	}
-	free(((Autotalent*)Instance)->fbuff);
-	free(((Autotalent*)Instance)->ftvec);
-	free((Autotalent*)Instance);
+	free(((Autotalent*)instance)->fbuff);
+	free(((Autotalent*)instance)->ftvec);
+	free((Autotalent*)instance);
 }
 
-LADSPA_Descriptor* g_psDescriptor;
-
-// Called when first loaded
-void _init()
+static const void* extension_data(const char* uri)
 {
-
-	char** pcPortNames;
-	LADSPA_PortDescriptor* piPortDescriptors;
-	LADSPA_PortRangeHint* psPortRangeHints;
-
-	g_psDescriptor = (LADSPA_Descriptor*)malloc(sizeof(LADSPA_Descriptor));
-
-	if(g_psDescriptor) {
-
-		g_psDescriptor->UniqueID = 4262;
-		g_psDescriptor->Label = strdup("autotalent");
-		g_psDescriptor->Properties = LADSPA_PROPERTY_HARD_RT_CAPABLE;
-		g_psDescriptor->Name = strdup("Autotalent");
-		g_psDescriptor->Maker = strdup("Tom Baran");
-		g_psDescriptor->Copyright = strdup("2010");
-		g_psDescriptor->PortCount = 32;
-		piPortDescriptors = (LADSPA_PortDescriptor*)calloc(32, sizeof(LADSPA_PortDescriptor));
-		g_psDescriptor->PortDescriptors = (const LADSPA_PortDescriptor*)piPortDescriptors;
-		piPortDescriptors[AT_TUNE] = LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
-		piPortDescriptors[AT_FIXED] = LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
-		piPortDescriptors[AT_PULL] = LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
-		piPortDescriptors[AT_A] = LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
-		piPortDescriptors[AT_Bb] = LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
-		piPortDescriptors[AT_B] = LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
-		piPortDescriptors[AT_C] = LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
-		piPortDescriptors[AT_Db] = LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
-		piPortDescriptors[AT_D] = LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
-		piPortDescriptors[AT_Eb] = LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
-		piPortDescriptors[AT_E] = LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
-		piPortDescriptors[AT_F] = LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
-		piPortDescriptors[AT_Gb] = LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
-		piPortDescriptors[AT_G] = LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
-		piPortDescriptors[AT_Ab] = LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
-		piPortDescriptors[AT_AMOUNT] = LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
-		piPortDescriptors[AT_SMOOTH] = LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
-		piPortDescriptors[AT_SHIFT] = LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
-		piPortDescriptors[AT_SCWARP] = LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
-		piPortDescriptors[AT_LFOAMP] = LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
-		piPortDescriptors[AT_LFORATE] = LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
-		piPortDescriptors[AT_LFOSHAPE] = LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
-		piPortDescriptors[AT_LFOSYMM] = LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
-		piPortDescriptors[AT_LFOQUANT] = LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
-		piPortDescriptors[AT_FCORR] = LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
-		piPortDescriptors[AT_FWARP] = LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
-		piPortDescriptors[AT_MIX] = LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL;
-		piPortDescriptors[AT_PITCH] = LADSPA_PORT_OUTPUT | LADSPA_PORT_CONTROL;
-		piPortDescriptors[AT_CONF] = LADSPA_PORT_OUTPUT | LADSPA_PORT_CONTROL;
-		piPortDescriptors[AT_INPUT1] = LADSPA_PORT_INPUT | LADSPA_PORT_AUDIO;
-		piPortDescriptors[AT_OUTPUT1] = LADSPA_PORT_OUTPUT | LADSPA_PORT_AUDIO;
-		piPortDescriptors[AT_LATENCY] = LADSPA_PORT_OUTPUT | LADSPA_PORT_CONTROL;
-		pcPortNames = (char**)calloc(32, sizeof(char*));
-		g_psDescriptor->PortNames = (const char**)pcPortNames;
-		pcPortNames[AT_TUNE] = strdup("Concert A (Hz)");
-		pcPortNames[AT_FIXED] = strdup("Fixed pitch (semitones w.r.t. A)");
-		pcPortNames[AT_PULL] = strdup("Pull to fixed pitch");
-		pcPortNames[AT_A] = strdup("A");
-		pcPortNames[AT_Bb] = strdup("Bb");
-		pcPortNames[AT_B] = strdup("B");
-		pcPortNames[AT_C] = strdup("C");
-		pcPortNames[AT_Db] = strdup("Db");
-		pcPortNames[AT_D] = strdup("D");
-		pcPortNames[AT_Eb] = strdup("Eb");
-		pcPortNames[AT_E] = strdup("E");
-		pcPortNames[AT_F] = strdup("F");
-		pcPortNames[AT_Gb] = strdup("Gb");
-		pcPortNames[AT_G] = strdup("G");
-		pcPortNames[AT_Ab] = strdup("Ab");
-		pcPortNames[AT_AMOUNT] = strdup("Correction strength");
-		pcPortNames[AT_SMOOTH] = strdup("Correction smoothness");
-		pcPortNames[AT_SHIFT] = strdup("Pitch shift (scale notes)");
-		pcPortNames[AT_SCWARP] = strdup("Output scale rotate (scale notes)");
-		pcPortNames[AT_LFOAMP] = strdup("LFO depth");
-		pcPortNames[AT_LFORATE] = strdup("LFO rate (Hz)");
-		pcPortNames[AT_LFOSHAPE] = strdup("LFO shape (square->sine->tri)");
-		pcPortNames[AT_LFOSYMM] = strdup("LFO symmetry");
-		pcPortNames[AT_LFOQUANT] = strdup("LFO quantization");
-		pcPortNames[AT_FCORR] = strdup("Formant correction");
-		pcPortNames[AT_FWARP] = strdup("Formant warp");
-		pcPortNames[AT_MIX] = strdup("Mix");
-		pcPortNames[AT_PITCH] = strdup("Detected pitch (semitones w.r.t. A)");
-		pcPortNames[AT_CONF] = strdup("Pitch detection confidence");
-		pcPortNames[AT_INPUT1] = strdup("Input");
-		pcPortNames[AT_OUTPUT1] = strdup("Output");
-		pcPortNames[AT_LATENCY] = strdup("latency");
-		psPortRangeHints = ((LADSPA_PortRangeHint*)calloc(32, sizeof(LADSPA_PortRangeHint)));
-		g_psDescriptor->PortRangeHints = (const LADSPA_PortRangeHint*)psPortRangeHints;
-		psPortRangeHints[AT_TUNE].HintDescriptor =
-		    (LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE | LADSPA_HINT_DEFAULT_440);
-		psPortRangeHints[AT_TUNE].LowerBound = 400;
-		psPortRangeHints[AT_TUNE].UpperBound = 480;
-		psPortRangeHints[AT_FIXED].HintDescriptor =
-		    (LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE | LADSPA_HINT_DEFAULT_0);
-		psPortRangeHints[AT_FIXED].LowerBound = -36;
-		psPortRangeHints[AT_FIXED].UpperBound = 12;
-		psPortRangeHints[AT_PULL].HintDescriptor =
-		    (LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE | LADSPA_HINT_DEFAULT_0);
-		psPortRangeHints[AT_PULL].LowerBound = 0;
-		psPortRangeHints[AT_PULL].UpperBound = 1;
-		psPortRangeHints[AT_A].HintDescriptor =
-		    (LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE | LADSPA_HINT_INTEGER | LADSPA_HINT_DEFAULT_0);
-		psPortRangeHints[AT_A].LowerBound = -1.1;
-		psPortRangeHints[AT_A].UpperBound = 1.1;
-		psPortRangeHints[AT_Bb].HintDescriptor =
-		    (LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE | LADSPA_HINT_INTEGER | LADSPA_HINT_DEFAULT_MINIMUM);
-		psPortRangeHints[AT_Bb].LowerBound = -1.1;
-		psPortRangeHints[AT_Bb].UpperBound = 1.1;
-		psPortRangeHints[AT_B].HintDescriptor =
-		    (LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE | LADSPA_HINT_INTEGER | LADSPA_HINT_DEFAULT_0);
-		psPortRangeHints[AT_B].LowerBound = -1.1;
-		psPortRangeHints[AT_B].UpperBound = 1.1;
-		psPortRangeHints[AT_C].HintDescriptor =
-		    (LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE | LADSPA_HINT_INTEGER | LADSPA_HINT_DEFAULT_0);
-		psPortRangeHints[AT_C].LowerBound = -1.1;
-		psPortRangeHints[AT_C].UpperBound = 1.1;
-		psPortRangeHints[AT_Db].HintDescriptor =
-		    (LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE | LADSPA_HINT_INTEGER | LADSPA_HINT_DEFAULT_MINIMUM);
-		psPortRangeHints[AT_Db].LowerBound = -1.1;
-		psPortRangeHints[AT_Db].UpperBound = 1.1;
-		psPortRangeHints[AT_D].HintDescriptor =
-		    (LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE | LADSPA_HINT_INTEGER | LADSPA_HINT_DEFAULT_0);
-		psPortRangeHints[AT_D].LowerBound = -1.1;
-		psPortRangeHints[AT_D].UpperBound = 1.1;
-		psPortRangeHints[AT_Eb].HintDescriptor =
-		    (LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE | LADSPA_HINT_INTEGER | LADSPA_HINT_DEFAULT_MINIMUM);
-		psPortRangeHints[AT_Eb].LowerBound = -1.1;
-		psPortRangeHints[AT_Eb].UpperBound = 1.1;
-		psPortRangeHints[AT_E].HintDescriptor =
-		    (LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE | LADSPA_HINT_INTEGER | LADSPA_HINT_DEFAULT_0);
-		psPortRangeHints[AT_E].LowerBound = -1.1;
-		psPortRangeHints[AT_E].UpperBound = 1.1;
-		psPortRangeHints[AT_F].HintDescriptor =
-		    (LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE | LADSPA_HINT_INTEGER | LADSPA_HINT_DEFAULT_0);
-		psPortRangeHints[AT_F].LowerBound = -1.1;
-		psPortRangeHints[AT_F].UpperBound = 1.1;
-		psPortRangeHints[AT_Gb].HintDescriptor =
-		    (LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE | LADSPA_HINT_INTEGER | LADSPA_HINT_DEFAULT_MINIMUM);
-		psPortRangeHints[AT_Gb].LowerBound = -1.1;
-		psPortRangeHints[AT_Gb].UpperBound = 1.1;
-		psPortRangeHints[AT_G].HintDescriptor =
-		    (LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE | LADSPA_HINT_INTEGER | LADSPA_HINT_DEFAULT_0);
-		psPortRangeHints[AT_G].LowerBound = -1.1;
-		psPortRangeHints[AT_G].UpperBound = 1.1;
-		psPortRangeHints[AT_Ab].HintDescriptor =
-		    (LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE | LADSPA_HINT_INTEGER | LADSPA_HINT_DEFAULT_MINIMUM);
-		psPortRangeHints[AT_Ab].LowerBound = -1.1;
-		psPortRangeHints[AT_Ab].UpperBound = 1.1;
-		psPortRangeHints[AT_AMOUNT].HintDescriptor =
-		    (LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE | LADSPA_HINT_DEFAULT_1);
-		psPortRangeHints[AT_AMOUNT].LowerBound = 0;
-		psPortRangeHints[AT_AMOUNT].UpperBound = 1;
-		psPortRangeHints[AT_SMOOTH].HintDescriptor =
-		    (LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE | LADSPA_HINT_DEFAULT_0);
-		psPortRangeHints[AT_SMOOTH].LowerBound = 0;
-		psPortRangeHints[AT_SMOOTH].UpperBound = 1;
-		psPortRangeHints[AT_SHIFT].HintDescriptor =
-		    (LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE | LADSPA_HINT_DEFAULT_0);
-		psPortRangeHints[AT_SHIFT].LowerBound = -12;
-		psPortRangeHints[AT_SHIFT].UpperBound = 12;
-		psPortRangeHints[AT_SCWARP].HintDescriptor =
-		    (LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE | LADSPA_HINT_INTEGER | LADSPA_HINT_DEFAULT_0);
-		psPortRangeHints[AT_SCWARP].LowerBound = -5.1;
-		psPortRangeHints[AT_SCWARP].UpperBound = 5.1;
-		psPortRangeHints[AT_LFOAMP].HintDescriptor =
-		    (LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE | LADSPA_HINT_DEFAULT_0);
-		psPortRangeHints[AT_LFOAMP].LowerBound = 0;
-		psPortRangeHints[AT_LFOAMP].UpperBound = 1;
-		psPortRangeHints[AT_LFORATE].HintDescriptor =
-		    (LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE | LADSPA_HINT_DEFAULT_MIDDLE);
-		psPortRangeHints[AT_LFORATE].LowerBound = 0;
-		psPortRangeHints[AT_LFORATE].UpperBound = 10;
-		psPortRangeHints[AT_LFOSHAPE].HintDescriptor =
-		    (LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE | LADSPA_HINT_DEFAULT_0);
-		psPortRangeHints[AT_LFOSHAPE].LowerBound = -1;
-		psPortRangeHints[AT_LFOSHAPE].UpperBound = 1;
-		psPortRangeHints[AT_LFOSYMM].HintDescriptor =
-		    (LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE | LADSPA_HINT_DEFAULT_0);
-		psPortRangeHints[AT_LFOSYMM].LowerBound = -1;
-		psPortRangeHints[AT_LFOSYMM].UpperBound = 1;
-		psPortRangeHints[AT_LFOQUANT].HintDescriptor = (LADSPA_HINT_TOGGLED | LADSPA_HINT_DEFAULT_0);
-		psPortRangeHints[AT_FCORR].HintDescriptor = (LADSPA_HINT_TOGGLED | LADSPA_HINT_DEFAULT_0);
-		psPortRangeHints[AT_FWARP].HintDescriptor =
-		    (LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE | LADSPA_HINT_DEFAULT_0);
-		psPortRangeHints[AT_FWARP].LowerBound = -1;
-		psPortRangeHints[AT_FWARP].UpperBound = 1;
-		psPortRangeHints[AT_MIX].HintDescriptor =
-		    (LADSPA_HINT_BOUNDED_BELOW | LADSPA_HINT_BOUNDED_ABOVE | LADSPA_HINT_DEFAULT_1);
-		psPortRangeHints[AT_MIX].LowerBound = 0;
-		psPortRangeHints[AT_MIX].UpperBound = 1;
-		psPortRangeHints[AT_PITCH].HintDescriptor = 0;
-		psPortRangeHints[AT_CONF].HintDescriptor = 0;
-		psPortRangeHints[AT_INPUT1].HintDescriptor = 0;
-		psPortRangeHints[AT_OUTPUT1].HintDescriptor = 0;
-		psPortRangeHints[AT_LATENCY].HintDescriptor = 0;
-
-		g_psDescriptor->instantiate = instantiateAutotalent;
-		g_psDescriptor->connect_port = connectPortToAutotalent;
-		g_psDescriptor->activate = NULL;
-		g_psDescriptor->run = runAutotalent;
-		g_psDescriptor->run_adding = NULL;
-		g_psDescriptor->set_run_adding_gain = NULL;
-		g_psDescriptor->deactivate = NULL;
-		g_psDescriptor->cleanup = cleanupAutotalent;
-	}
+  return NULL;
 }
 
-void deleteDescriptor(LADSPA_Descriptor* psDescriptor)
-{
-	unsigned long lIndex;
-	if(psDescriptor) {
-		free((char*)psDescriptor->Label);
-		free((char*)psDescriptor->Name);
-		free((char*)psDescriptor->Maker);
-		free((char*)psDescriptor->Copyright);
-		free((LADSPA_PortDescriptor*)psDescriptor->PortDescriptors);
-		for(lIndex = 0; lIndex < psDescriptor->PortCount; lIndex++)
-			free((char*)(psDescriptor->PortNames[lIndex]));
-		free((char**)psDescriptor->PortNames);
-		free((LADSPA_PortRangeHint*)psDescriptor->PortRangeHints);
-		free(psDescriptor);
-	}
-}
+static const LV2_Descriptor descriptor = {"urn:jeremy.salwen:plugins:autotalent",
+                                          instantiate,
+                                          connect_port,
+                                          activate,
+                                          run,
+                                          deactivate,
+                                          cleanup,
+                                          extension_data};
 
-// Called when library is unloaded
-void _fini()
-{
-	deleteDescriptor(g_psDescriptor);
-}
+
 
 // Return the plugin descriptor (there's only one in this file)
-const LADSPA_Descriptor* ladspa_descriptor(unsigned long Index)
+LV2_SYMBOL_EXPORT
+const LV2_Descriptor* lv2_descriptor(uint32_t index)
 {
-	switch(Index) {
-	case 0:
-		return g_psDescriptor;
-	default:
-		return NULL;
-	}
+    return index == 0 ? &descriptor : NULL;
 }
+
 
 // All done

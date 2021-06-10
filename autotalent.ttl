@@ -1,0 +1,315 @@
+@prefix lv2:  <http://lv2plug.in/ns/lv2core#>.
+@prefix doap: <http://usefulinc.com/ns/doap#>.
+@prefix foaf:  <http://xmlns.com/foaf/0.1/> .
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix ll: <http://ll-plugins.nongnu.org/lv2/namespace#>.
+@prefix ev: <http://lv2plug.in/ns/ext/event#>.
+@prefix atom: <http://lv2plug.in/ns/ext/atom#> .
+@prefix midi: <http://lv2plug.in/ns/ext/midi#> .
+@prefix urid: <http://lv2plug.in/ns/ext/urid#> .
+
+
+<urn:jeremy.salwen:plugins:autotalent> a lv2:Plugin ;
+  a lv2:Plugin, lv2:PitchPlugin;
+  lv2:binary <autotalent.dll>;
+  doap:name "autotalent";
+  doap:developer [
+      foaf:name "Tom Baran";
+      foaf:homepage <http://web.mit.edu/tbaran/www/> ;
+  ] ;
+  doap:maintainer [
+      foaf:name "Jeremy Salwen";
+      foaf:mbox <mailto:jeremybubs@gmail.com> ;
+  ] ;
+  doap:license <http://usefulinc.com/doap/licenses/gpl>;
+
+  lv2:optionalFeature <http://lv2plug.in/ns/ext/event> ;
+  lv2:optionalFeature <http://lv2plug.in/ns/ext/uri-map> ;
+
+  lv2:port [
+    a lv2:ControlPort, lv2:InputPort;
+    lv2:index 0;
+    lv2:symbol "TUNE";
+    lv2:name   "Concert A (Hz)";
+    lv2:minimum 400;
+    lv2:maximum 480;
+    lv2:default 440;
+  ], [
+    a lv2:ControlPort, lv2:InputPort;
+    lv2:index 1;
+    lv2:symbol "FIXED";
+    lv2:name   "Fixed pitch (semitones w.r.t. A)";
+    lv2:minimum -36;
+    lv2:maximum 12;
+    lv2:default 0;
+  ], [
+    a lv2:ControlPort, lv2:InputPort;
+    lv2:index 2;
+    lv2:symbol "PULL";
+    lv2:name   "Pull to fixed pitch";
+    lv2:minimum 0;
+    lv2:maximum 1;
+    lv2:default 0;
+  ], [
+    a lv2:ControlPort, lv2:InputPort;
+    lv2:index 3;
+    lv2:symbol "A";
+    lv2:name   "A";
+    lv2:minimum -1;
+    lv2:maximum 1;
+    lv2:default 0;
+    lv2:scalePoint [ rdfs:label "Disabled"; rdf:value -1 ];
+    lv2:scalePoint [ rdfs:label "Enabled";  rdf:value 0 ];
+    lv2:scalePoint [ rdfs:label "Preferred";  rdf:value 1 ];
+  ], [
+    a lv2:ControlPort, lv2:InputPort;
+    lv2:index 4;
+    lv2:symbol "Bb";
+    lv2:name   "Bb";
+    lv2:minimum -1;
+    lv2:maximum 1;
+    lv2:default 0;
+    lv2:scalePoint [ rdfs:label "Disabled"; rdf:value -1 ];
+    lv2:scalePoint [ rdfs:label "Enabled";  rdf:value 0 ];
+    lv2:scalePoint [ rdfs:label "Preferred";  rdf:value 1 ];
+  ], [
+    a lv2:ControlPort, lv2:InputPort;
+    lv2:index 5;
+    lv2:symbol "B";
+    lv2:name   "B";
+    lv2:minimum -1;
+    lv2:maximum 1;
+    lv2:default 0;
+    lv2:scalePoint [ rdfs:label "Disabled"; rdf:value -1 ];
+    lv2:scalePoint [ rdfs:label "Enabled";  rdf:value 0 ];
+    lv2:scalePoint [ rdfs:label "Preferred";  rdf:value 1 ];
+  ], [
+    a lv2:ControlPort, lv2:InputPort;
+    lv2:index 6;
+    lv2:symbol "C";
+    lv2:name   "C";
+    lv2:minimum -1;
+    lv2:maximum 1;
+    lv2:default 0;
+    lv2:scalePoint [ rdfs:label "Disabled"; rdf:value -1 ];
+    lv2:scalePoint [ rdfs:label "Enabled";  rdf:value 0 ];
+    lv2:scalePoint [ rdfs:label "Preferred";  rdf:value 1 ];
+  ], [
+    a lv2:ControlPort, lv2:InputPort;
+    lv2:index 7;
+    lv2:symbol "Db";
+    lv2:name   "Db";
+    lv2:minimum -1;
+    lv2:maximum 1;
+    lv2:default 0;
+    lv2:scalePoint [ rdfs:label "Disabled"; rdf:value -1 ];
+    lv2:scalePoint [ rdfs:label "Enabled";  rdf:value 0 ];
+    lv2:scalePoint [ rdfs:label "Preferred";  rdf:value 1 ];
+  ], [
+    a lv2:ControlPort, lv2:InputPort;
+    lv2:index 8;
+    lv2:symbol "D";
+    lv2:name   "D";
+    lv2:minimum -1;
+    lv2:maximum 1;
+    lv2:default 0;
+    lv2:scalePoint [ rdfs:label "Disabled"; rdf:value -1 ];
+    lv2:scalePoint [ rdfs:label "Enabled";  rdf:value 0 ];
+    lv2:scalePoint [ rdfs:label "Preferred";  rdf:value 1 ];
+  ], [
+    a lv2:ControlPort, lv2:InputPort;
+    lv2:index 9;
+    lv2:symbol "Eb";
+    lv2:name   "Eb";
+    lv2:minimum -1;
+    lv2:maximum 1;
+    lv2:default 0;
+    lv2:scalePoint [ rdfs:label "Disabled"; rdf:value -1 ];
+    lv2:scalePoint [ rdfs:label "Enabled";  rdf:value 0 ];
+    lv2:scalePoint [ rdfs:label "Preferred";  rdf:value 1 ];
+  ], [
+    a lv2:ControlPort, lv2:InputPort;
+    lv2:index 10;
+    lv2:symbol "E";
+    lv2:name   "E";
+    lv2:minimum -1;
+    lv2:maximum 1;
+    lv2:default 0;
+    lv2:scalePoint [ rdfs:label "Disabled"; rdf:value -1 ];
+    lv2:scalePoint [ rdfs:label "Enabled";  rdf:value 0 ];
+    lv2:scalePoint [ rdfs:label "Preferred";  rdf:value 1 ];
+  ], [
+    a lv2:ControlPort, lv2:InputPort;
+    lv2:index 11;
+    lv2:symbol "F";
+    lv2:name   "F";
+    lv2:minimum -1;
+    lv2:maximum 1;
+    lv2:default 0;
+    lv2:scalePoint [ rdfs:label "Disabled"; rdf:value -1 ];
+    lv2:scalePoint [ rdfs:label "Enabled";  rdf:value 0 ];
+    lv2:scalePoint [ rdfs:label "Preferred";  rdf:value 1 ];
+  ], [
+    a lv2:ControlPort, lv2:InputPort;
+    lv2:index 12;
+    lv2:symbol "Gb";
+    lv2:name   "Gb";
+    lv2:minimum -1;
+    lv2:maximum 1;
+    lv2:default 0;
+    lv2:scalePoint [ rdfs:label "Disabled"; rdf:value -1 ];
+    lv2:scalePoint [ rdfs:label "Enabled";  rdf:value 0 ];
+    lv2:scalePoint [ rdfs:label "Preferred";  rdf:value 1 ];
+  ], [
+    a lv2:ControlPort, lv2:InputPort;
+    lv2:index 13;
+    lv2:symbol "G";
+    lv2:name   "G";
+    lv2:minimum -1;
+    lv2:maximum 1;
+    lv2:default 0;
+    lv2:scalePoint [ rdfs:label "Disabled"; rdf:value -1 ];
+    lv2:scalePoint [ rdfs:label "Enabled";  rdf:value 0 ];
+    lv2:scalePoint [ rdfs:label "Preferred";  rdf:value 1 ];
+  ], [
+    a lv2:ControlPort, lv2:InputPort;
+    lv2:index 14;
+    lv2:symbol "Ab";
+    lv2:name   "Ab";
+    lv2:minimum -1;
+    lv2:maximum 1;
+    lv2:default 0;
+    lv2:scalePoint [ rdfs:label "Disabled"; rdf:value -1 ];
+    lv2:scalePoint [ rdfs:label "Enabled";  rdf:value 0 ];
+    lv2:scalePoint [ rdfs:label "Preferred";  rdf:value 1 ];
+  ], [
+    a lv2:ControlPort, lv2:InputPort;
+    lv2:index 15;
+    lv2:symbol "AMOUNT";
+    lv2:name   "Correction strength";
+    lv2:minimum 0;
+    lv2:maximum 1;
+    lv2:default 1;
+  ], [
+    a lv2:ControlPort, lv2:InputPort;
+    lv2:index 16;
+    lv2:symbol "SMOOTH";
+    lv2:name   "Correction smoothness";
+    lv2:minimum 0;
+    lv2:maximum 1;
+    lv2:default 0;
+  ], [
+    a lv2:ControlPort, lv2:InputPort;
+    lv2:index 17;
+    lv2:symbol "SHIFT";
+    lv2:name   "Pitch shift (scale notes)";
+    lv2:minimum -12;
+    lv2:maximum 12;
+    lv2:default 0;
+  ], [
+    a lv2:ControlPort, lv2:InputPort;
+    lv2:index 18;
+    lv2:symbol "SCWARP";
+    lv2:name   "Output scale rotate (scale notes)";
+    lv2:minimum -5.1;
+    lv2:maximum 5.1;
+    lv2:default 0;
+  ], [
+    a lv2:ControlPort, lv2:InputPort;
+    lv2:index 19;
+    lv2:symbol "LFOAMP";
+    lv2:name   "LFO depth";
+    lv2:minimum 0;
+    lv2:maximum 1;
+    lv2:default 0;
+  ], [
+    a lv2:ControlPort, lv2:InputPort;
+    lv2:index 20;
+    lv2:symbol "LFORATE";
+    lv2:name   "LFO rate (Hz)";
+    lv2:minimum 0;
+    lv2:maximum 10;
+    lv2:default 5;
+  ], [
+    a lv2:ControlPort, lv2:InputPort;
+    lv2:index 21;
+    lv2:symbol "LFOSHAPE";
+    lv2:name   "LFO shape (square->sine->tri)";
+    lv2:minimum -1;
+    lv2:maximum 1;
+    lv2:default 0;
+  ], [
+    a lv2:ControlPort, lv2:InputPort;
+    lv2:index 22;
+    lv2:symbol "LFOSYMM";
+    lv2:name   "LFO symmetry";
+    lv2:minimum -1;
+    lv2:maximum 1;
+    lv2:default 0;
+  ], [
+    a lv2:ControlPort, lv2:InputPort;
+    lv2:index 23;
+    lv2:portProperty lv2:toggled;
+    lv2:symbol "LFOQUANT";
+    lv2:name   "LFO quantization";
+    lv2:minimum 0;
+    lv2:maximum 1;
+    lv2:default 0;
+    lv2:scalePoint [ rdfs:label "On"; rdf:value 1 ];
+    lv2:scalePoint [ rdfs:label "Off";  rdf:value 0 ];
+  ], [
+    a lv2:ControlPort, lv2:InputPort;
+    lv2:index 24;
+    lv2:portProperty lv2:toggled;
+    lv2:symbol "FCORR";
+    lv2:name   "Formant correction";
+    lv2:minimum 0;
+    lv2:maximum 1;
+    lv2:default 0;
+    lv2:scalePoint [ rdfs:label "On"; rdf:value 1 ];
+    lv2:scalePoint [ rdfs:label "Off";  rdf:value 0 ];
+  ], [
+    a lv2:ControlPort, lv2:InputPort;
+    lv2:index 25;
+    lv2:symbol "FWARP";
+    lv2:name   "Formant warp";
+    lv2:minimum -1;
+    lv2:maximum 1;
+    lv2:default 0;
+  ], [
+    a lv2:ControlPort, lv2:InputPort;
+    lv2:index 26;
+    lv2:symbol "MIX";
+    lv2:name   "Mix";
+    lv2:minimum 0;
+    lv2:maximum 1;
+    lv2:default 1;
+  ], [
+    a lv2:ControlPort, lv2:OutputPort;
+    lv2:index 27;
+    lv2:symbol "PITCH";
+    lv2:name   "Detected pitch (semitones w.r.t. A)";
+  ], [
+    a lv2:ControlPort, lv2:OutputPort;
+    lv2:index 28;
+    lv2:symbol "CONF";
+    lv2:name   "Pitch detection confidence";
+  ], [
+    a lv2:AudioPort, lv2:InputPort;
+    lv2:index 29;
+    lv2:symbol "in";
+    lv2:name "Audio In";
+  ], [
+    a lv2:AudioPort, lv2:OutputPort;
+    lv2:index 30;
+    lv2:symbol "out";
+    lv2:name "Audio Out";
+  ], [
+    a lv2:ControlPort, lv2:OutputPort;
+    lv2:index 31;
+    lv2:portProperty lv2:reportsLatency;
+    lv2:symbol "latency";
+    lv2:name   "Latency";
+    lv2:minimum 0;
+  ] .

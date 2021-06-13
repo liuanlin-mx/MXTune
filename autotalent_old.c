@@ -29,6 +29,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "net_log.h"
+#include "mat_helper.h"
 #define PI (float)3.14159265358979323846
 #define L2SC (float)3.32192809488736218171
 
@@ -423,7 +424,7 @@ static LV2_Handle instantiate(const LV2_Descriptor* descriptor, double rate,
 static void connect_port(LV2_Handle instance, uint32_t port, void* data)
 {
     Autotalent* psAutotalent;
-    net_log_info("port:%d data:%p\n", port, data);
+    //net_log_info("port:%d data:%p\n", port, data);
     psAutotalent = (Autotalent*)instance;
     switch(port)
     {
@@ -764,10 +765,15 @@ static void run(LV2_Handle instance, uint32_t n_samples)
                 psAutotalent->ffttime[ti] = (float)(psAutotalent->cbi[(ti2 - ti + N) % N] * psAutotalent->cbwindow[ti]);
             }
 
+            //mat_helper_write_mat2_4("ffttime", 1, N, "float", psAutotalent->ffttime);
+            
             // Calculate FFT
             fft_forward(
                 psAutotalent->fmembvars, psAutotalent->ffttime, psAutotalent->fftfreqre, psAutotalent->fftfreqim);
 
+            //mat_helper_write_mat2_4("fftfreqre", 1, N, "float", psAutotalent->fftfreqre);
+            //mat_helper_write_mat2_4("fftfreqim", 1, N, "float", psAutotalent->fftfreqim);
+            
             // Remove DC
             psAutotalent->fftfreqre[0] = 0;
             psAutotalent->fftfreqim[0] = 0;
@@ -780,6 +786,8 @@ static void run(LV2_Handle instance, uint32_t n_samples)
                 psAutotalent->fftfreqim[ti] = 0;
             }
 
+            //mat_helper_write_mat2_4("fftfreqre2", 1, N, "float", psAutotalent->fftfreqre);
+            //mat_helper_write_mat2_4("fftfreqim2", 1, N, "float", psAutotalent->fftfreqim);
             // Calculate IFFT
             fft_inverse(
                 psAutotalent->fmembvars, psAutotalent->fftfreqre, psAutotalent->fftfreqim, psAutotalent->ffttime);
@@ -792,6 +800,7 @@ static void run(LV2_Handle instance, uint32_t n_samples)
             }
             psAutotalent->ffttime[0] = 1;
 
+            //mat_helper_write_mat2_4("ffttime2", 1, N, "float", psAutotalent->ffttime);
             //  ---- END Obtain autocovariance ----
 
             //  ---- Calculate pitch and confidence ----
@@ -1028,6 +1037,7 @@ static void run(LV2_Handle instance, uint32_t n_samples)
             psAutotalent->inphinc = aref * pow(2, inpitch / 12) / fs;
             psAutotalent->outphinc = aref * pow(2, outpitch / 12) / fs;
             psAutotalent->phincfact = psAutotalent->outphinc / psAutotalent->inphinc;
+            printf("inpitch:%f outpitch:%f phincfact:%f\n", inpitch, outpitch, psAutotalent->phincfact);
         }
         // ************************
         // * END Low-Rate Section *
@@ -1266,7 +1276,7 @@ static const LV2_Descriptor descriptor = {"urn:jeremy.salwen:plugins:autotalent"
 
 // Return the plugin descriptor (there's only one in this file)
 LV2_SYMBOL_EXPORT
-const LV2_Descriptor* lv2_descriptor(uint32_t index)
+const LV2_Descriptor* lv2_descriptor2(uint32_t index)
 {
     return index == 0 ? &descriptor : NULL;
 }

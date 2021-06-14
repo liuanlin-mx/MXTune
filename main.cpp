@@ -2,19 +2,20 @@
 #include <assert.h>
 #include "lv2.h"
 #include "mat_helper.h"
+#include <thread>
 
 LV2_SYMBOL_EXPORT
 const LV2_Descriptor* lv2_descriptor(uint32_t index);
 
 int main(int argc, char **argv)
 {
-    
+    //main2(argc, argv);
 #ifdef MAT_STORAGE_OS_WINDOWS
     WSADATA wsaData;
     WSAStartup(MAKEWORD(2, 2), &wsaData);
 #endif
     const LV2_Descriptor *desc = lv2_descriptor(0);
-    LV2_Handle *instance = desc->instantiate(desc, 44100, NULL, NULL);
+    LV2_Handle instance = desc->instantiate(desc, 44100, NULL, NULL);
     
     float cfg[32] = {
         440,    //AT_TUNE
@@ -87,5 +88,6 @@ int main(int argc, char **argv)
     fclose(ifp);
     fclose(ofp);
     printf("hello xxx\n");
+    getchar();
     return 0;
 }

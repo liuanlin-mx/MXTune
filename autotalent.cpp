@@ -1,5 +1,4 @@
 #include "autotalent.h"
-#include "mat_helper.h"
 
 autotalent::autotalent(unsigned int sample_rate)
     : _detector(sample_rate)
@@ -72,26 +71,6 @@ void autotalent::run(float* in, float *out, int n)
             float inpitch = _detector.get_period(_buffer, conf);
             float outpitch = _tune.tune(inpitch);
             _shifter.update_shifter_variables(inpitch, outpitch);
-    
-            static float test_in[32 * 1024];
-            static float test_out[32 * 1024];
-            static float test_conf[32 * 1024];
-            static unsigned int test_idx = 0;
-            test_in[test_idx] = inpitch;
-            test_out[test_idx] = outpitch;
-            test_conf[test_idx] = conf;
-            test_idx++;
-            if (test_idx >= sizeof(test_in) / sizeof(test_in[0]))
-            {
-                test_idx = 0;
-            }
-            
-            if (test_idx % 1000 == 0)
-            {
-                mat_helper_write_mat2_4("inpitch", 1, test_idx, "float", test_in);
-                mat_helper_write_mat2_4("outpitch", 1, test_idx, "float", test_out);
-                mat_helper_write_mat2_4("conf", 1, test_idx, "float", test_conf);
-            }
         }
         out[i] = _shifter.shifter(_buffer);
     }

@@ -277,6 +277,16 @@ static void run(LV2_Handle instance, uint32_t n_samples)
     {
         *(talent->_latency) = talent->_talent.get_latency();
     }
+    
+    if (talent->_pitch)
+    {
+        *(talent->_pitch) = talent->_talent.get_inpitch();
+    }
+    
+    if (talent->_conf)
+    {
+        *(talent->_conf) = talent->_talent.get_conf();
+    }
 }
 
 static const LV2_Descriptor descriptor = {"urn:jeremy.salwen:plugins:autotalent",

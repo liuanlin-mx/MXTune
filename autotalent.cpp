@@ -67,9 +67,10 @@ void autotalent::run(float* in, float *out, int n)
         _buffer.put(in[i]);
         if(_buffer.get_idx() % (_buffer.get_buf_size() / _noverlap) == 0)
         {
-            float conf;
-            float inpitch = _detector.get_period(_buffer, conf);
+            float inpitch = _detector.get_period(_buffer, _conf);
             float outpitch = _tune.tune(inpitch);
+            _inpitch = inpitch;
+            
             _shifter.update_shifter_variables(inpitch, outpitch);
         }
         out[i] = _shifter.shifter(_buffer);

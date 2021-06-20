@@ -10,6 +10,8 @@ public:
     ~pitch_detector();
     
 public:
+
+    void set_vthresh(float vthresh) { _vthresh = vthresh; }
     void set_aref(float aref) { _aref = aref; }
     float get_period(ring_buffer& buffer, float& conf);
     

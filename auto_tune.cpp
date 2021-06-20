@@ -16,6 +16,7 @@ auto_tune::auto_tune()
     
     _smooth = 1.0;
     _amount = 1.0;
+    _scwarp = 0;
     _update();
 }
 
@@ -76,7 +77,8 @@ float auto_tune::tune(float inpitch)
 {
     int lowersnap;
     int uppersnap;
-    float smooth = _smooth * 0.8;
+    //float smooth = _smooth * 0.8;
+    float smooth = _smooth;
     int scwarp = (_scwarp + _num_notes * 5) % _num_notes;
     
     //  ---- Modify pitch in all kinds of ways! ----

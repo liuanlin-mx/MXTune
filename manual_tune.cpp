@@ -1,3 +1,4 @@
+#define _USE_MATH_DEFINES
 #include <math.h>
 #include "manual_tune.h"
 #include "net_log.h"
@@ -87,10 +88,14 @@ manual_tune::pitch_node manual_tune::get_outpitch(float time)
     std::shared_ptr<tune_node>& tune = _tune_list[idx];
     if (tune)
     {
-        pitch_node& inpitch = _inpitch[idx];
+        float a = 0;
+        float b = 0;
         pitch_node tmp;
+        const pitch_node& inpitch = _inpitch[idx];
         tmp.conf = inpitch.conf;
-        tmp.pitch = _tune2pitch(tune, time, inpitch.pitch);
+        
+        _linear_fit_from_inpitch(tune->time_start, tune->time_end, a, b);
+        tmp.pitch = _tune2pitch(tune, time, inpitch.pitch, a, b);
         return tmp;
     }
     
@@ -105,6 +110,11 @@ std::list<std::pair<manual_tune::pitch_node, float> > manual_tune::get_outpitch(
     
     std::list<std::pair<manual_tune::pitch_node, float> > list;
     pitch_node last;
+    
+    float a = 0;
+    float b = 0;
+    std::shared_ptr<tune_node> last_tune;
+    
     for (int i = begin; i < end; i++)
     {
         pitch_node& inpitch = _inpitch[i];
@@ -124,12 +134,19 @@ std::list<std::pair<manual_tune::pitch_node, float> > manual_tune::get_outpitch(
             pitch_node tmp;
             float time = _idx2time(i);
             tmp.conf = inpitch.conf;
-            tmp.pitch = _tune2pitch(tune, time, inpitch.pitch);
+            
+            if (tune != last_tune)
+            {
+                _linear_fit_from_inpitch(tune->time_start, tune->time_end, a, b);
+            }
+            
+            tmp.pitch = _tune2pitch(tune, time, inpitch.pitch, a, b);
             if (!tmp.is_same(last))
             {
                 last = tmp;
                 list.push_back(std::pair<manual_tune::pitch_node, float>(tmp, time));
             }
+            last_tune = tune;
         }
         else
         {
@@ -373,7 +390,31 @@ void manual_tune::_remove_overlap(const std::shared_ptr<tune_node>& tune)
 }
 
 
-float manual_tune::_tune2pitch(const std::shared_ptr<tune_node>& tune, float time, float inpitch)
+void manual_tune::_linear_fit_from_inpitch(float time_begin, float time_end, float& a, float& b)
+{
+    float x_sum = 0;
+    float y_sum = 0;
+    float x2_sum = 0;
+    float xy_sum = 0;
+    
+    std::int32_t begin = _time2idx(time_begin);
+    std::int32_t end = _time2idx(time_end);
+    std::int32_t n = end - begin;
+    
+    for (std::int32_t i = begin; i < end; i++)
+    {
+        float time = _idx2time(i);
+        x_sum += time;
+        y_sum += _inpitch[i].pitch;
+        x2_sum += time * time;
+        xy_sum += time * _inpitch[i].pitch;
+    }
+    
+    a = (n * xy_sum - x_sum * y_sum) / (n * x2_sum - x_sum * x_sum);
+    b = (y_sum - a * x_sum) / n;
+}
+
+float manual_tune::_tune2pitch(const std::shared_ptr<tune_node>& tune, float time, float inpitch, float a, float b)
 {
     //y = y0 + (y1 - y0) / (x1 - x0) * (x - x0)
     
@@ -386,27 +427,20 @@ float manual_tune::_tune2pitch(const std::shared_ptr<tune_node>& tune, float tim
     float y1 = tune->pitch_end;
     float pitch = y0 + (y1 - y0) / (x1 - x0) * (x - x0);
     
+    float pitch_fit = a * time + b;
     
-    float amount = tune->amount;
+    float k = 1.0;
+    if (time < tune->time_start + tune->attack)
+    {
+        float t = time - tune->time_start;
+        k = sin(t * M_PI_2 / tune->attack);
+    }
+    else if (time >= tune->time_end - tune->release)
+    {
+        float t = time - (tune->time_end - tune->release);
+        k = 1. - sin(t * M_PI_2 / tune->release);
+    }
     
-    if (x < tune->time_start + tune->attack)
-    {
-        float xa0 = tune->time_start;
-        float ya0 = 0;
-        float xa1 = tune->time_start + tune->attack;
-        float ya1 = tune->amount;
-        
-        amount = ya0 + (ya1 - ya0) / (xa1 - xa0) * (x - xa0);
-    }
-    else if (x > tune->time_end - tune->release)
-    {
-        float xa0 = tune->time_end - tune->release;
-        float ya0 = tune->amount;
-        float xa1 = tune->time_end;
-        float ya1 = 0.;
-        
-        amount = ya0 + (ya1 - ya0) / (xa1 - xa0) * (x - xa0);
-    }
-        
-    return inpitch + (pitch - inpitch) * amount;
+    pitch_fit = (pitch_fit - pitch) * k + pitch;
+    return (inpitch - pitch_fit) * (1.0 - tune->amount * k) + pitch;
 }

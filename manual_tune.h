@@ -85,7 +85,8 @@ private:
     void _erase_tune_if(const std::shared_ptr<tune_node>& tune, bool b);
     void _remove_overlap(const std::shared_ptr<tune_node>& node);
     
-    float _tune2pitch(const std::shared_ptr<tune_node>& tune, float time, float inpitch);
+    void _linear_fit_from_inpitch(float time_begin, float time_end, float& a, float& b);
+    float _tune2pitch(const std::shared_ptr<tune_node>& tune, float time, float inpitch, float a, float b);
     
 private:
     pitch_node *_inpitch;

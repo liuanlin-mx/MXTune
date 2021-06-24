@@ -12,6 +12,7 @@ manual_tune::manual_tune(unsigned int len)
     _tune_list = new std::shared_ptr<tune_node>[len];
     
     _min_time = 0.01;
+    _conf_thresh = 0.7;
 }
 
 manual_tune::~manual_tune()
@@ -93,9 +94,15 @@ manual_tune::pitch_node manual_tune::get_outpitch(float time)
         pitch_node tmp;
         const pitch_node& inpitch = _inpitch[idx];
         tmp.conf = inpitch.conf;
-        
-        _linear_fit_from_inpitch(tune->time_start, tune->time_end, a, b);
-        tmp.pitch = _tune2pitch(tune, time, inpitch.pitch, a, b);
+        if (1 || inpitch.conf >= _conf_thresh)
+        {
+            _linear_fit_from_inpitch(tune->time_start, tune->time_end, a, b);
+            tmp.pitch = _tune2pitch(tune, time, inpitch.pitch, a, b);
+        }
+        else
+        {
+            tmp.pitch = inpitch.pitch;
+        }
         return tmp;
     }
     
@@ -135,18 +142,26 @@ std::list<std::pair<manual_tune::pitch_node, float> > manual_tune::get_outpitch(
             float time = _idx2time(i);
             tmp.conf = inpitch.conf;
             
-            if (tune != last_tune)
+            if (1 || inpitch.conf >= _conf_thresh)
             {
-                _linear_fit_from_inpitch(tune->time_start, tune->time_end, a, b);
+                if (tune != last_tune)
+                {
+                    _linear_fit_from_inpitch(tune->time_start, tune->time_end, a, b);
+                }
+                
+                tmp.pitch = _tune2pitch(tune, time, inpitch.pitch, a, b);
+                last_tune = tune;
+            }
+            else
+            {
+                tmp.pitch = tmp.pitch;
             }
             
-            tmp.pitch = _tune2pitch(tune, time, inpitch.pitch, a, b);
             if (!tmp.is_same(last))
             {
                 last = tmp;
                 list.push_back(std::pair<manual_tune::pitch_node, float>(tmp, time));
             }
-            last_tune = tune;
         }
         else
         {
@@ -403,6 +418,11 @@ void manual_tune::_linear_fit_from_inpitch(float time_begin, float time_end, flo
     
     for (std::int32_t i = begin; i < end; i++)
     {
+        if (_inpitch[i].conf < _conf_thresh)
+        {
+            continue;
+        }
+        
         float time = _idx2time(i);
         x_sum += time;
         y_sum += _inpitch[i].pitch;

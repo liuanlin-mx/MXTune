@@ -15,7 +15,7 @@
 //==============================================================================
 AutotalentAudioProcessor::AutotalentAudioProcessor()
 #ifndef JucePlugin_PreferredChannelConfigurations
-     : AudioProcessor (BusesProperties()
+    : AudioProcessor (BusesProperties()
                      #if ! JucePlugin_IsMidiEffect
                       #if ! JucePlugin_IsSynth
                        .withInput  ("Input",  AudioChannelSet::mono(), true)
@@ -25,11 +25,21 @@ AutotalentAudioProcessor::AutotalentAudioProcessor()
                        )
 #endif
 {
-    _talent = NULL;
+    for (std::int32_t i = 0; i < sizeof(_parameters) / sizeof(_parameters[0]); i++)
+    {
+        _parameters[i].parameter = new PluginParameter(_parameters[i].name, _parameters[i].def / _parameters[i].scale,
+            _parameters[i].min / _parameters[i].scale, _parameters[i].max / _parameters[i].scale, _parameters[i].is_boolean);
+        _parameters[i].parameter->addListener(this);
+        addParameter(_parameters[i].parameter);
+    }
 }
 
 AutotalentAudioProcessor::~AutotalentAudioProcessor()
 {
+    for (std::int32_t i = 0; i < sizeof(_parameters) / sizeof(_parameters[0]); i++)
+    {
+        _parameters[i].parameter->removeListener(this);
+    }
 }
 
 //==============================================================================
@@ -99,20 +109,24 @@ void AutotalentAudioProcessor::prepareToPlay (double sampleRate, int samplesPerB
 {
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
-    net_log_debug("\n");
+    
     if (_talent == nullptr)
     {
         _talent.reset(new autotalent(sampleRate));
         if (_talent)
         {
             setLatencySamples(_talent->get_latency());
+            _talent->set_at_note(_notes);
+            _talent->set_at_amount(_at_amount);
+            _talent->set_at_smooth(_at_smooth);
+            _talent->enable_auto_tune(_is_enable_at);
+            _talent->enable_track(_is_enable_track);
         }
     }
 }
 
 void AutotalentAudioProcessor::releaseResources()
 {
-    net_log_debug("\n");
     if (_talent)
     {
         _talent.reset();
@@ -150,7 +164,6 @@ void AutotalentAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuf
     ScopedNoDenormals noDenormals;
     auto totalNumInputChannels  = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
-    //net_log_debug("totalNumInputChannels:%d totalNumOutputChannels:%d\n", totalNumInputChannels, totalNumOutputChannels);
     
     // In case we have more outputs than inputs, this code clears any output
     // channels that didn't contain input data, (because these aren't
@@ -171,7 +184,6 @@ void AutotalentAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuf
             _cur_pos = result.timeInSeconds;
             _is_playing = result.isPlaying;
         }
-        //net_log_debug("isPlaying:%d timeInSeconds:%f\n", result.isPlaying, result.timeInSeconds);
     }
     
     // This is the place where you'd normally do the guts of your plugin's
@@ -217,6 +229,91 @@ void AutotalentAudioProcessor::setStateInformation (const void* data, int sizeIn
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.
 }
+
+
+void AutotalentAudioProcessor::parameterValueChanged (int parameterIndex, float newValue)
+{
+    std::lock_guard<std::mutex> l(_mtx);
+
+    if (parameterIndex >= PARAMETER_ID_A && parameterIndex <= PARAMETER_ID_Ab)
+    {
+        _notes[parameterIndex - PARAMETER_ID_A] = (newValue > 0)? 1: -1;
+        if (_talent)
+        {
+            _talent->set_at_note(_notes);
+        }
+    }
+    else if (parameterIndex == PARAMETER_ID_AT_AMOUNT)
+    {
+        if (_talent)
+        {
+            _at_amount = newValue;
+            _talent->set_at_amount(newValue);
+        }
+    }
+    else if (parameterIndex == PARAMETER_ID_AT_SMOOTH)
+    {
+        if (_talent)
+        {
+            _at_smooth = newValue;
+            _talent->set_at_smooth(newValue);
+        }
+    }
+    else if (parameterIndex == PARAMETER_ID_ENABLE_AUTOTUNE)
+    {
+        if (_talent)
+        {
+            _is_enable_at = newValue > 0.;
+            _talent->enable_auto_tune(_is_enable_at);
+        }
+    }
+    else if (parameterIndex == PARAMETER_ID_ENABLE_TRACK)
+    {
+        if (_talent)
+        {
+            _is_enable_track = newValue > 0.;
+            _talent->enable_track(_is_enable_track);
+        }
+    }
+    
+    if (!_gesture_is_starting)
+    {
+        _parameter_update_id++;
+    }
+    
+}
+
+void AutotalentAudioProcessor::parameterGestureChanged (int parameterIndex, bool gestureIsStarting)
+{
+    //std::lock_guard<std::mutex> l(_mtx);
+    _gesture_is_starting = gestureIsStarting;
+}
+
+
+float AutotalentAudioProcessor::get_parameter(std::uint32_t id)
+{
+    if (id < PARAMETER_ID_NUM)
+    {
+        return _parameters[id].parameter->getValue() * _parameters[id].scale;
+    }
+    return 0.;
+}
+
+void AutotalentAudioProcessor::set_parameter(std::uint32_t id, float v)
+{
+    if (id < PARAMETER_ID_NUM)
+    {
+        v = v / _parameters[id].scale;
+        if (v > 1.0)
+        {
+            v = 1.0;
+        }
+        _parameters[id].parameter->beginChangeGesture();
+        _parameters[id].parameter->setValueNotifyingHost(v);
+        _parameters[id].parameter->endChangeGesture();
+    }
+}
+
 
 //==============================================================================
 // This creates new instances of the plugin..

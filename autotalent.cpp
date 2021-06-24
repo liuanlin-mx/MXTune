@@ -14,6 +14,7 @@ autotalent::autotalent(unsigned int sample_rate)
     , _auto_tune(false)
 {
     _detector.set_vthresh(_conf_thresh);
+    _m_tune.set_vthresh(_conf_thresh);
 }
 
 autotalent::~autotalent()
@@ -31,38 +32,37 @@ void autotalent::set_mix(float mix)
     _shifter.set_mix(mix);
 }
 
-void autotalent::set_note(int notes[12])
+void autotalent::set_at_note(int notes[12])
 {
     _tune.set_note(notes);
 }
 
-    void update_tune();
-void autotalent::set_pull(float pull)
+void autotalent::set_at_pull(float pull)
 {
     _tune.set_pull(pull);
 }
 
-void autotalent::set_fixed(float fixed)
+void autotalent::set_at_fixed(float fixed)
 {
     _tune.set_fixed(fixed);
 }
 
-void autotalent::set_shift(float shift)
+void autotalent::set_at_shift(float shift)
 {
     _tune.set_shift(shift);
 }
 
-void autotalent::set_smooth(float smooth)
+void autotalent::set_at_smooth(float smooth)
 {
     _tune.set_smooth(smooth);
 }
 
-void autotalent::set_amount(float amount)
+void autotalent::set_at_amount(float amount)
 {
     _tune.set_amount(amount);
 }
 
-void autotalent::set_scwarp(int scwarp)
+void autotalent::set_at_scwarp(int scwarp)
 {
     _tune.set_scwarp(scwarp);
 }

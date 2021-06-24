@@ -76,6 +76,8 @@ public:
     void clear_note();
     
     void snap_key(auto_tune *tune);
+    
+    void set_vthresh(float thresh) { _conf_thresh = thresh; }
 private:
     
     std::uint32_t _time2idx(float time);
@@ -96,6 +98,7 @@ private:
     std::uint32_t _max_len;
     std::uint32_t _len;
     float _min_time;
+    float _conf_thresh;
     
 };
 

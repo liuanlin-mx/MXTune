@@ -34,26 +34,26 @@ PluginGui::PluginGui (AutotalentAudioProcessor& p)
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]
 
+    groupComponent4.reset (new GroupComponent ("new group",
+                                               String()));
+    addAndMakeVisible (groupComponent4.get());
+
+    groupComponent4->setBounds (248, 8, 608, 88);
+
     groupComponent2.reset (new GroupComponent ("Key",
                                                TRANS("Key")));
     addAndMakeVisible (groupComponent2.get());
 
     groupComponent2->setBounds (8, 96, 136, 312);
 
-    groupComponent4.reset (new GroupComponent ("new group",
-                                               String()));
-    addAndMakeVisible (groupComponent4.get());
-
-    groupComponent4->setBounds (224, 8, 632, 88);
-
     sliderAttack.reset (new Slider ("new slider"));
     addAndMakeVisible (sliderAttack.get());
-    sliderAttack->setRange (0, 200, 1);
+    sliderAttack->setRange (0, 500, 1);
     sliderAttack->setSliderStyle (Slider::LinearBar);
     sliderAttack->setTextBoxStyle (Slider::TextBoxAbove, false, 80, 20);
     sliderAttack->addListener (this);
 
-    sliderAttack->setBounds (264, 56, 64, 24);
+    sliderAttack->setBounds (312, 56, 64, 24);
 
     groupComponent5.reset (new GroupComponent ("new group",
                                                TRANS("Notes")));
@@ -65,7 +65,7 @@ PluginGui::PluginGui (AutotalentAudioProcessor& p)
                                               String()));
     addAndMakeVisible (groupComponent.get());
 
-    groupComponent->setBounds (8, 8, 216, 88);
+    groupComponent->setBounds (8, 8, 240, 88);
 
     toggleButtonTrack.reset (new ToggleButton ("Track"));
     addAndMakeVisible (toggleButtonTrack.get());
@@ -256,12 +256,12 @@ PluginGui::PluginGui (AutotalentAudioProcessor& p)
 
     sliderRelease.reset (new Slider ("new slider"));
     addAndMakeVisible (sliderRelease.get());
-    sliderRelease->setRange (0, 200, 1);
+    sliderRelease->setRange (0, 500, 1);
     sliderRelease->setSliderStyle (Slider::LinearBar);
     sliderRelease->setTextBoxStyle (Slider::TextBoxAbove, false, 80, 20);
     sliderRelease->addListener (this);
 
-    sliderRelease->setBounds (352, 56, 64, 24);
+    sliderRelease->setBounds (400, 56, 64, 24);
 
     sliderAmount.reset (new Slider ("new slider"));
     addAndMakeVisible (sliderAmount.get());
@@ -270,7 +270,7 @@ PluginGui::PluginGui (AutotalentAudioProcessor& p)
     sliderAmount->setTextBoxStyle (Slider::TextBoxAbove, false, 80, 20);
     sliderAmount->addListener (this);
 
-    sliderAmount->setBounds (440, 56, 56, 24);
+    sliderAmount->setBounds (488, 56, 56, 24);
 
     label4.reset (new Label ("Attack(ms)",
                              TRANS("Attack(ms)")));
@@ -281,7 +281,7 @@ PluginGui::PluginGui (AutotalentAudioProcessor& p)
     label4->setColour (TextEditor::textColourId, Colours::black);
     label4->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
-    label4->setBounds (256, 24, 80, 24);
+    label4->setBounds (304, 24, 80, 24);
 
     label5.reset (new Label ("Release(ms)",
                              TRANS("Release(ms)")));
@@ -292,7 +292,7 @@ PluginGui::PluginGui (AutotalentAudioProcessor& p)
     label5->setColour (TextEditor::textColourId, Colours::black);
     label5->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
-    label5->setBounds (344, 24, 88, 24);
+    label5->setBounds (392, 24, 88, 24);
 
     label6.reset (new Label ("Amount",
                              TRANS("Amount")));
@@ -303,7 +303,7 @@ PluginGui::PluginGui (AutotalentAudioProcessor& p)
     label6->setColour (TextEditor::textColourId, Colours::black);
     label6->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
-    label6->setBounds (440, 24, 56, 24);
+    label6->setBounds (488, 24, 56, 24);
 
     toggleButtonSnap.reset (new ToggleButton ("new toggle button"));
     addAndMakeVisible (toggleButtonSnap.get());
@@ -356,16 +356,36 @@ PluginGui::PluginGui (AutotalentAudioProcessor& p)
     label7->setColour (TextEditor::textColourId, Colours::black);
     label7->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
-    label7->setBounds (16, 536, 56, 24);
+    label7->setBounds (16, 56, 56, 24);
 
-    sliderDefSmooth.reset (new Slider ("new slider"));
-    addAndMakeVisible (sliderDefSmooth.get());
-    sliderDefSmooth->setRange (0, 1, 0.01);
-    sliderDefSmooth->setSliderStyle (Slider::LinearBar);
-    sliderDefSmooth->setTextBoxStyle (Slider::TextBoxAbove, false, 80, 20);
-    sliderDefSmooth->addListener (this);
+    sliderATSmooth.reset (new Slider ("new slider"));
+    addAndMakeVisible (sliderATSmooth.get());
+    sliderATSmooth->setRange (0, 1, 0.01);
+    sliderATSmooth->setSliderStyle (Slider::LinearBar);
+    sliderATSmooth->setTextBoxStyle (Slider::TextBoxAbove, false, 80, 20);
+    sliderATSmooth->addListener (this);
 
-    sliderDefSmooth->setBounds (88, 536, 40, 24);
+    sliderATSmooth->setBounds (72, 56, 40, 24);
+
+    label8.reset (new Label ("Amount:",
+                             TRANS("Amount:")));
+    addAndMakeVisible (label8.get());
+    label8->setFont (Font (15.00f, Font::plain).withTypefaceStyle ("Regular"));
+    label8->setJustificationType (Justification::centredLeft);
+    label8->setEditable (false, false, false);
+    label8->setColour (TextEditor::textColourId, Colours::black);
+    label8->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+
+    label8->setBounds (128, 56, 56, 24);
+
+    sliderATAmount.reset (new Slider ("new slider"));
+    addAndMakeVisible (sliderATAmount.get());
+    sliderATAmount->setRange (0, 1, 0.01);
+    sliderATAmount->setSliderStyle (Slider::LinearBar);
+    sliderATAmount->setTextBoxStyle (Slider::TextBoxAbove, false, 80, 20);
+    sliderATAmount->addListener (this);
+
+    sliderATAmount->setBounds (184, 56, 40, 24);
 
 
     //[UserPreSize]
@@ -375,20 +395,7 @@ PluginGui::PluginGui (AutotalentAudioProcessor& p)
 
 
     //[Constructor] You can add your own custom stuff here..
-    _snap_note = toggleButtonSnap->getToggleState();
-    sliderDefAttack->setValue(_def_attack * 1000);
-    sliderDefRelease->setValue(_def_release * 1000);
-    sliderDefAmount->setValue(_def_amount);
-    sliderDefSmooth->setValue(_def_smooth);
-
-    _proc.get_autotalent()->set_amount(_def_amount);
-    _proc.get_autotalent()->set_smooth(_def_smooth);
-
-    _proc.get_autotalent()->set_note(_notes);
-
-    _key = 3;
-    _key_type = 2;
-    _update_notes();
+    _update_gui_parameter();
     startTimer(1000 / 15);
     //[/Constructor]
 }
@@ -398,8 +405,8 @@ PluginGui::~PluginGui()
     //[Destructor_pre]. You can add your own custom destruction code here..
     //[/Destructor_pre]
 
-    groupComponent2 = nullptr;
     groupComponent4 = nullptr;
+    groupComponent2 = nullptr;
     sliderAttack = nullptr;
     groupComponent5 = nullptr;
     groupComponent = nullptr;
@@ -436,7 +443,9 @@ PluginGui::~PluginGui()
     sliderDefRelease = nullptr;
     sliderDefAmount = nullptr;
     label7 = nullptr;
-    sliderDefSmooth = nullptr;
+    sliderATSmooth = nullptr;
+    label8 = nullptr;
+    sliderATAmount = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -447,6 +456,7 @@ PluginGui::~PluginGui()
 void PluginGui::paint (Graphics& g)
 {
     //[UserPrePaint] Add your own custom painting code here..
+    _update_gui_parameter();
     //[/UserPrePaint]
 
     g.fillAll (Colour (0xff323e44));
@@ -455,9 +465,9 @@ void PluginGui::paint (Graphics& g)
         int x = 152, y = 112, width = 696, height = 472;
         Colour fillColour = Colour (0x04000000);
         //[UserPaintCustomArguments] Customize the painting arguments here..
-        _draw_x = x;
+        _draw_x = x + 24;
         _draw_y = y;
-        _draw_w = width;
+        _draw_w = width - 24;
         _draw_h = height;
         //[/UserPaintCustomArguments]
         g.setColour (fillColour);
@@ -486,13 +496,13 @@ void PluginGui::paint (Graphics& g)
                 std::int32_t n = (i + 9 + 12 * 3) / 12;
                 char name[32];
                 sprintf(name, "%s%d", node_name[(unsigned)(i + 12 * 8) % 12], n);
-                g.drawText(name, _draw_x, y - 12, 24, 24, juce::Justification::centred, true);
+                g.drawText(name, _draw_x - 24, y - 12, 24, 24, juce::Justification::centred, true);
             }
             else
             {
-                g.drawText(node_name[(unsigned)(i + 12 * 8) % 12], _draw_x, y - 12, 24, 24, juce::Justification::centred, true);
+                g.drawText(node_name[(unsigned)(i + 12 * 8) % 12], _draw_x - 24, y - 12, 24, 24, juce::Justification::centred, true);
             }
-            g.drawLine(_draw_x + 24, y, _draw_x + _draw_w, y, 0.7);
+            g.drawLine(_draw_x, y, _draw_x + _draw_w, y, 0.7);
 
         }
     }
@@ -519,6 +529,46 @@ void PluginGui::paint (Graphics& g)
         {
             g.setColour (juce::Colours::red);
             g.drawLine(x, y1, x, y2, 1);
+        }
+    }
+
+    // draw selected note
+    if (_new_tune || _modify_tune)
+    {
+        float start_x = _time_to_x(_cur_node->time_start);
+        float end_x = _time_to_x(_cur_node->time_end);
+        float start_y = _pitch_to_y(_cur_node->pitch_start);
+        float end_y = _pitch_to_y(_cur_node->pitch_end);
+
+        if (start_x >= _draw_x && end_x < start_x + _draw_w
+                && start_y >= _draw_y && end_y < start_y + _draw_y)
+        {
+            g.setColour (juce::Colours::red);
+            g.setOpacity(0.5);
+            g.drawLine(start_x, start_y, end_x, end_y, 10);
+        }
+    }
+
+    // draw notes
+    {
+        std::list<std::shared_ptr<manual_tune::tune_node> > list =
+            _proc.get_manual_tune().get_tune(_time_left, _time_right);
+
+        g.setColour (juce::Colours::grey);
+        g.setOpacity(0.5);
+        for (auto i: list)
+        {
+
+            float start_x = _time_to_x(i->time_start);
+            float end_x = _time_to_x(i->time_end);
+            float start_y = _pitch_to_y(i->pitch_start);
+            float end_y = _pitch_to_y(i->pitch_end);
+
+            if (start_x >= _draw_x && end_x < start_x + _draw_w
+                    && start_y >= _draw_y && end_y < start_y + _draw_y)
+            {
+                g.drawLine(start_x, start_y, end_x, end_y, 10);
+            }
         }
     }
 
@@ -556,7 +606,7 @@ void PluginGui::paint (Graphics& g)
 
         //g.setColour (juce::Colours::red);
         g.setColour (getLookAndFeel().findColour (Slider::thumbColourId));
-        g.strokePath (pitch_path, PathStrokeType (1.0f));
+        g.strokePath (pitch_path, PathStrokeType (2.0f));
     }
 
     // draw outpitch line
@@ -564,7 +614,6 @@ void PluginGui::paint (Graphics& g)
         std::list<std::pair<manual_tune::pitch_node, float> > pitch_list = _proc.get_manual_tune().get_outpitch(_time_left, _time_right);
         Path pitch_path;
         bool flag = true;
-        std::int32_t xx = 0;
         for (auto i: pitch_list)
         {
             manual_tune::pitch_node& node = i.first;
@@ -575,12 +624,6 @@ void PluginGui::paint (Graphics& g)
             if ((x > _draw_x && x < _draw_x + _draw_w && y > _draw_y && y < _draw_y + _draw_h) &&
                 node.conf > _proc.get_autotalent()->get_conf_thresh())
             {
-                if (--xx > 0)
-                {
-                    net_log_debug("x:%f y:%f time:%f conf:%f pitch:%f\n", x, y, time, node.conf, node.pitch);
-                    net_log_debug("time:%f %f\n", _time_left, _time_right);
-                }
-
                 if (flag)
                 {
                     flag = false;
@@ -599,50 +642,9 @@ void PluginGui::paint (Graphics& g)
 
         g.setColour (juce::Colours::green);
         //g.setColour (Colour (0xff7fff00));
-        g.strokePath (pitch_path, PathStrokeType (1.0f));
+        g.strokePath (pitch_path, PathStrokeType (2.0f));
     }
 
-    // draw selected note
-    if (_new_tune || _modify_tune)
-    {
-        float start_x = _time_to_x(_cur_node->time_start);
-        float end_x = _time_to_x(_cur_node->time_end);
-        float start_y = _pitch_to_y(_cur_node->pitch_start);
-        float end_y = _pitch_to_y(_cur_node->pitch_end);
-
-        net_log_debug("x:%f y:%f x:%f y:%f\n", start_x, start_y, end_x, end_y);
-        if (start_x >= _draw_x && end_x < start_x + _draw_w
-                && start_y >= _draw_y && end_y < start_y + _draw_y)
-        {
-            g.setColour (juce::Colours::red);
-            g.setOpacity(0.3);
-            g.drawLine(start_x, start_y, end_x, end_y, 10);
-        }
-    }
-
-    // draw notes
-    {
-        std::list<std::shared_ptr<manual_tune::tune_node> > list =
-            _proc.get_manual_tune().get_tune(_time_left, _time_right);
-
-        g.setColour (juce::Colours::grey);
-        g.setOpacity(0.3);
-        for (auto i: list)
-        {
-
-            float start_x = _time_to_x(i->time_start);
-            float end_x = _time_to_x(i->time_end);
-            float start_y = _pitch_to_y(i->pitch_start);
-            float end_y = _pitch_to_y(i->pitch_end);
-
-            net_log_debug("x:%f y:%f x:%f y:%f\n", start_x, start_y, end_x, end_y);
-            if (start_x >= _draw_x && end_x < start_x + _draw_w
-                    && start_y >= _draw_y && end_y < start_y + _draw_y)
-            {
-                g.drawLine(start_x, start_y, end_x, end_y, 10);
-            }
-        }
-    }
     //[/UserPaint]
 }
 
@@ -690,28 +692,32 @@ void PluginGui::sliderValueChanged (Slider* sliderThatWasMoved)
     else if (sliderThatWasMoved == sliderDefAttack.get())
     {
         //[UserSliderCode_sliderDefAttack] -- add your slider handling code here..
-        _def_attack = sliderThatWasMoved->getValue() / 1000.;
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_DEF_ATTACK, sliderThatWasMoved->getValue() / 1000.);
         //[/UserSliderCode_sliderDefAttack]
     }
     else if (sliderThatWasMoved == sliderDefRelease.get())
     {
         //[UserSliderCode_sliderDefRelease] -- add your slider handling code here..
-        _def_release = sliderThatWasMoved->getValue() / 1000.;
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_DEF_RELEASE, sliderThatWasMoved->getValue() / 1000.);
         //[/UserSliderCode_sliderDefRelease]
     }
     else if (sliderThatWasMoved == sliderDefAmount.get())
     {
         //[UserSliderCode_sliderDefAmount] -- add your slider handling code here..
-        _def_amount = sliderThatWasMoved->getValue();
-        _proc.get_autotalent()->set_amount(_def_amount);
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_DEF_AMOUNT, sliderThatWasMoved->getValue());
         //[/UserSliderCode_sliderDefAmount]
     }
-    else if (sliderThatWasMoved == sliderDefSmooth.get())
+    else if (sliderThatWasMoved == sliderATSmooth.get())
     {
-        //[UserSliderCode_sliderDefSmooth] -- add your slider handling code here..
-        _def_smooth = sliderThatWasMoved->getValue();
-        _proc.get_autotalent()->set_smooth(_def_smooth);
-        //[/UserSliderCode_sliderDefSmooth]
+        //[UserSliderCode_sliderATSmooth] -- add your slider handling code here..
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_AT_SMOOTH, sliderThatWasMoved->getValue());
+        //[/UserSliderCode_sliderATSmooth]
+    }
+    else if (sliderThatWasMoved == sliderATAmount.get())
+    {
+        //[UserSliderCode_sliderATAmount] -- add your slider handling code here..
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_AT_AMOUNT, sliderThatWasMoved->getValue());
+        //[/UserSliderCode_sliderATAmount]
     }
 
     //[UsersliderValueChanged_Post]
@@ -726,115 +732,174 @@ void PluginGui::buttonClicked (Button* buttonThatWasClicked)
     if (buttonThatWasClicked == toggleButtonTrack.get())
     {
         //[UserButtonCode_toggleButtonTrack] -- add your button handler code here..
-        _proc.get_autotalent()->enable_track(buttonThatWasClicked->getToggleState());
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_ENABLE_TRACK, buttonThatWasClicked->getToggleState()? 1.: 0.);
         //[/UserButtonCode_toggleButtonTrack]
     }
     else if (buttonThatWasClicked == toggleButtonAutoTune.get())
     {
         //[UserButtonCode_toggleButtonAutoTune] -- add your button handler code here..
-        _proc.get_autotalent()->enable_auto_tune(buttonThatWasClicked->getToggleState());
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_ENABLE_AUTOTUNE, buttonThatWasClicked->getToggleState()? 1.: 0.);
         //[/UserButtonCode_toggleButtonAutoTune]
     }
     else if (buttonThatWasClicked == toggleButtonNoteA.get())
     {
         //[UserButtonCode_toggleButtonNoteA] -- add your button handler code here..
+        _notes[_key_A] = buttonThatWasClicked->getToggleState()? 1: -1;
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_A, (_notes[_key_A] > 0)? 1.: 0.);
         _key = _key_custom;
         _key_type = _key_type_custom;
-        _update_notes();
+        comboBoxKey->setSelectedId(_key + 1, dontSendNotification);
+        comboBoxKeyType->setSelectedId(_key_type + 1, dontSendNotification);
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY, _key);
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY, _key_type);
         //[/UserButtonCode_toggleButtonNoteA]
     }
     else if (buttonThatWasClicked == toggleButtonNoteBb.get())
     {
         //[UserButtonCode_toggleButtonNoteBb] -- add your button handler code here..
+        _notes[_key_Bb] = buttonThatWasClicked->getToggleState()? 1: -1;
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_Bb, (_notes[_key_Bb] > 0)? 1.: 0.);
         _key = _key_custom;
         _key_type = _key_type_custom;
-        _update_notes();
+        comboBoxKey->setSelectedId(_key + 1, dontSendNotification);
+        comboBoxKeyType->setSelectedId(_key_type + 1, dontSendNotification);
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY, _key);
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY, _key_type);
         //[/UserButtonCode_toggleButtonNoteBb]
     }
     else if (buttonThatWasClicked == toggleButtonNoteB.get())
     {
         //[UserButtonCode_toggleButtonNoteB] -- add your button handler code here..
+        _notes[_key_B] = buttonThatWasClicked->getToggleState()? 1: -1;
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_B, (_notes[_key_B] > 0)? 1.: 0.);
         _key = _key_custom;
         _key_type = _key_type_custom;
-        _update_notes();
+        comboBoxKey->setSelectedId(_key + 1, dontSendNotification);
+        comboBoxKeyType->setSelectedId(_key_type + 1, dontSendNotification);
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY, _key);
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY, _key_type);
         //[/UserButtonCode_toggleButtonNoteB]
     }
     else if (buttonThatWasClicked == toggleButtonNoteC.get())
     {
         //[UserButtonCode_toggleButtonNoteC] -- add your button handler code here..
+        _notes[_key_C] = buttonThatWasClicked->getToggleState()? 1: -1;
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_C, (_notes[_key_C] > 0)? 1.: 0.);
         _key = _key_custom;
         _key_type = _key_type_custom;
-        _update_notes();
+        comboBoxKey->setSelectedId(_key + 1, dontSendNotification);
+        comboBoxKeyType->setSelectedId(_key_type + 1, dontSendNotification);
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY, _key);
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY, _key_type);
         //[/UserButtonCode_toggleButtonNoteC]
     }
     else if (buttonThatWasClicked == toggleButtonNoteDb.get())
     {
         //[UserButtonCode_toggleButtonNoteDb] -- add your button handler code here..
+        _notes[_key_Db] = buttonThatWasClicked->getToggleState()? 1: -1;
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_Db, (_notes[_key_Db] > 0)? 1.: 0.);
         _key = _key_custom;
         _key_type = _key_type_custom;
-        _update_notes();
+        comboBoxKey->setSelectedId(_key + 1, dontSendNotification);
+        comboBoxKeyType->setSelectedId(_key_type + 1, dontSendNotification);
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY, _key);
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY, _key_type);
         //[/UserButtonCode_toggleButtonNoteDb]
     }
     else if (buttonThatWasClicked == toggleButtonNoteD.get())
     {
         //[UserButtonCode_toggleButtonNoteD] -- add your button handler code here..
+        _notes[_key_D] = buttonThatWasClicked->getToggleState()? 1: -1;
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_D, (_notes[_key_D] > 0)? 1.: 0.);
         _key = _key_custom;
         _key_type = _key_type_custom;
-        _update_notes();
+        comboBoxKey->setSelectedId(_key + 1, dontSendNotification);
+        comboBoxKeyType->setSelectedId(_key_type + 1, dontSendNotification);
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY, _key);
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY, _key_type);
         //[/UserButtonCode_toggleButtonNoteD]
     }
     else if (buttonThatWasClicked == toggleButtonNoteEb.get())
     {
         //[UserButtonCode_toggleButtonNoteEb] -- add your button handler code here..
+        _notes[_key_Eb] = buttonThatWasClicked->getToggleState()? 1: -1;
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_Eb, (_notes[_key_Eb] > 0)? 1.: 0.);
         _key = _key_custom;
         _key_type = _key_type_custom;
-        _update_notes();
+        comboBoxKey->setSelectedId(_key + 1, dontSendNotification);
+        comboBoxKeyType->setSelectedId(_key_type + 1, dontSendNotification);
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY, _key);
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY, _key_type);
         //[/UserButtonCode_toggleButtonNoteEb]
     }
     else if (buttonThatWasClicked == toggleButtonNoteE.get())
     {
         //[UserButtonCode_toggleButtonNoteE] -- add your button handler code here..
+        _notes[_key_E] = buttonThatWasClicked->getToggleState()? 1: -1;
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_E, (_notes[_key_E] > 0)? 1.: 0.);
         _key = _key_custom;
         _key_type = _key_type_custom;
-        _update_notes();
+        comboBoxKey->setSelectedId(_key + 1, dontSendNotification);
+        comboBoxKeyType->setSelectedId(_key_type + 1, dontSendNotification);
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY, _key);
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY, _key_type);
         //[/UserButtonCode_toggleButtonNoteE]
     }
     else if (buttonThatWasClicked == toggleButtonNoteF.get())
     {
         //[UserButtonCode_toggleButtonNoteF] -- add your button handler code here..
+        _notes[_key_F] = buttonThatWasClicked->getToggleState()? 1: -1;
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_F, (_notes[_key_F] > 0)? 1.: 0.);
         _key = _key_custom;
         _key_type = _key_type_custom;
-        _update_notes();
+        comboBoxKey->setSelectedId(_key + 1, dontSendNotification);
+        comboBoxKeyType->setSelectedId(_key_type + 1, dontSendNotification);
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY, _key);
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY, _key_type);
         //[/UserButtonCode_toggleButtonNoteF]
     }
     else if (buttonThatWasClicked == toggleButtonNoteGb.get())
     {
         //[UserButtonCode_toggleButtonNoteGb] -- add your button handler code here..
+        _notes[_key_Gb] = buttonThatWasClicked->getToggleState()? 1: -1;
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_Gb, (_notes[_key_Gb] > 0)? 1.: 0.);
         _key = _key_custom;
         _key_type = _key_type_custom;
-        _update_notes();
+        comboBoxKey->setSelectedId(_key + 1, dontSendNotification);
+        comboBoxKeyType->setSelectedId(_key_type + 1, dontSendNotification);
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY, _key);
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY, _key_type);
         //[/UserButtonCode_toggleButtonNoteGb]
     }
     else if (buttonThatWasClicked == toggleButtonNoteAb.get())
     {
         //[UserButtonCode_toggleButtonNoteAb] -- add your button handler code here..
+        _notes[_key_Ab] = buttonThatWasClicked->getToggleState()? 1: -1;
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_Ab, (_notes[_key_Ab] > 0)? 1.: 0.);
         _key = _key_custom;
         _key_type = _key_type_custom;
-        _update_notes();
+        comboBoxKey->setSelectedId(_key + 1, dontSendNotification);
+        comboBoxKeyType->setSelectedId(_key_type + 1, dontSendNotification);
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY, _key);
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY, _key_type);
         //[/UserButtonCode_toggleButtonNoteAb]
     }
     else if (buttonThatWasClicked == toggleButtonNoteG.get())
     {
         //[UserButtonCode_toggleButtonNoteG] -- add your button handler code here..
+        _notes[_key_G] = buttonThatWasClicked->getToggleState()? 1: -1;
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_G, (_notes[_key_G] > 0)? 1.: 0.);
         _key = _key_custom;
         _key_type = _key_type_custom;
-        _update_notes();
+        comboBoxKey->setSelectedId(_key + 1, dontSendNotification);
+        comboBoxKeyType->setSelectedId(_key_type + 1, dontSendNotification);
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY, _key);
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY, _key_type);
         //[/UserButtonCode_toggleButtonNoteG]
     }
     else if (buttonThatWasClicked == textButtonSnapKey.get())
     {
         //[UserButtonCode_textButtonSnapKey] -- add your button handler code here..
-        _proc.get_autotalent()->set_note(_notes);
         _proc.get_autotalent()->snap_key();
         //[/UserButtonCode_textButtonSnapKey]
     }
@@ -847,7 +912,7 @@ void PluginGui::buttonClicked (Button* buttonThatWasClicked)
     else if (buttonThatWasClicked == toggleButtonSnap.get())
     {
         //[UserButtonCode_toggleButtonSnap] -- add your button handler code here..
-        _snap_note = buttonThatWasClicked->getToggleState();
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_SNAP, buttonThatWasClicked->getToggleState()? 1: 0);
         //[/UserButtonCode_toggleButtonSnap]
     }
     else if (buttonThatWasClicked == textButtonClearNote.get())
@@ -870,7 +935,7 @@ void PluginGui::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
     {
         //[UserComboBoxCode_comboBoxKey] -- add your combo box handling code here..
         _key = comboBoxThatHasChanged->getSelectedId() - 1;
-        net_log_debug("_key:%d\n", _key);
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY, _key);
         _update_notes();
         //[/UserComboBoxCode_comboBoxKey]
     }
@@ -878,7 +943,7 @@ void PluginGui::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
     {
         //[UserComboBoxCode_comboBoxKeyType] -- add your combo box handling code here..
         _key_type = comboBoxThatHasChanged->getSelectedId() - 1;
-        net_log_debug("_key_type:%d\n", _key_type);
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY_TYPE, _key_type);
         _update_notes();
         //[/UserComboBoxCode_comboBoxKeyType]
     }
@@ -890,8 +955,6 @@ void PluginGui::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 void PluginGui::mouseDown (const MouseEvent& e)
 {
     //[UserCode_mouseDown] -- Add your code here...
-    net_log_debug("%s %d\n", __FUNCTION__, __LINE__);
-
     std::int32_t x = e.getMouseDownX();
     std::int32_t y = e.getMouseDownY();
 
@@ -934,23 +997,22 @@ void PluginGui::mouseDrag (const MouseEvent& e)
     //[UserCode_mouseDrag] -- Add your code here...
     std::int32_t x = e.position.getX();
     std::int32_t y = e.position.getY();
-    net_log_debug("_modify_tune:%d _new_tune:%d\n", _modify_tune, _new_tune);
     if (_modify_tune == false && _new_tune == false && abs(e.getMouseDownX() - x) > 5)
     {
         _new_tune = true;
 
         _cur_node.reset(new manual_tune::tune_node);
-        _cur_node->attack = _def_attack;
-        _cur_node->release = _def_release;
-        _cur_node->amount = _def_amount;
-        sliderAttack->setValue(_def_attack * 1000.);
-        sliderRelease->setValue(_def_release * 1000.);
-        sliderAmount->setValue(_def_amount);
+        _cur_node->attack = _proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_DEF_ATTACK);
+        _cur_node->release = _proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_DEF_RELEASE);
+        _cur_node->amount = _proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_DEF_AMOUNT);
+        sliderAttack->setValue(_cur_node->attack * 1000.);
+        sliderRelease->setValue(_cur_node->release * 1000.);
+        sliderAmount->setValue(_cur_node->amount);
 
         float pitch = _y_to_pitch(e.getMouseDownY());
         float time = _x_to_time(e.getMouseDownX());
         pitch = _snap_pitch(pitch);
-        
+
         _cur_node->pitch_start = pitch;
         _cur_node->pitch_end = _cur_node->pitch_start;
         _cur_node->time_start = time;
@@ -961,7 +1023,7 @@ void PluginGui::mouseDrag (const MouseEvent& e)
     {
         _cur_node->time_end = _x_to_time(x);
 
-        if (_snap_note)
+        if (_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_SNAP) > 0.)
         {
             _cur_node->pitch_end = _cur_node->pitch_start;
         }
@@ -982,7 +1044,7 @@ void PluginGui::mouseDrag (const MouseEvent& e)
 
             float pitch_start = _y_to_pitch(y) + _select_yd;
             pitch_start = _snap_pitch(pitch_start);
-            
+
             if (abs(pitch_start - _cur_node->pitch_start) > 0.001)
             {
                 float pitch_end = pitch_start + _cur_node->pitch_end - _cur_node->pitch_start;
@@ -997,7 +1059,7 @@ void PluginGui::mouseDrag (const MouseEvent& e)
 
             float pitch_start = _y_to_pitch(y) + _select_yd;
             pitch_start = _snap_pitch(pitch_start);
-            
+
             if (abs(pitch_start - _cur_node->pitch_start) > 0.001)
             {
                 _cur_node->pitch_start = pitch_start;
@@ -1010,7 +1072,7 @@ void PluginGui::mouseDrag (const MouseEvent& e)
 
             float pitch_end = _y_to_pitch(y) + _select_yd;
             pitch_end = _snap_pitch(pitch_end);
-            
+
             //if (abs(pitch_end - _cur_node->pitch_end) > 0.001)
             {
                 _cur_node->pitch_end = pitch_end;
@@ -1049,6 +1111,7 @@ void PluginGui::mouseUp (const MouseEvent& e)
 void PluginGui::mouseWheelMove (const MouseEvent& e, const MouseWheelDetails& wheel)
 {
     //[UserCode_mouseWheelMove] -- Add your code here...
+#if 0
     if (_modify_tune)
     {
         if (!_is_ctrl && !_is_shift && !_is_alt)
@@ -1117,120 +1180,29 @@ void PluginGui::mouseWheelMove (const MouseEvent& e, const MouseWheelDetails& wh
         }
         return;
     }
+#endif
+
 
     // x zoom
     if (!_is_ctrl && !_is_shift && _is_alt)
     {
-        float diff = _time_right - _time_left;
-        if (wheel.deltaY > 0)
-        {
-            diff -= (diff * 0.1);
-            if (diff > _time_min_len)
-            {
-                _time_left = _cur_time - diff * 0.5;
-                if (_time_left < 0)
-                {
-                    _time_left = 0.;
-                }
-                _time_right = _time_left + diff;
-                if (_time_right > _time_max_len)
-                {
-                    _time_right = _time_max_len;
-                }
-            }
-        }
-        else
-        {
-            diff += (diff * 0.1);
-            if (diff < _time_max_len)
-            {
-                _time_left = _cur_time - diff * 0.5;
-                if (_time_left < 0)
-                {
-                    _time_left = 0.;
-                }
-                _time_right = _time_left + diff;
-                if (_time_right > _time_max_len)
-                {
-                    _time_right = _time_max_len;
-                }
-            }
-        }
+        _x_zoom(wheel.deltaY > 0);
         repaint();
     }
     else if (!_is_ctrl && _is_shift && !_is_alt) //x move
     {
-        float diff = _time_right - _time_left;
-        if (wheel.deltaY > 0)
-        {
-            _time_left -= (diff * 0.1);
-            if (_time_left < 0.)
-            {
-                _time_left = 0.;
-            }
-            _time_right = _time_left + diff;
-            if (_time_right > _time_max_len)
-            {
-                _time_right = _time_max_len;
-            }
-        }
-        else
-        {
-            _time_right += (diff * 0.1);;
-            if (_time_right > _time_max_len)
-            {
-                _time_right = _time_max_len;
-            }
-            _time_left = _time_right - diff;
-            if (_time_left < 0.)
-            {
-                _time_left = 0.;
-            }
-        }
-
+        _x_move(wheel.deltaY > 0);
         repaint();
     }
     else if (_is_ctrl && !_is_shift && !_is_alt) // y zoom
     {
-        if (wheel.deltaY > 0)
-        {
-            if (_pitch_up > _pitch_down + 6)
-            {
-                _pitch_up--;
-                _pitch_down++;
-                repaint();
-            }
-        }
-        else
-        {
-            if (_pitch_up < _pitch_down + 24)
-            {
-                _pitch_up++;
-                _pitch_down--;
-                repaint();
-            }
-        }
+        _y_zoom(wheel.deltaY > 0);
+        repaint();
     }
     else if (!_is_ctrl && !_is_shift && !_is_alt) //y move
     {
-        if (wheel.deltaY > 0.)
-        {
-            if (_pitch_up < _pitch_max)
-            {
-                _pitch_up++;
-                _pitch_down++;
-                repaint();
-            }
-        }
-        else
-        {
-            if (_pitch_down > _pitch_min)
-            {
-                _pitch_up--;
-                _pitch_down--;
-                repaint();
-            }
-        }
+        _y_move(wheel.deltaY > 0);
+        repaint();
     }
     //[/UserCode_mouseWheelMove]
 }
@@ -1253,10 +1225,32 @@ bool PluginGui::keyPressed (const KeyPress& key)
         }
         else
         {
+            //_cur_node = _proc.get_manual_tune().select_tune(_x_to_time(e.getMouseDownX()), _y_to_pitch(e.getMouseDownY()), _select_pos);
         }
         repaint();
         return true;
     }
+    else if (key.getKeyCode() == 'A')
+    {
+        _x_move(true);
+        repaint();
+    }
+    else if (key.getKeyCode() == 'D')
+    {
+        _x_move(false);
+        repaint();
+    }
+    else if (key.getKeyCode() == 'W')
+    {
+        _y_move(true);
+        repaint();
+    }
+    else if (key.getKeyCode() == 'S')
+    {
+        _y_move(false);
+        repaint();
+    }
+
     return false;  // Return true if your handler uses this key event, or false to allow it to be passed-on.
     //[/UserCode_keyPressed]
 }
@@ -1264,7 +1258,6 @@ bool PluginGui::keyPressed (const KeyPress& key)
 void PluginGui::modifierKeysChanged (const ModifierKeys& modifiers)
 {
     //[UserCode_modifierKeysChanged] -- Add your code here...
-    net_log_debug("%s %d\n", __FUNCTION__, __LINE__);
     if (modifiers.isCtrlDown())
     {
         _is_ctrl = true;
@@ -1302,17 +1295,73 @@ void PluginGui::timerCallback()
     repaint();
 }
 
+void PluginGui::_update_gui_parameter()
+{
+    std::uint32_t id = _proc.get_parameters_update_id();
+    if (id == _parameter_update_id)
+    {
+        return;
+    }
+    
+    _parameter_update_id = _proc.get_parameters_update_id();
+    
+    toggleButtonSnap->setToggleState (_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_SNAP) > 0., dontSendNotification);
+    toggleButtonTrack->setToggleState(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_ENABLE_TRACK) > 0., dontSendNotification);
+    sliderDefAttack->setValue(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_DEF_ATTACK) * 1000);
+    sliderDefRelease->setValue(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_DEF_RELEASE) * 1000);
+    sliderDefAmount->setValue(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_DEF_AMOUNT));
+    
+    sliderATAmount->setValue(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_AT_AMOUNT));
+    sliderATSmooth->setValue(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_AT_SMOOTH));
+
+
+    {
+        _key = (std::int32_t)std::round(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY));
+        _key_type = (std::int32_t)std::round(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY_TYPE));
+        
+        comboBoxKey->setSelectedId(_key + 1, dontSendNotification);
+        comboBoxKeyType->setSelectedId(_key_type + 1, dontSendNotification);
+        
+        _notes[_key_A] = _proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_A) > 0 ? 1: -1;
+        _notes[_key_Bb] = _proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_Bb) > 0 ? 1: -1;
+        _notes[_key_B] = _proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_B) > 0 ? 1: -1;
+        _notes[_key_C] = _proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_C) > 0 ? 1: -1;
+        _notes[_key_Db] = _proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_Db) > 0 ? 1: -1;
+        _notes[_key_D] = _proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_D) > 0 ? 1: -1;
+        _notes[_key_Eb] = _proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_Eb) > 0 ? 1: -1;
+        _notes[_key_E] = _proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_E) > 0 ? 1: -1;
+        _notes[_key_F] = _proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_F) > 0 ? 1: -1;
+        _notes[_key_Gb] = _proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_Gb) > 0 ? 1: -1;
+        _notes[_key_G] = _proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_G) > 0 ? 1: -1;
+        _notes[_key_Ab] = _proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_Ab) > 0 ? 1: -1;
+        
+        toggleButtonNoteA->setToggleState((_notes[_key_A] > 0), dontSendNotification);
+        toggleButtonNoteBb->setToggleState((_notes[_key_Bb] > 0), dontSendNotification);
+        toggleButtonNoteB->setToggleState((_notes[_key_B] > 0), dontSendNotification);
+        toggleButtonNoteC->setToggleState((_notes[_key_C] > 0), dontSendNotification);
+        toggleButtonNoteDb->setToggleState((_notes[_key_Db] > 0), dontSendNotification);
+        toggleButtonNoteD->setToggleState((_notes[_key_D] > 0), dontSendNotification);
+        toggleButtonNoteEb->setToggleState((_notes[_key_Eb] > 0), dontSendNotification);
+        toggleButtonNoteE->setToggleState((_notes[_key_E] > 0), dontSendNotification);
+        toggleButtonNoteF->setToggleState((_notes[_key_F] > 0), dontSendNotification);
+        toggleButtonNoteGb->setToggleState((_notes[_key_Gb] > 0), dontSendNotification);
+        toggleButtonNoteG->setToggleState((_notes[_key_G] > 0), dontSendNotification);
+        toggleButtonNoteAb->setToggleState((_notes[_key_Ab] > 0), dontSendNotification);
+        
+    }
+}
+
 float PluginGui::_snap_pitch(float pitch)
 {
     std::int32_t i = round(pitch);
     std::int32_t left = i;
     std::int32_t right = i;
-    
-    if (_snap_note == false)
+
+    if (_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_SNAP) < 1)
     {
         return pitch;
     }
-    
+
     for (std::int32_t j = 0; j < 12; j++)
     {
         if (_notes[(left + 12 * 8) % 12] < 0)
@@ -1324,7 +1373,7 @@ float PluginGui::_snap_pitch(float pitch)
             break;
         }
     }
-    
+
     for (std::int32_t j = 0; j < 11; j++)
     {
         if (_notes[(right + 12 * 8) % 12] < 0)
@@ -1336,7 +1385,7 @@ float PluginGui::_snap_pitch(float pitch)
             break;
         }
     }
-    
+
     if (abs(i - left) > abs(right - i))
     {
         return left;
@@ -1375,28 +1424,7 @@ float PluginGui::_x_to_time(float x)
 
 void PluginGui::_update_notes()
 {
-    if (_key == _key_custom || _key_type == _key_type_custom)
-    {
-        _notes[0] = toggleButtonNoteA->getToggleState()? 1: -1;
-        _notes[1] = toggleButtonNoteBb->getToggleState()? 1: -1;
-        _notes[2] = toggleButtonNoteB->getToggleState()? 1: -1;
-        _notes[3] = toggleButtonNoteC->getToggleState()? 1: -1;
-        _notes[4] = toggleButtonNoteDb->getToggleState()? 1: -1;
-        _notes[5] = toggleButtonNoteD->getToggleState()? 1: -1;
-        _notes[6] = toggleButtonNoteEb->getToggleState()? 1: -1;
-        _notes[7] = toggleButtonNoteE->getToggleState()? 1: -1;
-        _notes[8] = toggleButtonNoteF->getToggleState()? 1: -1;
-        _notes[9] = toggleButtonNoteGb->getToggleState()? 1: -1;
-        _notes[10] = toggleButtonNoteG->getToggleState()? 1: -1;
-        _notes[11] = toggleButtonNoteAb->getToggleState()? 1: -1;
-
-        net_log_debug("key:%d key_type:%d\n", _key, _key_type);
-        for (std::int32_t i = 0; i < 12; i++)
-        {
-            net_log_debug("%d\n", _notes[i]);
-        }
-    }
-    else
+    if (_key < _key_custom && _key_type < _key_type_custom)
     {
         if (_key_type == 0)
         {
@@ -1422,13 +1450,6 @@ void PluginGui::_update_notes()
             }
         }
 
-        net_log_debug("key:%d key_type:%d\n", _key, _key_type);
-        for (std::int32_t i = 0; i < 12; i++)
-        {
-            net_log_debug("%d\n", _notes[i]);
-        }
-
-
         toggleButtonNoteA->setToggleState((_notes[0] > 0), dontSendNotification);
         toggleButtonNoteBb->setToggleState((_notes[1] > 0), dontSendNotification);
         toggleButtonNoteB->setToggleState((_notes[2] > 0), dontSendNotification);
@@ -1441,11 +1462,133 @@ void PluginGui::_update_notes()
         toggleButtonNoteGb->setToggleState((_notes[9] > 0), dontSendNotification);
         toggleButtonNoteG->setToggleState((_notes[10] > 0), dontSendNotification);
         toggleButtonNoteAb->setToggleState((_notes[11] > 0), dontSendNotification);
+        
+        
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_A, (_notes[0] > 0)? 1.: 0.);
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_Bb, (_notes[1] > 0)? 1.: 0.);
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_B, (_notes[2] > 0)? 1.: 0.);
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_C, (_notes[3] > 0)? 1.: 0.);
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_Db, (_notes[4] > 0)? 1.: 0.);
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_D, (_notes[5] > 0)? 1.: 0.);
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_Eb, (_notes[6] > 0)? 1.: 0.);
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_E, (_notes[7] > 0)? 1.: 0.);
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_F, (_notes[8] > 0)? 1.: 0.);
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_Gb, (_notes[9] > 0)? 1.: 0.);
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_G, (_notes[10] > 0)? 1.: 0.);
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_Ab, (_notes[11] > 0)? 1.: 0.);
     }
-    comboBoxKey->setSelectedId(_key + 1, dontSendNotification);
-    comboBoxKeyType->setSelectedId(_key_type + 1, dontSendNotification);
+}
 
-    _proc.get_autotalent()->set_note(_notes);
+void PluginGui::_x_move(bool left)
+{
+    float diff = _time_right - _time_left;
+    if (left)
+    {
+        _time_left -= (diff * 0.1);
+        if (_time_left < 0.)
+        {
+            _time_left = 0.;
+        }
+        _time_right = _time_left + diff;
+        if (_time_right > _time_max_len)
+        {
+            _time_right = _time_max_len;
+        }
+    }
+    else
+    {
+        _time_right += (diff * 0.1);;
+        if (_time_right > _time_max_len)
+        {
+            _time_right = _time_max_len;
+        }
+        _time_left = _time_right - diff;
+        if (_time_left < 0.)
+        {
+            _time_left = 0.;
+        }
+    }
+
+}
+
+void PluginGui::_y_move(bool up)
+{
+    if (up)
+    {
+        if (_pitch_up < _pitch_max)
+        {
+            _pitch_up++;
+            _pitch_down++;
+        }
+    }
+    else
+    {
+        if (_pitch_down > _pitch_min)
+        {
+            _pitch_up--;
+            _pitch_down--;
+        }
+    }
+}
+
+void PluginGui::_x_zoom(bool in)
+{
+    float diff = _time_right - _time_left;
+    if (in)
+    {
+        diff -= (diff * 0.1);
+        if (diff > _time_min_len)
+        {
+            _time_left = _cur_time - diff * 0.5;
+            if (_time_left < 0)
+            {
+                _time_left = 0.;
+            }
+            _time_right = _time_left + diff;
+            if (_time_right > _time_max_len)
+            {
+                _time_right = _time_max_len;
+            }
+        }
+    }
+    else
+    {
+        diff += (diff * 0.1);
+        if (diff < _time_max_len)
+        {
+            _time_left = _cur_time - diff * 0.5;
+            if (_time_left < 0)
+            {
+                _time_left = 0.;
+            }
+            _time_right = _time_left + diff;
+            if (_time_right > _time_max_len)
+            {
+                _time_right = _time_max_len;
+            }
+        }
+    }
+}
+
+void PluginGui::_y_zoom(bool in)
+{
+    std::int32_t diff = _pitch_up - _pitch_down;
+    if (in)
+    {
+        if (diff > 4)
+        {
+            _pitch_down++;
+            _pitch_up--;
+        }
+    }
+    else
+    {
+        if (diff < 24 && _pitch_up < _pitch_max && _pitch_down > _pitch_min)
+        {
+            _pitch_up++;
+            _pitch_down--;
+        }
+    }
 }
 
 //[/MiscUserCode]
@@ -1476,19 +1619,19 @@ BEGIN_JUCER_METADATA
   <BACKGROUND backgroundColour="ff323e44">
     <RECT pos="152 112 696 472" fill="solid: 4000000" hasStroke="0"/>
   </BACKGROUND>
+  <GROUPCOMPONENT name="new group" id="fe9a3479d2a7d612" memberName="groupComponent4"
+                  virtualName="" explicitFocusOrder="0" pos="248 8 608 88" title=""/>
   <GROUPCOMPONENT name="Key" id="c819674330435c53" memberName="groupComponent2"
                   virtualName="" explicitFocusOrder="0" pos="8 96 136 312" title="Key"/>
-  <GROUPCOMPONENT name="new group" id="fe9a3479d2a7d612" memberName="groupComponent4"
-                  virtualName="" explicitFocusOrder="0" pos="224 8 632 88" title=""/>
   <SLIDER name="new slider" id="970facfde35ebf14" memberName="sliderAttack"
-          virtualName="" explicitFocusOrder="0" pos="264 56 64 24" min="0.0"
-          max="200.0" int="1.0" style="LinearBar" textBoxPos="TextBoxAbove"
+          virtualName="" explicitFocusOrder="0" pos="312 56 64 24" min="0.0"
+          max="500.0" int="1.0" style="LinearBar" textBoxPos="TextBoxAbove"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1.0"
           needsCallback="1"/>
   <GROUPCOMPONENT name="new group" id="cc29711a8f0b4c59" memberName="groupComponent5"
                   virtualName="" explicitFocusOrder="0" pos="144 96 712 496" title="Notes"/>
   <GROUPCOMPONENT name="new group" id="c7e247cd0bd1faa6" memberName="groupComponent"
-                  virtualName="" explicitFocusOrder="0" pos="8 8 216 88" title=""/>
+                  virtualName="" explicitFocusOrder="0" pos="8 8 240 88" title=""/>
   <TOGGLEBUTTON name="Track" id="96b9e7d23267fe2e" memberName="toggleButtonTrack"
                 virtualName="" explicitFocusOrder="0" pos="664 24 88 24" buttonText="Track"
                 connectedEdges="0" needsCallback="1" radioGroupId="0" state="0"/>
@@ -1564,27 +1707,27 @@ BEGIN_JUCER_METADATA
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15.0" kerning="0.0" bold="0" italic="0" justification="33"/>
   <SLIDER name="new slider" id="3ba450cd3750e8bc" memberName="sliderRelease"
-          virtualName="" explicitFocusOrder="0" pos="352 56 64 24" min="0.0"
-          max="200.0" int="1.0" style="LinearBar" textBoxPos="TextBoxAbove"
+          virtualName="" explicitFocusOrder="0" pos="400 56 64 24" min="0.0"
+          max="500.0" int="1.0" style="LinearBar" textBoxPos="TextBoxAbove"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1.0"
           needsCallback="1"/>
   <SLIDER name="new slider" id="f581cb7cddbce5f" memberName="sliderAmount"
-          virtualName="" explicitFocusOrder="0" pos="440 56 56 24" min="0.0"
+          virtualName="" explicitFocusOrder="0" pos="488 56 56 24" min="0.0"
           max="1.0" int="0.01" style="LinearBar" textBoxPos="TextBoxAbove"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1.0"
           needsCallback="1"/>
   <LABEL name="Attack(ms)" id="1ae5d807d1d03286" memberName="label4" virtualName=""
-         explicitFocusOrder="0" pos="256 24 80 24" edTextCol="ff000000"
+         explicitFocusOrder="0" pos="304 24 80 24" edTextCol="ff000000"
          edBkgCol="0" labelText="Attack(ms)" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="15.0"
          kerning="0.0" bold="0" italic="0" justification="33"/>
   <LABEL name="Release(ms)" id="40333d99763aadcd" memberName="label5"
-         virtualName="" explicitFocusOrder="0" pos="344 24 88 24" edTextCol="ff000000"
+         virtualName="" explicitFocusOrder="0" pos="392 24 88 24" edTextCol="ff000000"
          edBkgCol="0" labelText="Release(ms)" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15.0" kerning="0.0" bold="0" italic="0" justification="33"/>
   <LABEL name="Amount" id="e338f10f9eadcccf" memberName="label6" virtualName=""
-         explicitFocusOrder="0" pos="440 24 56 24" edTextCol="ff000000"
+         explicitFocusOrder="0" pos="488 24 56 24" edTextCol="ff000000"
          edBkgCol="0" labelText="Amount" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="15.0"
          kerning="0.0" bold="0" italic="0" justification="33"/>
@@ -1610,12 +1753,22 @@ BEGIN_JUCER_METADATA
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1.0"
           needsCallback="1"/>
   <LABEL name="Smooth" id="73e3856f04859fc1" memberName="label7" virtualName=""
-         explicitFocusOrder="0" pos="16 536 56 24" edTextCol="ff000000"
+         explicitFocusOrder="0" pos="16 56 56 24" edTextCol="ff000000"
          edBkgCol="0" labelText="Smooth:" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="15.0"
          kerning="0.0" bold="0" italic="0" justification="33"/>
-  <SLIDER name="new slider" id="7421acdac299c74d" memberName="sliderDefSmooth"
-          virtualName="" explicitFocusOrder="0" pos="88 536 40 24" min="0.0"
+  <SLIDER name="new slider" id="7421acdac299c74d" memberName="sliderATSmooth"
+          virtualName="" explicitFocusOrder="0" pos="72 56 40 24" min="0.0"
+          max="1.0" int="0.01" style="LinearBar" textBoxPos="TextBoxAbove"
+          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1.0"
+          needsCallback="1"/>
+  <LABEL name="Amount:" id="6bb22626d8b4863e" memberName="label8" virtualName=""
+         explicitFocusOrder="0" pos="128 56 56 24" edTextCol="ff000000"
+         edBkgCol="0" labelText="Amount:" editableSingleClick="0" editableDoubleClick="0"
+         focusDiscardsChanges="0" fontname="Default font" fontsize="15.0"
+         kerning="0.0" bold="0" italic="0" justification="33"/>
+  <SLIDER name="new slider" id="79ef7d9f1d333c4" memberName="sliderATAmount"
+          virtualName="" explicitFocusOrder="0" pos="184 56 40 24" min="0.0"
           max="1.0" int="0.01" style="LinearBar" textBoxPos="TextBoxAbove"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1.0"
           needsCallback="1"/>

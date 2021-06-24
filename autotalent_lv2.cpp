@@ -262,15 +262,15 @@ static void run(LV2_Handle instance, uint32_t n_samples)
     mix = (float)*(talent->_mix);
     
     talent->_talent.set_aref(aref);
-    talent->_talent.set_fixed(fixed);
-    talent->_talent.set_shift(shift);
-    talent->_talent.set_pull(pull);
-    talent->_talent.set_smooth(smooth);
-    talent->_talent.set_amount(amount);
-    talent->_talent.set_scwarp(scwarp);
+    talent->_talent.set_at_fixed(fixed);
+    talent->_talent.set_at_shift(shift);
+    talent->_talent.set_at_pull(pull);
+    talent->_talent.set_at_smooth(smooth);
+    talent->_talent.set_at_amount(amount);
+    talent->_talent.set_at_scwarp(scwarp);
     talent->_talent.set_mix(mix);
     
-    talent->_talent.set_note(notes);
+    talent->_talent.set_at_note(notes);
     
     talent->_talent.run(input, output, n_samples);
     if (talent->_latency)

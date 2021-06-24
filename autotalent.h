@@ -16,14 +16,13 @@ public:
 public:
     void set_aref(float aref);
     void set_mix(float mix);
-    void set_note(int notes[12]);
-    void update_tune();
-    void set_pull(float pull);
-    void set_fixed(float fixed);
-    void set_shift(float shift);
-    void set_smooth(float smooth);
-    void set_amount(float amount);
-    void set_scwarp(int scwarp);
+    void set_at_note(int notes[12]);
+    void set_at_pull(float pull);
+    void set_at_fixed(float fixed);
+    void set_at_shift(float shift);
+    void set_at_smooth(float smooth);
+    void set_at_amount(float amount);
+    void set_at_scwarp(int scwarp);
     float get_latency() { return _buffer.get_buf_size() - 1; }
     float get_inpitch() { return _inpitch; }
     float get_conf() { return _conf; }

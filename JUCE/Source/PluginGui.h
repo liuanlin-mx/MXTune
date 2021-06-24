@@ -49,6 +49,8 @@ public:
     //[UserMethods]     -- You can add your own custom methods in this section.
     void timerCallback() override;
 
+    void _update_gui_parameter();
+    
     float _snap_pitch(float pitch);
     float _pitch_to_y(float pitch);
     float _y_to_pitch(float y);
@@ -56,6 +58,10 @@ public:
     float _x_to_time(float x);
 
     void _update_notes();
+    void _x_move(bool left);
+    void _y_move(bool up);
+    void _x_zoom(bool in);
+    void _y_zoom(bool in);
 
     //[/UserMethods]
 
@@ -81,11 +87,10 @@ private:
 
     bool _new_tune = false;
     bool _modify_tune = false;
-    bool _snap_note = true;
 
-    std::uint32_t _select_pos;
-    float _select_xd;
-    float _select_yd;
+    std::uint32_t _select_pos = manual_tune::SELECT_NONE;
+    float _select_xd = 0;
+    float _select_yd = 0;
 
     bool _is_ctrl = false;
     bool _is_shift = false;
@@ -109,23 +114,41 @@ private:
 
     float _cur_time = 5;
 
-    float _def_attack = 0.100;
+    std::uint32_t _parameter_update_id = 0xffffffff;
+    /*float _def_attack = 0.050;
     float _def_release = 0.050;
-    float _def_amount = 0.8;
-    float _def_smooth = 1.0;
+    float _def_amount = 0.5;
+    
+    float _AT_amount = 0.6;
+    float _AT_smooth = 0.7;*/
 
     enum
     {
+        _key_A = 0,
+        _key_Bb = 1,
+        _key_B = 2,
+        _key_C = 3,
+        _key_Db = 4,
+        _key_D = 5,
+        _key_Eb = 6,
+        _key_E = 7,
+        _key_F = 8,
+        _key_Gb = 9,
+        _key_G = 10,
+        _key_Ab = 11,
         _key_custom = 12,
+        _key_type_major = 0,
+        _key_type_minor = 1,
+        _key_type_chromatic = 2,
         _key_type_custom = 3,
     };
-    std::int32_t _key;      //0:A 1:Bb .... 12:Ab 13:custom
-    std::int32_t _key_type; //0:Major 1:Minor 2:Chromatic 3:custom
+    std::int32_t _key = _key_C;      //0:A 1:Bb .... 12:Ab 13:custom
+    std::int32_t _key_type = _key_type_chromatic; //0:Major 1:Minor 2:Chromatic 3:custom
     //[/UserVariables]
 
     //==============================================================================
-    std::unique_ptr<GroupComponent> groupComponent2;
     std::unique_ptr<GroupComponent> groupComponent4;
+    std::unique_ptr<GroupComponent> groupComponent2;
     std::unique_ptr<Slider> sliderAttack;
     std::unique_ptr<GroupComponent> groupComponent5;
     std::unique_ptr<GroupComponent> groupComponent;
@@ -162,7 +185,9 @@ private:
     std::unique_ptr<Slider> sliderDefRelease;
     std::unique_ptr<Slider> sliderDefAmount;
     std::unique_ptr<Label> label7;
-    std::unique_ptr<Slider> sliderDefSmooth;
+    std::unique_ptr<Slider> sliderATSmooth;
+    std::unique_ptr<Label> label8;
+    std::unique_ptr<Slider> sliderATAmount;
 
 
     //==============================================================================

@@ -120,9 +120,9 @@ private:
     bool _is_playing = false;
     
     std::int32_t _notes[12] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
-    float _def_attack = 0.050;
-    float _def_release = 0.050;
-    float _def_amount = 0.5;
+    //float _def_attack = 0.050;
+    //float _def_release = 0.050;
+    //float _def_amount = 0.5;
     
     float _at_amount = 0.6;
     float _at_smooth = 0.7;
@@ -159,6 +159,8 @@ private:
     
     volatile std::uint32_t _parameter_update_id = 0;
     bool _gesture_is_starting = false;
+    
+    String _state_info;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AutotalentAudioProcessor)
 };

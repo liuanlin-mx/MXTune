@@ -57,6 +57,7 @@ public:
     
     
 public:
+    float get_time_len() { return _idx2time(_len); }
     void set_inpitch(float time_begin, float time_end, const pitch_node& node);
     pitch_node get_inpitch(float time);
     std::list<std::pair<pitch_node, float> > get_inpitch(float time_begin, float time_end);

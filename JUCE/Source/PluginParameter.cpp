@@ -17,7 +17,7 @@ PluginParameter::~PluginParameter()
 
 float PluginParameter::getValue() const
 {
-    net_log_debug("name:%s _value:%f\n", _name.toRawUTF8(), _value);
+    //net_log_debug("name:%s _value:%f\n", _name.toRawUTF8(), _value);
     return _value;
 }
 
@@ -32,12 +32,12 @@ void PluginParameter::setValue(float newValue)
     {
         _value = _min;
     }
-    net_log_debug("name:%s _value:%f\n", _name.toRawUTF8(), _value);
+    //net_log_debug("name:%s _value:%f\n", _name.toRawUTF8(), _value);
 }
 
 float PluginParameter::getDefaultValue() const
 {
-    net_log_debug("name:%s _def_value:%f\n", _name.toRawUTF8(), _def_value);
+    //net_log_debug("name:%s _def_value:%f\n", _name.toRawUTF8(), _def_value);
     return _def_value;
 }
 

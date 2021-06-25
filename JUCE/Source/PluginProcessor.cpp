@@ -11,6 +11,7 @@
 #include "PluginProcessor.h"
 #include "PluginGui.h"
 #include "net_log.h"
+#include <list>
 
 //==============================================================================
 AutotalentAudioProcessor::AutotalentAudioProcessor()
@@ -32,6 +33,24 @@ AutotalentAudioProcessor::AutotalentAudioProcessor()
         _parameters[i].parameter->addListener(this);
         addParameter(_parameters[i].parameter);
     }
+    
+    _notes[0] = get_parameter(PARAMETER_ID_A) > 0 ? 1: -1;
+    _notes[1] = get_parameter(PARAMETER_ID_Bb) > 0 ? 1: -1;
+    _notes[2] = get_parameter(PARAMETER_ID_B) > 0 ? 1: -1;
+    _notes[3] = get_parameter(PARAMETER_ID_C) > 0 ? 1: -1;
+    _notes[4] = get_parameter(PARAMETER_ID_Db) > 0 ? 1: -1;
+    _notes[5] = get_parameter(PARAMETER_ID_D) > 0 ? 1: -1;
+    _notes[6] = get_parameter(PARAMETER_ID_Eb) > 0 ? 1: -1;
+    _notes[7] = get_parameter(PARAMETER_ID_E) > 0 ? 1: -1;
+    _notes[8] = get_parameter(PARAMETER_ID_F) > 0 ? 1: -1;
+    _notes[9] = get_parameter(PARAMETER_ID_Gb) > 0 ? 1: -1;
+    _notes[10] = get_parameter(PARAMETER_ID_G) > 0 ? 1: -1;
+    _notes[11] = get_parameter(PARAMETER_ID_Ab) > 0 ? 1: -1;
+    
+    _at_amount = get_parameter(PARAMETER_ID_AT_AMOUNT);
+    _at_smooth = get_parameter(PARAMETER_ID_AT_SMOOTH);
+    _is_enable_at = get_parameter(PARAMETER_ID_ENABLE_AUTOTUNE);
+    _is_enable_track = get_parameter(PARAMETER_ID_ENABLE_TRACK);
 }
 
 AutotalentAudioProcessor::~AutotalentAudioProcessor()
@@ -222,18 +241,220 @@ void AutotalentAudioProcessor::getStateInformation (MemoryBlock& destData)
     // You should use this method to store your parameters in the memory block.
     // You could do that either as raw data, or use the XML or ValueTree classes
     // as intermediaries to make it easy to save and load complex data.
+    
+    net_log_debug("\n");
+    if (_talent == nullptr)
+    {
+        return;
+    }
+    
+    net_log_debug("\n");
+    ReferenceCountedObjectPtr<DynamicObject> root(new DynamicObject);
+    
+    float time_begin = 0;
+    float time_end = _talent->get_manual_tune().get_time_len();
+    Array<var> inpitch_arr;
+    Array<var> outpitch_arr;
+    Array<var> tune_arr;
+    
+    net_log_debug("time_end:%f\n", time_end);
+    {
+        std::list<std::pair<manual_tune::pitch_node, float> > inpitch = _talent->get_manual_tune().get_inpitch(time_begin, time_end);
+        net_log_debug("size:%d\n", inpitch.size());
+        for (auto i: inpitch)
+        {
+            ReferenceCountedObjectPtr<DynamicObject> item(new DynamicObject);
+            item->setProperty("pitch", var(i.first.pitch));
+            item->setProperty("conf", var(i.first.conf));
+            item->setProperty("time", var(i.second));
+            inpitch_arr.add(item.get());
+        }
+        root->setProperty("inpitch", inpitch_arr);
+    }
+    {
+        std::list<std::pair<manual_tune::pitch_node, float> > outpitch = _talent->get_manual_tune().get_outpitch(time_begin, time_end);
+        for (auto i: outpitch)
+        {
+            
+            ReferenceCountedObjectPtr<DynamicObject> item(new DynamicObject);
+            item->setProperty("pitch", var(i.first.pitch));
+            item->setProperty("conf", var(i.first.conf));
+            item->setProperty("time", var(i.second));
+            outpitch_arr.add(item.get());
+        }
+        root->setProperty("outpitch", outpitch_arr);
+    }
+    
+    {
+        std::list<std::shared_ptr<manual_tune::tune_node> > tune = _talent->get_manual_tune().get_tune(time_begin, time_end);
+        for (auto i: tune)
+        {
+            ReferenceCountedObjectPtr<DynamicObject> item(new DynamicObject);
+            item->setProperty("time_start", var(i->time_start));
+            item->setProperty("time_end", var(i->time_end));
+            item->setProperty("pitch_start", var(i->pitch_start));
+            item->setProperty("pitch_end", var(i->pitch_end));
+            item->setProperty("attack", var(i->attack));
+            item->setProperty("release", var(i->release));
+            item->setProperty("amount", var(i->amount));
+            tune_arr.add(item.get());
+        }
+        root->setProperty("tune", tune_arr);
+    }
+    String s = JSON::toString(root.get());
+    net_log_debug("\n");
+    destData.setSize(s.length());
+    destData.copyFrom(s.getCharPointer(), 0, destData.getSize());
 }
 
 void AutotalentAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.
+    net_log_debug("%.*s\n", sizeInBytes, (const char *)data);
+    if (sizeInBytes < 1 || _talent == nullptr)
+    {
+        return;
+    }
+
+    const char *first = static_cast<const char *>(data);
+    const char *last = first + sizeInBytes - 1;
+
+    if (*first != '{' || *last != '}')
+    {
+        return;
+    }
+    
+    var root = JSON::fromString(String(first, sizeInBytes));
+    if (root.isVoid())
+    {
+        return;
+    }
+    
+    if (!root.hasProperty("inpitch")
+        || !root.hasProperty("outpitch")
+        || !root.hasProperty("tune"))
+    {
+        return;
+    }
+    
+    net_log_debug("\n");
+    {
+        var inpitch = root["inpitch"];
+        if (!inpitch.isArray())
+        {
+            return;
+        }
+        
+        std::int32_t size = inpitch.size();
+        if (size > 0
+            && inpitch[0].hasProperty("pitch")
+            && inpitch[0].hasProperty("conf")
+            && inpitch[0].hasProperty("time"))
+        {
+            manual_tune::pitch_node last_pitch;
+            last_pitch.pitch = inpitch[0]["pitch"];
+            last_pitch.conf = inpitch[0]["conf"];
+            float last_time = inpitch[0]["time"];
+            for (std::int32_t i = 1; i < size; i++)
+            {
+                if (inpitch[i].hasProperty("pitch")
+                    && inpitch[i].hasProperty("conf")
+                    && inpitch[i].hasProperty("time"))
+                {
+                    manual_tune::pitch_node pitch;
+                    pitch.pitch = inpitch[i]["pitch"];
+                    pitch.conf = inpitch[i]["conf"];
+                    float time = inpitch[i]["time"];
+                    
+                    _talent->get_manual_tune().set_inpitch(last_time, time, last_pitch);
+                    last_pitch = pitch;
+                    last_time = time;
+                }
+            }
+        }
+    }
+    
+    
+    {
+        var outpitch = root["outpitch"];
+        if (!outpitch.isArray())
+        {
+            return;
+        }
+        
+        std::int32_t size = outpitch.size();
+        if (size > 0
+            && outpitch[0].hasProperty("pitch")
+            && outpitch[0].hasProperty("conf")
+            && outpitch[0].hasProperty("time"))
+        {
+            manual_tune::pitch_node last_pitch;
+            last_pitch.pitch = outpitch[0]["pitch"];
+            last_pitch.conf = outpitch[0]["conf"];
+            float last_time = outpitch[0]["time"];
+            for (std::int32_t i = 1; i < size; i++)
+            {
+                if (outpitch[i].hasProperty("pitch")
+                    && outpitch[i].hasProperty("conf")
+                    && outpitch[i].hasProperty("time"))
+                {
+                    manual_tune::pitch_node pitch;
+                    pitch.pitch = outpitch[i]["pitch"];
+                    pitch.conf = outpitch[i]["conf"];
+                    float time = outpitch[i]["time"];
+                    
+                    _talent->get_manual_tune().set_outpitch(last_time, time, last_pitch);
+                    last_pitch = pitch;
+                    last_time = time;
+                }
+            }
+        }
+    }
+    
+    
+    {
+        var tune = root["tune"];
+        if (!tune.isArray())
+        {
+            return;
+        }
+        
+        std::int32_t size = tune.size();
+        if (size > 0)
+        {
+            for (std::int32_t i = 0; i < size; i++)
+            {
+                if (tune[i].hasProperty("time_start")
+                    && tune[i].hasProperty("time_end")
+                    && tune[i].hasProperty("pitch_start")
+                    && tune[i].hasProperty("pitch_end")
+                    && tune[i].hasProperty("attack")
+                    && tune[i].hasProperty("release")
+                    && tune[i].hasProperty("amount"))
+                {
+                    std::shared_ptr<manual_tune::tune_node> node(new manual_tune::tune_node);
+                    node->time_start = tune[i]["time_start"];
+                    node->time_end = tune[i]["time_end"];
+                    node->pitch_start = tune[i]["pitch_start"];
+                    node->pitch_end = tune[i]["pitch_end"];
+                    node->attack = tune[i]["attack"];
+                    node->release = tune[i]["release"];
+                    node->amount = tune[i]["amount"];
+                    
+                    _talent->get_manual_tune().set_tune(node);
+                }
+            }
+        }
+    }
+
 }
 
 
 void AutotalentAudioProcessor::parameterValueChanged (int parameterIndex, float newValue)
 {
     std::lock_guard<std::mutex> l(_mtx);
+    net_log_debug("parameterIndex:%d value:%f\n", parameterIndex, newValue);
 
     if (parameterIndex >= PARAMETER_ID_A && parameterIndex <= PARAMETER_ID_Ab)
     {
@@ -245,33 +466,34 @@ void AutotalentAudioProcessor::parameterValueChanged (int parameterIndex, float 
     }
     else if (parameterIndex == PARAMETER_ID_AT_AMOUNT)
     {
+        _at_amount = newValue;
         if (_talent)
         {
-            _at_amount = newValue;
             _talent->set_at_amount(newValue);
         }
     }
     else if (parameterIndex == PARAMETER_ID_AT_SMOOTH)
     {
+        _at_smooth = newValue;
         if (_talent)
         {
-            _at_smooth = newValue;
             _talent->set_at_smooth(newValue);
         }
     }
     else if (parameterIndex == PARAMETER_ID_ENABLE_AUTOTUNE)
     {
+        _is_enable_at = newValue > 0.;
         if (_talent)
         {
-            _is_enable_at = newValue > 0.;
             _talent->enable_auto_tune(_is_enable_at);
         }
     }
     else if (parameterIndex == PARAMETER_ID_ENABLE_TRACK)
     {
+        _is_enable_track = newValue > 0.;
+        net_log_debug("_is_enable_track:%d\n", _is_enable_track);
         if (_talent)
         {
-            _is_enable_track = newValue > 0.;
             _talent->enable_track(_is_enable_track);
         }
     }

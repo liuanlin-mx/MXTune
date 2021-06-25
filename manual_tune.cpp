@@ -304,13 +304,17 @@ std::uint32_t manual_tune::_time2idx(float time)
     std::uint32_t idx = round(time * 1000);
     if (idx >= _max_len)
     {
-        idx = _max_len;
+        idx = _max_len - 1;
     }
     return idx;
 }
 
 float manual_tune::_idx2time(std::uint32_t idx)
 {
+    if (idx >= _max_len)
+    {
+        idx = _max_len - 1;
+    }
     return idx / 1000.;
 }
 

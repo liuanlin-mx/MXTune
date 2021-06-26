@@ -29,38 +29,49 @@ pitch_detector::pitch_detector(float sample_rate)
     
     
     // Generate a window with a single raised cosine from N/4 to 3N/4
-    _cbwindow = (float *)calloc(_buf_size, sizeof(float));
-    for(int i = 0; i < (_buf_size / 2); i++)
+    _cbwindow = (float *)fftwf_malloc(_buf_size * sizeof(float));
+    memset(_cbwindow, 0, _buf_size * sizeof(float));
+    for(std::int32_t i = 0; i < (_buf_size / 2); i++)
     {
         _cbwindow[i + _buf_size / 4] = -0.5 * cos(4 * PI * i / (_buf_size - 1)) + 0.5;
     }
     
-    _fft = fft_con(_buf_size);
     
-    _ffttime = (float *)calloc(_buf_size, sizeof(float));
-    _fftfreqre = (float *)calloc(_corr_size, sizeof(float));
-    _fftfreqim = (float *)calloc(_corr_size, sizeof(float));
-    _acwinv = (float *)calloc(_buf_size, sizeof(float));
-    
+    _ffttime = (float *)fftwf_malloc(_buf_size * sizeof(float));
+    _acwinv = (float *)fftwf_malloc(_buf_size * sizeof(float));
+    _complex = (fftwf_complex *)fftwf_malloc(_corr_size * sizeof(fftwf_complex));
+    _forward_plan = fftwf_plan_dft_r2c_1d(_buf_size, _ffttime, _complex, FFTW_ESTIMATE);
+    _reverse_plan = fftwf_plan_dft_c2r_1d(_buf_size, _complex, _ffttime, FFTW_ESTIMATE);
     
     
     // ---- Calculate autocorrelation of window ----
-    for(int i = 0; i < _buf_size; i++)
+    for(std::int32_t i = 0; i < _buf_size; i++)
     {
         _ffttime[i] = _cbwindow[i];
     }
     
-    fft_forward(_fft, _cbwindow, _fftfreqre, _fftfreqim);
+    mat_helper_write_mat2_4("cbwindow", 1, _buf_size, "float", _cbwindow);
+    mat_helper_write_mat2_4("ffttime1", 1, _buf_size, "float", _ffttime);
+    // Calculate FFT
+    fftwf_execute(_forward_plan);
     
-    for(int i = 0; i < _corr_size; i++)
+    // Remove DC
+    _complex[0][0] = 0;
+    _complex[0][1] = 0;
+    
+
+    // Take magnitude squared
+    for(std::int32_t i = 1; i < _corr_size - 1; i++)
     {
-        _fftfreqre[i] = (_fftfreqre[i]) * (_fftfreqre[i]) + (_fftfreqim[i]) * (_fftfreqim[i]);
-        _fftfreqim[i] = 0;
+        _complex[i][0] = (_complex[i][0]) * (_complex[i][0]) + (_complex[i][1]) * (_complex[i][1]);
+        _complex[i][1] = 0;
     }
     
-    fft_inverse(_fft, _fftfreqre, _fftfreqim, _ffttime);
     
-    for(int i = 1; i < _buf_size; i++)
+    // Calculate IFFT
+    fftwf_execute(_reverse_plan);
+
+    for(std::int32_t i = 1; i < _buf_size; i++)
     {
         _acwinv[i] = _ffttime[i] / _ffttime[0];
         if(_acwinv[i] > 0.000001)
@@ -74,67 +85,59 @@ pitch_detector::pitch_detector(float sample_rate)
     }
     _acwinv[0] = 1;
     // ---- END Calculate autocorrelation of window ----
-    
 }
 
 
 pitch_detector::~pitch_detector()
 {
-    free(_cbwindow);
-    free(_ffttime);
-    free(_fftfreqre);
-    free(_fftfreqim);
-    free(_acwinv);
-    fft_des(_fft);
+    fftwf_destroy_plan(_forward_plan);
+    fftwf_destroy_plan(_reverse_plan);
+    fftwf_free(_complex);
+    
+    fftwf_free(_cbwindow);
+    fftwf_free(_ffttime);
+    fftwf_free(_acwinv);
 }
 
 float pitch_detector::get_period(ring_buffer& buffer, float& conf)
 {
-    int n = buffer.get_buf_size();
+    std::int32_t n = buffer.get_buf_size();
     // ---- Obtain autocovariance ----
     
     // Window and fill FFT buffer
-    int iwr = buffer.get_idx();
-    for(int i = 0; i < n; i++)
+    std::int32_t iwr = buffer.get_idx();
+    for(std::int32_t i = 0; i < n; i++)
     {
         _ffttime[i] = (float)(buffer[(iwr - i + n) % n] * _cbwindow[i]);
     }
 
-    //mat_helper_write_mat2_4("ffttime", 1, n, "float", _ffttime);
-    //mat_helper_write_mat2_4("cbwindow", 1, n, "float", _cbwindow);
-    
     // Calculate FFT
-    fft_forward(_fft, _ffttime, _fftfreqre, _fftfreqim);
-
-    //mat_helper_write_mat2_4("fftfreqre", 1, n, "float", _fftfreqre);
-    //mat_helper_write_mat2_4("fftfreqim", 1, n, "float", _fftfreqim);
+    fftwf_execute(_forward_plan);
     
     // Remove DC
-    _fftfreqre[0] = 0;
-    _fftfreqim[0] = 0;
+    _complex[0][0] = 0;
+    _complex[0][1] = 0;
+    
 
     // Take magnitude squared
-    for(int i = 1; i < _corr_size; i++)
+    for(std::int32_t i = 1; i < _corr_size - 1; i++)
     {
-        _fftfreqre[i] = _fftfreqre[i] * _fftfreqre[i] + _fftfreqim[i] * _fftfreqim[i];
-        _fftfreqim[i] = 0;
+        _complex[i][0] = (_complex[i][0]) * (_complex[i][0]) + (_complex[i][1]) * (_complex[i][1]);
+        _complex[i][1] = 0;
     }
     
-    //mat_helper_write_mat2_4("fftfreqre2", 1, n, "float", _fftfreqre);
-    //mat_helper_write_mat2_4("fftfreqim2", 1, n, "float", _fftfreqim);
     
     // Calculate IFFT
-    fft_inverse(_fft, _fftfreqre, _fftfreqim, _ffttime);
+    fftwf_execute(_reverse_plan);
 
     // Normalize
     float tf = (float)1 / _ffttime[0];
-    for(int i = 1; i < n; i++)
+    for(std::int32_t i = 1; i < n; i++)
     {
         _ffttime[i] = _ffttime[i] * tf;
     }
     _ffttime[0] = 1;
-    
-    //mat_helper_write_mat2_4("ffttime2", 1, n, "float", _ffttime);
+
     //  ---- END Obtain autocovariance ----
 
 
@@ -146,12 +149,12 @@ float pitch_detector::get_period(ring_buffer& buffer, float& conf)
     //     peak within a given range
     //   Confidence is determined by the corresponding unbiased height
     float tf2 = 0;
-    int ti4 = 0;
+    std::int32_t ti4 = 0;
     float period = _min_period;
-    for(int i = _min_idx; i < _max_idx; i++)
+    for(std::int32_t i = _min_idx; i < _max_idx; i++)
     {
-        int i_left = i - 1;
-        int i_right = i + 1;
+        std::int32_t i_left = i - 1;
+        std::int32_t i_right = i + 1;
         if(i_left < 0)
         {
             i_left = 0;

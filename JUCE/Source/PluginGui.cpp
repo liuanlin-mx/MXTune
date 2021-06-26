@@ -1302,15 +1302,15 @@ void PluginGui::_update_gui_parameter()
     {
         return;
     }
-    
+
     _parameter_update_id = _proc.get_parameters_update_id();
-    
+
     toggleButtonSnap->setToggleState (_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_SNAP) > 0., dontSendNotification);
     toggleButtonTrack->setToggleState(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_ENABLE_TRACK) > 0., dontSendNotification);
     sliderDefAttack->setValue(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_DEF_ATTACK) * 1000);
     sliderDefRelease->setValue(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_DEF_RELEASE) * 1000);
     sliderDefAmount->setValue(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_DEF_AMOUNT));
-    
+
     sliderATAmount->setValue(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_AT_AMOUNT));
     sliderATSmooth->setValue(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_AT_SMOOTH));
 
@@ -1318,10 +1318,10 @@ void PluginGui::_update_gui_parameter()
     {
         _key = (std::int32_t)std::round(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY));
         _key_type = (std::int32_t)std::round(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY_TYPE));
-        
+
         comboBoxKey->setSelectedId(_key + 1, dontSendNotification);
         comboBoxKeyType->setSelectedId(_key_type + 1, dontSendNotification);
-        
+
         _notes[_key_A] = _proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_A) > 0 ? 1: -1;
         _notes[_key_Bb] = _proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_Bb) > 0 ? 1: -1;
         _notes[_key_B] = _proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_B) > 0 ? 1: -1;
@@ -1334,7 +1334,7 @@ void PluginGui::_update_gui_parameter()
         _notes[_key_Gb] = _proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_Gb) > 0 ? 1: -1;
         _notes[_key_G] = _proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_G) > 0 ? 1: -1;
         _notes[_key_Ab] = _proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_Ab) > 0 ? 1: -1;
-        
+
         toggleButtonNoteA->setToggleState((_notes[_key_A] > 0), dontSendNotification);
         toggleButtonNoteBb->setToggleState((_notes[_key_Bb] > 0), dontSendNotification);
         toggleButtonNoteB->setToggleState((_notes[_key_B] > 0), dontSendNotification);
@@ -1347,7 +1347,7 @@ void PluginGui::_update_gui_parameter()
         toggleButtonNoteGb->setToggleState((_notes[_key_Gb] > 0), dontSendNotification);
         toggleButtonNoteG->setToggleState((_notes[_key_G] > 0), dontSendNotification);
         toggleButtonNoteAb->setToggleState((_notes[_key_Ab] > 0), dontSendNotification);
-        
+
     }
 }
 
@@ -1462,8 +1462,8 @@ void PluginGui::_update_notes()
         toggleButtonNoteGb->setToggleState((_notes[9] > 0), dontSendNotification);
         toggleButtonNoteG->setToggleState((_notes[10] > 0), dontSendNotification);
         toggleButtonNoteAb->setToggleState((_notes[11] > 0), dontSendNotification);
-        
-        
+
+
         _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_A, (_notes[0] > 0)? 1.: 0.);
         _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_Bb, (_notes[1] > 0)? 1.: 0.);
         _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_B, (_notes[2] > 0)? 1.: 0.);

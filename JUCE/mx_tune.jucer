@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="lWsyKI" name="autotalent" projectType="audioplug" jucerVersion="5.4.7"
-              pluginFormats="buildVST" pluginCharacteristicsValue="pluginEditorRequiresKeys,pluginProducesMidiOut,pluginWantsMidiIn"
-              pluginManufacturer="liuanlin-mx" pluginCode="mx" pluginManufacturerCode="mx"
-              pluginVSTNumMidiInputs="1" pluginVSTNumMidiOutputs="1">
-  <MAINGROUP id="ok7jMT" name="autotalent">
+<JUCERPROJECT id="lWsyKI" name="MXTune" projectType="audioplug" jucerVersion="5.4.7"
+              pluginFormats="buildVST,buildVST3" pluginCharacteristicsValue="pluginEditorRequiresKeys,pluginProducesMidiOut,pluginWantsMidiIn"
+              pluginManufacturer="liuanlin-mx" pluginVSTNumMidiInputs="1" pluginVSTNumMidiOutputs="1"
+              pluginName="MXTune" pluginDesc="pitch correction">
+  <MAINGROUP id="ok7jMT" name="MXTune">
     <GROUP id="{F13C5646-EBC5-7FEE-A7A0-D2D433F1E308}" name="Source">
       <FILE id="Q4FwQO" name="PluginGui.cpp" compile="1" resource="0" file="Source/PluginGui.cpp"/>
       <FILE id="haSkaB" name="PluginGui.h" compile="0" resource="0" file="Source/PluginGui.h"/>

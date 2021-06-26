@@ -50,7 +50,7 @@ public:
     void timerCallback() override;
 
     void _update_gui_parameter();
-    
+
     float _snap_pitch(float pitch);
     float _pitch_to_y(float pitch);
     float _y_to_pitch(float y);
@@ -118,7 +118,7 @@ private:
     /*float _def_attack = 0.050;
     float _def_release = 0.050;
     float _def_amount = 0.5;
-    
+
     float _AT_amount = 0.6;
     float _AT_smooth = 0.7;*/
 

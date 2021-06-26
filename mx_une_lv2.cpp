@@ -1,5 +1,5 @@
 #include <lv2.h>
-#include "autotalent.h"
+#include "mx_tune.h"
 
 // The port numbers
 
@@ -37,15 +37,15 @@
 #define AT_LATENCY 31
 
 
-struct autotalent_lv2
+struct mx_tune_lv2
 {
-    autotalent_lv2(unsigned int sample_rate)
+    mx_tune_lv2(unsigned int sample_rate)
         : _talent(sample_rate)
     {
         
     }
     
-    autotalent _talent;
+    mx_tune _talent;
     
     
     float* _tune;
@@ -86,12 +86,12 @@ struct autotalent_lv2
 static LV2_Handle instantiate(const LV2_Descriptor* descriptor, double rate,
                               const char* bundle_path, const LV2_Feature* const* features)
 {
-    return new autotalent_lv2(rate);
+    return new mx_tune_lv2(rate);
 }
 
 static void cleanup(LV2_Handle instance)
 {
-    autotalent_lv2 *talent = (autotalent_lv2 *)instance;
+    mx_tune_lv2 *talent = (mx_tune_lv2 *)instance;
     delete talent;
 }
 
@@ -99,7 +99,7 @@ static void cleanup(LV2_Handle instance)
 static void connect_port(LV2_Handle instance, uint32_t port, void* data_)
 {
     float *data = (float *)data_;
-    autotalent_lv2* talent = (autotalent_lv2*)instance;
+    mx_tune_lv2* talent = (mx_tune_lv2*)instance;
     switch(port)
     {
     case AT_TUNE:
@@ -232,7 +232,7 @@ static void run(LV2_Handle instance, uint32_t n_samples)
     float shift;
     float mix;
     
-    autotalent_lv2* talent = (autotalent_lv2*)instance;
+    mx_tune_lv2* talent = (mx_tune_lv2*)instance;
 
     input = talent->_input_buffer1;
     output = talent->_output_buffer1;
@@ -289,7 +289,7 @@ static void run(LV2_Handle instance, uint32_t n_samples)
     }
 }
 
-static const LV2_Descriptor descriptor = {"urn:jeremy.salwen:plugins:autotalent",
+static const LV2_Descriptor descriptor = {"urn:jeremy.salwen:plugins:mx_tune",
                                           instantiate,
                                           connect_port,
                                           activate,

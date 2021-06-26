@@ -1,7 +1,7 @@
 #include "mx_tune.h"
 #include "net_log.h"
 
-autotalent::autotalent(unsigned int sample_rate)
+mx_tune::mx_tune(unsigned int sample_rate)
     : _detector(sample_rate)
     , _shifter(sample_rate)
     , _buffer(sample_rate)
@@ -17,73 +17,73 @@ autotalent::autotalent(unsigned int sample_rate)
     _m_tune.set_vthresh(_conf_thresh);
 }
 
-autotalent::~autotalent()
+mx_tune::~mx_tune()
 {
 }
 
-void autotalent::set_aref(float aref)
+void mx_tune::set_aref(float aref)
 {
     _detector.set_aref(aref);
     _shifter.set_aref(aref);
 }
 
-void autotalent::set_mix(float mix)
+void mx_tune::set_mix(float mix)
 {
     _shifter.set_mix(mix);
 }
 
-void autotalent::set_at_note(int notes[12])
+void mx_tune::set_at_note(int notes[12])
 {
     _tune.set_note(notes);
 }
 
-void autotalent::set_at_pull(float pull)
+void mx_tune::set_at_pull(float pull)
 {
     _tune.set_pull(pull);
 }
 
-void autotalent::set_at_fixed(float fixed)
+void mx_tune::set_at_fixed(float fixed)
 {
     _tune.set_fixed(fixed);
 }
 
-void autotalent::set_at_shift(float shift)
+void mx_tune::set_at_shift(float shift)
 {
     _tune.set_shift(shift);
 }
 
-void autotalent::set_at_smooth(float smooth)
+void mx_tune::set_at_smooth(float smooth)
 {
     _tune.set_smooth(smooth);
 }
 
-void autotalent::set_at_amount(float amount)
+void mx_tune::set_at_amount(float amount)
 {
     _tune.set_amount(amount);
 }
 
-void autotalent::set_at_scwarp(int scwarp)
+void mx_tune::set_at_scwarp(int scwarp)
 {
     _tune.set_scwarp(scwarp);
 }
 
-void autotalent::clear_note()
+void mx_tune::clear_note()
 {
     _m_tune.clear_note();
 }
 
-void autotalent::clear_pitch()
+void mx_tune::clear_pitch()
 {
     _m_tune.clear_inpitch();
     _m_tune.clear_outpitch();
 }
 
-void autotalent::snap_key()
+void mx_tune::snap_key()
 {
     _m_tune.snap_key(&_tune);
 }
 
-void autotalent::run(float* in, float *out, int n, float timestamp)
+void mx_tune::run(float* in, float *out, int n, float timestamp)
 {
     for (int i = 0; i < n; i++)
     {

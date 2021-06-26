@@ -1,8 +1,8 @@
-/* autotalent.c
+/* mx_tune.c
    A pitch-correcting LADSPA plugin.
 
    Free software by Thomas A. Baran.
-   http://web.mit.edu/tbaran/www/autotalent.html
+   http://web.mit.edu/tbaran/www/mx_tune.html
    VERSION 0.2
    March 20, 2010
 
@@ -1262,7 +1262,7 @@ static const void* extension_data(const char* uri)
     return NULL;
 }
 
-static const LV2_Descriptor descriptor = {"urn:jeremy.salwen:plugins:autotalent",
+static const LV2_Descriptor descriptor = {"urn:jeremy.salwen:plugins:mx_tune",
                                           instantiate,
                                           connect_port,
                                           activate,

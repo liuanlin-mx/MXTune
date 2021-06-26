@@ -10,17 +10,13 @@
 @prefix urid: <http://lv2plug.in/ns/ext/urid#> .
 
 
-<urn:jeremy.salwen:plugins:autotalent> a lv2:Plugin ;
+<urn:jeremy.salwen:plugins:mx_tune> a lv2:Plugin ;
   a lv2:Plugin, lv2:PitchPlugin;
-  lv2:binary <autotalent.dll>;
-  doap:name "autotalent";
+  lv2:binary <mx_tune.dll>;
+  doap:name "mx_tune";
   doap:developer [
-      foaf:name "Tom Baran";
+      foaf:name "Liu Anlin";
       foaf:homepage <http://web.mit.edu/tbaran/www/> ;
-  ] ;
-  doap:maintainer [
-      foaf:name "Jeremy Salwen";
-      foaf:mbox <mailto:jeremybubs@gmail.com> ;
   ] ;
   doap:license <http://usefulinc.com/doap/licenses/gpl>;
 

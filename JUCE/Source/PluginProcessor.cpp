@@ -131,7 +131,7 @@ void AutotalentAudioProcessor::prepareToPlay (double sampleRate, int samplesPerB
     
     if (_talent == nullptr)
     {
-        _talent.reset(new autotalent(sampleRate));
+        _talent.reset(new mx_tune(sampleRate));
         if (_talent)
         {
             setLatencySamples(_talent->get_latency());

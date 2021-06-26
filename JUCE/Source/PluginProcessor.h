@@ -12,7 +12,7 @@
 
 #include <mutex>
 #include <JuceHeader.h>
-#include "autotalent.h"
+#include "mx_tune.h"
 #include "PluginParameter.h"
 
 //==============================================================================
@@ -102,7 +102,7 @@ public:
     void parameterGestureChanged (int parameterIndex, bool gestureIsStarting) override;
     
 public:
-    const std::shared_ptr<autotalent>& get_autotalent() { return _talent; }
+    const std::shared_ptr<mx_tune>& get_autotalent() { return _talent; }
     manual_tune& get_manual_tune() { return _talent->get_manual_tune(); }
     double get_cur_pos() { return _cur_pos; }
     bool is_playing() { return _is_playing; }
@@ -115,7 +115,7 @@ public:
     
 private:
     std::mutex _mtx;
-    std::shared_ptr<autotalent> _talent = 0;
+    std::shared_ptr<mx_tune> _talent = 0;
     double _cur_pos = 0;
     bool _is_playing = false;
     

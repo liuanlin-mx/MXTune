@@ -7,11 +7,11 @@
 #include "auto_tune.h"
 #include "manual_tune.h"
 
-class autotalent
+class mx_tune
 {
 public:
-    autotalent(unsigned int sample_rate);
-    ~autotalent();
+    mx_tune(unsigned int sample_rate);
+    ~mx_tune();
     
 public:
     void set_aref(float aref);

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeLite_Workspace Name="mx_tune" Database="" Version="10000">
+  <Project Name="mx_tune" Path="mx_tune.project" Active="Yes"/>
+  <BuildMatrix>
+    <WorkspaceConfiguration Name="winexe" Selected="no">
+      <Environment/>
+      <Project Name="mx_tune" ConfigName="winexe"/>
+    </WorkspaceConfiguration>
+    <WorkspaceConfiguration Name="lv2_plugin" Selected="no">
+      <Environment/>
+      <Project Name="mx_tune" ConfigName="lv2_plugin"/>
+    </WorkspaceConfiguration>
+    <WorkspaceConfiguration Name="vst2_plugin(64bit)" Selected="no">
+      <Environment/>
+      <Project Name="mx_tune" ConfigName="vst2_plugin(64bit)"/>
+    </WorkspaceConfiguration>
+    <WorkspaceConfiguration Name="vst2_plugin(32bit)" Selected="yes">
+      <Environment/>
+      <Project Name="mx_tune" ConfigName="vst2_plugin(32bit)"/>
+    </WorkspaceConfiguration>
+    <WorkspaceConfiguration Name="vst3_plugin(windows_32bit)" Selected="no">
+      <Environment/>
+      <Project Name="mx_tune" ConfigName="vst3_plugin(windows_32bit)"/>
+    </WorkspaceConfiguration>
+  </BuildMatrix>
+</CodeLite_Workspace>

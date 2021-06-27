@@ -1,0 +1,397 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeLite_Project Name="mx_tune" Version="11000" InternalType="">
+  <Plugins>
+    <Plugin Name="qmake">
+      <![CDATA[00080001N0005Debug0000000000000001N0010lv2_plugin0000000000000001N0006plugin0000000000000001N0011vst2_plugin0000000000000001N0018vst2_plugin(32bit)0000000000000001N0018vst2_plugin(64bit)0000000000000001N0026vst3_plugin(windows_32bit)0000000000000001N0006winexe000000000000]]>
+    </Plugin>
+  </Plugins>
+  <VirtualDirectory Name="JUCE">
+    <VirtualDirectory Name="JuceLibraryCode">
+      <File Name="JUCE/JuceLibraryCode/JuceHeader.h"/>
+      <File Name="JUCE/JuceLibraryCode/include_juce_opengl.cpp"/>
+      <File Name="JUCE/JuceLibraryCode/include_juce_gui_extra.cpp"/>
+      <File Name="JUCE/JuceLibraryCode/include_juce_gui_basics.cpp"/>
+      <File Name="JUCE/JuceLibraryCode/include_juce_graphics.cpp"/>
+      <File Name="JUCE/JuceLibraryCode/include_juce_events.cpp"/>
+      <File Name="JUCE/JuceLibraryCode/include_juce_data_structures.cpp"/>
+      <File Name="JUCE/JuceLibraryCode/include_juce_cryptography.cpp"/>
+      <File Name="JUCE/JuceLibraryCode/include_juce_core.cpp"/>
+      <File Name="JUCE/JuceLibraryCode/include_juce_audio_utils.cpp"/>
+      <File Name="JUCE/JuceLibraryCode/include_juce_audio_processors.cpp"/>
+      <File Name="JUCE/JuceLibraryCode/include_juce_audio_plugin_client_VST3.cpp" ExcludeProjConfig="vst2_plugin(32bit);"/>
+      <File Name="JUCE/JuceLibraryCode/include_juce_audio_plugin_client_VST2.cpp" ExcludeProjConfig="vst3_plugin(windows_32bit);"/>
+      <File Name="JUCE/JuceLibraryCode/include_juce_audio_plugin_client_utils.cpp"/>
+      <File Name="JUCE/JuceLibraryCode/include_juce_audio_plugin_client_Unity.cpp"/>
+      <File Name="JUCE/JuceLibraryCode/include_juce_audio_plugin_client_Standalone.cpp"/>
+      <File Name="JUCE/JuceLibraryCode/include_juce_audio_plugin_client_RTAS_utils.cpp"/>
+      <File Name="JUCE/JuceLibraryCode/include_juce_audio_plugin_client_RTAS_4.cpp"/>
+      <File Name="JUCE/JuceLibraryCode/include_juce_audio_plugin_client_RTAS_3.cpp"/>
+      <File Name="JUCE/JuceLibraryCode/include_juce_audio_plugin_client_RTAS_2.cpp"/>
+      <File Name="JUCE/JuceLibraryCode/include_juce_audio_plugin_client_RTAS_1.cpp"/>
+      <File Name="JUCE/JuceLibraryCode/include_juce_audio_plugin_client_AAX.cpp"/>
+      <File Name="JUCE/JuceLibraryCode/include_juce_audio_formats.cpp"/>
+      <File Name="JUCE/JuceLibraryCode/include_juce_audio_devices.cpp"/>
+      <File Name="JUCE/JuceLibraryCode/include_juce_audio_basics.cpp"/>
+      <File Name="JUCE/JuceLibraryCode/AppConfig.h"/>
+    </VirtualDirectory>
+    <VirtualDirectory Name="Source">
+      <File Name="JUCE/Source/PluginParameter.h"/>
+      <File Name="JUCE/Source/PluginParameter.cpp"/>
+      <File Name="JUCE/Source/PluginGui.h"/>
+      <File Name="JUCE/Source/PluginGui.cpp"/>
+      <File Name="JUCE/Source/PluginProcessor.h"/>
+      <File Name="JUCE/Source/PluginProcessor.cpp"/>
+    </VirtualDirectory>
+  </VirtualDirectory>
+  <VirtualDirectory Name="mx_tune">
+    <File Name="mx_tune.ttl"/>
+    <File Name="mx_une_lv2.cpp"/>
+    <File Name="mx_tune.cpp"/>
+    <File Name="mx_tune.h"/>
+    <File Name="manual_tune.h"/>
+    <File Name="manual_tune.cpp"/>
+    <File Name="main.cpp" ExcludeProjConfig="vst3_plugin(windows_32bit);plugin;vst2_plugin(32bit);"/>
+    <File Name="net_log.h"/>
+    <File Name="mat_helper.h"/>
+    <File Name="pitch_shifter.h"/>
+    <File Name="pitch_shifter.cpp"/>
+    <File Name="auto_tune.h"/>
+    <File Name="auto_tune.cpp"/>
+    <File Name="ring_buffer.h"/>
+    <File Name="ring_buffer.cpp"/>
+    <File Name="pitch_detector.h"/>
+    <File Name="pitch_detector.cpp"/>
+    <File Name="manifest.ttl"/>
+    <File Name="lv2.h"/>
+  </VirtualDirectory>
+  <Description/>
+  <Dependencies/>
+  <Dependencies Name="lv2_plugin"/>
+  <Dependencies Name="vst2_plugin(32bit)"/>
+  <Dependencies Name="vst2_plugin(64bit)"/>
+  <Dependencies Name="winexe"/>
+  <Settings Type="Dynamic Library">
+    <GlobalSettings>
+      <Compiler Options="" C_Options="" Assembler="">
+        <IncludePath Value="."/>
+      </Compiler>
+      <Linker Options="">
+        <LibraryPath Value="."/>
+      </Linker>
+      <ResourceCompiler Options=""/>
+    </GlobalSettings>
+    <Configuration Name="lv2_plugin" CompilerType="MinGW 64bit ( MSYS2 64bit )" DebuggerType="GNU gdb debugger" Type="Dynamic Library" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-Os;-O2;-std=c++14;-fpermissive;-fPIC" C_Options="-Os;-O2;-fpermissive;-fPIC" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
+        <IncludePath Value="."/>
+        <IncludePath Value="JUCE/JuceLibraryCode"/>
+        <IncludePath Value="JUCE/Source"/>
+        <IncludePath Value="JUCE/JuceLibraryCode/modules"/>
+        <IncludePath Value="VST3_SDK"/>
+      </Compiler>
+      <Linker Options="-mwindows;-fPIC;-static" Required="yes">
+        <LibraryPath Value="."/>
+        <LibraryPath Value="Debug"/>
+        <Library Value="gdi32"/>
+        <Library Value="user32"/>
+        <Library Value="kernel32"/>
+        <Library Value="comctl32"/>
+        <Library Value="winmm"/>
+        <Library Value="uuid"/>
+        <Library Value="wsock32"/>
+        <Library Value="wininet"/>
+        <Library Value="version"/>
+        <Library Value="ole32"/>
+        <Library Value="ws2_32"/>
+        <Library Value="oleaut32"/>
+        <Library Value="imm32"/>
+        <Library Value="comdlg32"/>
+        <Library Value="shlwapi"/>
+        <Library Value="rpcrt4"/>
+        <Library Value="opengl32"/>
+      </Linker>
+      <ResourceCompiler Options="" Required="no"/>
+      <General OutputFile="$(IntermediateDirectory)/$(ProjectName).dll" IntermediateDirectory="$(ConfigurationName)" Command="$(OutputFile)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="" PauseExecWhenProcTerminates="yes" IsGUIProgram="no" IsEnabled="yes"/>
+      <BuildSystem Name="Default"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
+        <![CDATA[]]>
+      </Environment>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="" IsExtended="no">
+        <DebuggerSearchPaths/>
+        <PostConnectCommands/>
+        <StartupCommands/>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild>
+        <Command Enabled="yes">cp $(IntermediateDirectory)/$(ProjectName).dll D:/DAW/Ardour6/lib/ardour6/LV2/autotalent.lv2</Command>
+        <Command Enabled="yes">cp $(ProjectPath)/manifest.ttl D:/DAW/Ardour6/lib/ardour6/LV2/autotalent.lv2</Command>
+        <Command Enabled="yes">cp $(ProjectPath)/autotalent.ttl D:/DAW/Ardour6/lib/ardour6/LV2/autotalent.lv2</Command>
+      </PostBuild>
+      <CustomBuild Enabled="no">
+        <RebuildCommand/>
+        <CleanCommand/>
+        <BuildCommand/>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName/>
+        <WorkingDirectory/>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild/>
+      </AdditionalRules>
+      <Completion EnableCpp11="no" EnableCpp14="no">
+        <ClangCmpFlagsC/>
+        <ClangCmpFlags/>
+        <ClangPP/>
+        <SearchPaths/>
+      </Completion>
+    </Configuration>
+    <Configuration Name="vst2_plugin(32bit)" CompilerType="MinGW 32bit ( MSYS2 64bit )" DebuggerType="GNU gdb debugger" Type="Dynamic Library" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-Os;-O2;-std=c++14;-fpermissive;-fPIC" C_Options="-Os;-O2;-fpermissive;-fPIC" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
+        <IncludePath Value="."/>
+        <IncludePath Value="JUCE/JuceLibraryCode"/>
+        <IncludePath Value="JUCE/Source"/>
+        <IncludePath Value="JUCE/JuceLibraryCode/modules"/>
+        <IncludePath Value="VST3_SDK"/>
+      </Compiler>
+      <Linker Options="-mwindows;-fPIC;-static" Required="yes">
+        <LibraryPath Value="."/>
+        <LibraryPath Value="Debug"/>
+        <Library Value="gdi32"/>
+        <Library Value="user32"/>
+        <Library Value="kernel32"/>
+        <Library Value="comctl32"/>
+        <Library Value="winmm"/>
+        <Library Value="uuid"/>
+        <Library Value="wsock32"/>
+        <Library Value="wininet"/>
+        <Library Value="version"/>
+        <Library Value="ole32"/>
+        <Library Value="ws2_32"/>
+        <Library Value="oleaut32"/>
+        <Library Value="imm32"/>
+        <Library Value="comdlg32"/>
+        <Library Value="shlwapi"/>
+        <Library Value="rpcrt4"/>
+        <Library Value="opengl32"/>
+        <Library Value="fftw3f"/>
+      </Linker>
+      <ResourceCompiler Options="" Required="no"/>
+      <General OutputFile="$(IntermediateDirectory)/$(ProjectName).dll" IntermediateDirectory="$(ConfigurationName)" Command="$(OutputFile)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="" PauseExecWhenProcTerminates="yes" IsGUIProgram="no" IsEnabled="yes"/>
+      <BuildSystem Name="Default"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
+        <![CDATA[]]>
+      </Environment>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="" IsExtended="no">
+        <DebuggerSearchPaths/>
+        <PostConnectCommands/>
+        <StartupCommands/>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild>
+        <Command Enabled="yes">cp $(IntermediateDirectory)/$(ProjectName).dll "D:/DAW/VstPlugins (x86)/MXTune.dll"</Command>
+      </PostBuild>
+      <CustomBuild Enabled="no">
+        <RebuildCommand/>
+        <CleanCommand/>
+        <BuildCommand/>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName/>
+        <WorkingDirectory/>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild/>
+      </AdditionalRules>
+      <Completion EnableCpp11="no" EnableCpp14="no">
+        <ClangCmpFlagsC/>
+        <ClangCmpFlags/>
+        <ClangPP/>
+        <SearchPaths/>
+      </Completion>
+    </Configuration>
+    <Configuration Name="vst2_plugin(64bit)" CompilerType="MinGW 64bit ( MSYS2 64bit )" DebuggerType="GNU gdb debugger" Type="Dynamic Library" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-Os;-O2;-std=c++14;-fpermissive;-fPIC" C_Options="-Os;-O2;-fpermissive;-fPIC" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
+        <IncludePath Value="."/>
+        <IncludePath Value="JUCE/JuceLibraryCode"/>
+        <IncludePath Value="JUCE/Source"/>
+        <IncludePath Value="JUCE/JuceLibraryCode/modules"/>
+        <IncludePath Value="VST3_SDK"/>
+      </Compiler>
+      <Linker Options="-mwindows;-fPIC;-static" Required="yes">
+        <LibraryPath Value="."/>
+        <LibraryPath Value="Debug"/>
+        <Library Value="gdi32"/>
+        <Library Value="user32"/>
+        <Library Value="kernel32"/>
+        <Library Value="comctl32"/>
+        <Library Value="winmm"/>
+        <Library Value="uuid"/>
+        <Library Value="wsock32"/>
+        <Library Value="wininet"/>
+        <Library Value="version"/>
+        <Library Value="ole32"/>
+        <Library Value="ws2_32"/>
+        <Library Value="oleaut32"/>
+        <Library Value="imm32"/>
+        <Library Value="comdlg32"/>
+        <Library Value="shlwapi"/>
+        <Library Value="rpcrt4"/>
+        <Library Value="opengl32"/>
+      </Linker>
+      <ResourceCompiler Options="" Required="no"/>
+      <General OutputFile="$(IntermediateDirectory)/$(ProjectName).dll" IntermediateDirectory="$(ConfigurationName)" Command="$(OutputFile)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="" PauseExecWhenProcTerminates="yes" IsGUIProgram="no" IsEnabled="yes"/>
+      <BuildSystem Name="Default"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
+        <![CDATA[]]>
+      </Environment>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="" IsExtended="no">
+        <DebuggerSearchPaths/>
+        <PostConnectCommands/>
+        <StartupCommands/>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild>
+        <Command Enabled="yes">cp $(IntermediateDirectory)/$(ProjectName).dll D:/DAW/VstPlugins</Command>
+      </PostBuild>
+      <CustomBuild Enabled="no">
+        <RebuildCommand/>
+        <CleanCommand/>
+        <BuildCommand/>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName/>
+        <WorkingDirectory/>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild/>
+      </AdditionalRules>
+      <Completion EnableCpp11="no" EnableCpp14="no">
+        <ClangCmpFlagsC/>
+        <ClangCmpFlags/>
+        <ClangPP/>
+        <SearchPaths/>
+      </Completion>
+    </Configuration>
+    <Configuration Name="vst3_plugin(windows_32bit)" CompilerType="MinGW 32bit ( MSYS2 64bit )" DebuggerType="GNU gdb debugger" Type="Dynamic Library" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-Os;-O2;-std=c++14;-fpermissive;-fPIC" C_Options="-Os;-O2;-fpermissive;-fPIC" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
+        <IncludePath Value="."/>
+        <IncludePath Value="JUCE/JuceLibraryCode"/>
+        <IncludePath Value="JUCE/Source"/>
+        <IncludePath Value="JUCE/JuceLibraryCode/modules"/>
+        <IncludePath Value="VST3_SDK"/>
+      </Compiler>
+      <Linker Options="-mwindows;-fPIC;-static" Required="yes">
+        <LibraryPath Value="."/>
+        <LibraryPath Value="Debug"/>
+        <Library Value="gdi32"/>
+        <Library Value="user32"/>
+        <Library Value="kernel32"/>
+        <Library Value="comctl32"/>
+        <Library Value="winmm"/>
+        <Library Value="uuid"/>
+        <Library Value="wsock32"/>
+        <Library Value="wininet"/>
+        <Library Value="version"/>
+        <Library Value="ole32"/>
+        <Library Value="ws2_32"/>
+        <Library Value="oleaut32"/>
+        <Library Value="imm32"/>
+        <Library Value="comdlg32"/>
+        <Library Value="shlwapi"/>
+        <Library Value="rpcrt4"/>
+        <Library Value="opengl32"/>
+      </Linker>
+      <ResourceCompiler Options="" Required="no"/>
+      <General OutputFile="$(IntermediateDirectory)/$(ProjectName).vst3" IntermediateDirectory="$(ConfigurationName)" Command="$(OutputFile)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="" PauseExecWhenProcTerminates="yes" IsGUIProgram="no" IsEnabled="yes"/>
+      <BuildSystem Name="Default"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
+        <![CDATA[]]>
+      </Environment>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="" IsExtended="no">
+        <DebuggerSearchPaths/>
+        <PostConnectCommands/>
+        <StartupCommands/>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild>
+        <Command Enabled="yes">cp $(IntermediateDirectory)/$(ProjectName).vst3 "C:/Program Files (x86)/Common Files/VST3/MXTune.vst3"</Command>
+      </PostBuild>
+      <CustomBuild Enabled="no">
+        <RebuildCommand/>
+        <CleanCommand/>
+        <BuildCommand/>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName/>
+        <WorkingDirectory/>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild/>
+      </AdditionalRules>
+      <Completion EnableCpp11="no" EnableCpp14="no">
+        <ClangCmpFlagsC/>
+        <ClangCmpFlags/>
+        <ClangPP/>
+        <SearchPaths/>
+      </Completion>
+    </Configuration>
+    <Configuration Name="winexe" CompilerType="MinGW 64bit ( MSYS2 64bit )" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-g -Wall;-fno-lto" C_Options="-g;-fno-lto" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
+        <IncludePath Value="."/>
+      </Compiler>
+      <Linker Options="-static" Required="yes">
+        <LibraryPath Value="."/>
+        <LibraryPath Value="Debug"/>
+        <Library Value="ws2_32"/>
+        <Library Value="d3d9"/>
+        <Library Value="xinput"/>
+        <Library Value="Gdi32"/>
+        <Library Value="Dwmapi"/>
+        <Library Value="d3dcompiler"/>
+        <Library Value="Imm32"/>
+        <Library Value="D3D11"/>
+      </Linker>
+      <ResourceCompiler Options="" Required="no"/>
+      <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="$(ConfigurationName)" Command="$(OutputFile)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="" PauseExecWhenProcTerminates="yes" IsGUIProgram="no" IsEnabled="yes"/>
+      <BuildSystem Name="Default"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
+        <![CDATA[]]>
+      </Environment>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="" IsExtended="no">
+        <DebuggerSearchPaths/>
+        <PostConnectCommands/>
+        <StartupCommands/>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild/>
+      <CustomBuild Enabled="no">
+        <RebuildCommand/>
+        <CleanCommand/>
+        <BuildCommand/>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName/>
+        <WorkingDirectory/>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild/>
+      </AdditionalRules>
+      <Completion EnableCpp11="no" EnableCpp14="no">
+        <ClangCmpFlagsC/>
+        <ClangCmpFlags/>
+        <ClangPP/>
+        <SearchPaths/>
+      </Completion>
+    </Configuration>
+  </Settings>
+</CodeLite_Project>

@@ -1,7 +1,6 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include "manual_tune.h"
-#include "net_log.h"
 
 manual_tune::manual_tune(unsigned int len)
 {

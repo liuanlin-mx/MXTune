@@ -1,5 +1,4 @@
 #include "mx_tune.h"
-#include "net_log.h"
 
 mx_tune::mx_tune(unsigned int sample_rate)
     : _detector(sample_rate)
@@ -102,7 +101,6 @@ void mx_tune::run(float* in, float *out, int n, float timestamp)
                 manual_tune::pitch_node node;
                 node.conf = _conf;
                 node.pitch = inpitch;
-                //net_log_debug("track conf:%f pitch:%f time:%f %f\n", node.conf, node.pitch, time_begin, time_end);
                 _m_tune.set_inpitch(time_begin, time_end, node);
                 
                 //node.pitch = _tune.tune(inpitch);

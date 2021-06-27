@@ -10,7 +10,6 @@
 
 #include "PluginProcessor.h"
 #include "PluginGui.h"
-#include "net_log.h"
 #include <list>
 
 //==============================================================================
@@ -242,13 +241,11 @@ void AutotalentAudioProcessor::getStateInformation (MemoryBlock& destData)
     // You could do that either as raw data, or use the XML or ValueTree classes
     // as intermediaries to make it easy to save and load complex data.
     
-    net_log_debug("\n");
     if (_talent == nullptr)
     {
         return;
     }
     
-    net_log_debug("\n");
     ReferenceCountedObjectPtr<DynamicObject> root(new DynamicObject);
     
     float time_begin = 0;
@@ -257,10 +254,8 @@ void AutotalentAudioProcessor::getStateInformation (MemoryBlock& destData)
     Array<var> outpitch_arr;
     Array<var> tune_arr;
     
-    net_log_debug("time_end:%f\n", time_end);
     {
         std::list<std::pair<manual_tune::pitch_node, float> > inpitch = _talent->get_manual_tune().get_inpitch(time_begin, time_end);
-        net_log_debug("size:%d\n", inpitch.size());
         for (auto i: inpitch)
         {
             ReferenceCountedObjectPtr<DynamicObject> item(new DynamicObject);
@@ -302,7 +297,6 @@ void AutotalentAudioProcessor::getStateInformation (MemoryBlock& destData)
         root->setProperty("tune", tune_arr);
     }
     String s = JSON::toString(root.get());
-    net_log_debug("\n");
     destData.setSize(s.length());
     destData.copyFrom(s.getCharPointer(), 0, destData.getSize());
 }
@@ -311,7 +305,6 @@ void AutotalentAudioProcessor::setStateInformation (const void* data, int sizeIn
 {
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.
-    net_log_debug("%.*s\n", sizeInBytes, (const char *)data);
     if (sizeInBytes < 1 || _talent == nullptr)
     {
         return;
@@ -338,7 +331,6 @@ void AutotalentAudioProcessor::setStateInformation (const void* data, int sizeIn
         return;
     }
     
-    net_log_debug("\n");
     {
         var inpitch = root["inpitch"];
         if (!inpitch.isArray())
@@ -454,7 +446,6 @@ void AutotalentAudioProcessor::setStateInformation (const void* data, int sizeIn
 void AutotalentAudioProcessor::parameterValueChanged (int parameterIndex, float newValue)
 {
     std::lock_guard<std::mutex> l(_mtx);
-    net_log_debug("parameterIndex:%d value:%f\n", parameterIndex, newValue);
 
     if (parameterIndex >= PARAMETER_ID_A && parameterIndex <= PARAMETER_ID_Ab)
     {
@@ -491,7 +482,6 @@ void AutotalentAudioProcessor::parameterValueChanged (int parameterIndex, float 
     else if (parameterIndex == PARAMETER_ID_ENABLE_TRACK)
     {
         _is_enable_track = newValue > 0.;
-        net_log_debug("_is_enable_track:%d\n", _is_enable_track);
         if (_talent)
         {
             _talent->enable_track(_is_enable_track);

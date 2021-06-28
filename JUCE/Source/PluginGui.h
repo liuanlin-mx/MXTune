@@ -63,6 +63,7 @@ public:
     void _x_zoom(bool in);
     void _y_zoom(bool in);
 
+    void _draw_note_limit(float& x0, float& y0, float& x1, float& y1);
     //[/UserMethods]
 
     void paint (Graphics& g) override;

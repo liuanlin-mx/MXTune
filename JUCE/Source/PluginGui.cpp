@@ -538,14 +538,10 @@ void PluginGui::paint (Graphics& g)
         float end_x = _time_to_x(_cur_node->time_end);
         float start_y = _pitch_to_y(_cur_node->pitch_start);
         float end_y = _pitch_to_y(_cur_node->pitch_end);
-
-        if (start_x >= _draw_x && end_x < start_x + _draw_w
-                && start_y >= _draw_y && end_y < start_y + _draw_y)
-        {
-            g.setColour (juce::Colours::red);
-            g.setOpacity(0.5);
-            g.drawLine(start_x, start_y, end_x, end_y, 10);
-        }
+        _draw_note_limit(start_x, start_y, end_x, end_y);
+        g.setColour (juce::Colours::red);
+        g.setOpacity(0.5);
+        g.drawLine(start_x, start_y, end_x, end_y, 12);
     }
 
     // draw notes
@@ -553,21 +549,18 @@ void PluginGui::paint (Graphics& g)
         std::list<std::shared_ptr<manual_tune::tune_node> > list =
             _proc.get_manual_tune().get_tune(_time_left, _time_right);
 
-        g.setColour (juce::Colours::grey);
+        
+        g.setColour (juce::Colours::orange);
         g.setOpacity(0.5);
         for (auto i: list)
         {
-
             float start_x = _time_to_x(i->time_start);
             float end_x = _time_to_x(i->time_end);
             float start_y = _pitch_to_y(i->pitch_start);
             float end_y = _pitch_to_y(i->pitch_end);
-
-            if (start_x >= _draw_x && end_x < start_x + _draw_w
-                    && start_y >= _draw_y && end_y < start_y + _draw_y)
-            {
-                g.drawLine(start_x, start_y, end_x, end_y, 10);
-            }
+            
+            _draw_note_limit(start_x, start_y, end_x, end_y);
+            g.drawLine(start_x, start_y, end_x, end_y, 12);
         }
     }
 
@@ -640,7 +633,6 @@ void PluginGui::paint (Graphics& g)
         }
 
         g.setColour (juce::Colours::green);
-        //g.setColour (Colour (0xff7fff00));
         g.strokePath (pitch_path, PathStrokeType (2.0f));
     }
 
@@ -1588,6 +1580,70 @@ void PluginGui::_y_zoom(bool in)
             _pitch_down--;
         }
     }
+}
+
+void PluginGui::_draw_note_limit(float& start_x, float& start_y, float& end_x, float& end_y)
+{
+    float x0 = start_x;
+    float y0 = start_y;
+    float x1 = end_x;
+    float y1 = end_y;
+    
+    if (x0 < _draw_x)
+    {
+        x0 = _draw_x;
+        y0 = start_y + (end_y - start_y) / (end_x - start_x) * (x0 - start_x);
+    }
+    
+    if (x0 >= _draw_x + _draw_w)
+    {
+        x0 = _draw_x + _draw_w - 1;
+        y0 = start_y + (end_y - start_y) / (end_x - start_x) * (x0 - start_x);
+    }
+    
+    if (x1 < _draw_x)
+    {
+        x1 = _draw_x;
+        y1 = start_y + (end_y - start_y) / (end_x - start_x) * (x1 - start_x);
+    }
+    
+    if (x1 >= _draw_x + _draw_w)
+    {
+        x1 = _draw_x + _draw_w - 1;
+        y1 = start_y + (end_y - start_y) / (end_x - start_x) * (x1 - start_x);
+    }
+    
+    
+    
+    if (y0 < _draw_y)
+    {
+        y0 = _draw_y;
+        x0 = (end_x - start_x) * (y0 - start_y) / (end_y - start_y) + start_x;
+    }
+    
+    if (y0 >= _draw_y + _draw_h)
+    {
+        y0 = _draw_y + _draw_h - 1;
+        x0 = (end_x - start_x) * (y0 - start_y) / (end_y - start_y) + start_x;
+    }
+    
+    
+    if (y1 < _draw_y)
+    {
+        y1 = _draw_y;
+        x1 = (end_x - start_x) * (y1 - start_y) / (end_y - start_y) + start_x;
+    }
+    
+    if (y1 >= _draw_y + _draw_h)
+    {
+        y1 = _draw_y + _draw_h - 1;
+        x1 = (end_x - start_x) * (y1 - start_y) / (end_y - start_y) + start_x;
+    }
+    
+    start_x = x0;
+    start_y = y0;
+    end_x = x1;
+    end_y = y1;
 }
 
 //[/MiscUserCode]

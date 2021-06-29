@@ -8,7 +8,7 @@ mx_tune::mx_tune(unsigned int sample_rate)
     , _noverlap(4)
     , _inpitch(0)
     , _conf(0.)
-    , _conf_thresh(0.7)
+    , _conf_thresh(0.9)
     , _track(false)
     , _auto_tune(false)
 {

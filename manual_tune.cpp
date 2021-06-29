@@ -233,7 +233,22 @@ std::shared_ptr<manual_tune::tune_node> manual_tune::select_tune(float time, flo
 {
     std::uint32_t idx = _time2idx(time);
     std::shared_ptr<tune_node>& node = _tune_list[idx];
-    if (node && (abs(pitch - node->pitch_start) < 0.5 || abs(pitch - node->pitch_end) < 0.5))
+    if (node == nullptr)
+    {
+        pos = SELECT_NONE;
+        return std::shared_ptr<tune_node>();
+    }
+    std::uint32_t begin = _time2idx(node->time_start);
+    std::uint32_t end = _time2idx(node->time_end);
+    
+    float x0 = node->time_start;
+    float y0 = node->pitch_start;
+    float x1 = node->time_end;
+    float y1 = node->pitch_end;
+    
+    float y = y0 + (y1 - y0) / (x1 - x0) * (time - x0);
+    
+    if (abs(y - pitch) < 0.2)
     {
         float len = node->time_end - node->time_start;
         float left = node->time_start + len * 0.2;

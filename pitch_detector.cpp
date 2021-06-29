@@ -1,7 +1,6 @@
 #include <math.h>
 #include <string.h>
 #include "pitch_detector.h"
-#include "mat_helper.h"
 
 #define PI (float)3.14159265358979323846
 #define L2SC (float)3.32192809488736218171
@@ -50,8 +49,6 @@ pitch_detector::pitch_detector(float sample_rate)
         _ffttime[i] = _cbwindow[i];
     }
     
-    mat_helper_write_mat2_4("cbwindow", 1, _buf_size, "float", _cbwindow);
-    mat_helper_write_mat2_4("ffttime1", 1, _buf_size, "float", _ffttime);
     // Calculate FFT
     fftwf_execute(_forward_plan);
     

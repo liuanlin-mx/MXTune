@@ -13,20 +13,15 @@
       <Project Name="mx_tune" ConfigName="lv2_plugin"/>
       <Project Name="JuceLibraryCode" ConfigName="Debug"/>
     </WorkspaceConfiguration>
-    <WorkspaceConfiguration Name="vst2_plugin(64bit)" Selected="no">
+    <WorkspaceConfiguration Name="vst_plugin(windows_64bit)" Selected="no">
       <Environment/>
-      <Project Name="mx_tune" ConfigName="vst2_plugin(64bit)"/>
       <Project Name="JuceLibraryCode" ConfigName="Debug"/>
+      <Project Name="mx_tune" ConfigName="vst_plugin(windows_64bit)"/>
     </WorkspaceConfiguration>
-    <WorkspaceConfiguration Name="vst2_plugin(32bit)" Selected="yes">
+    <WorkspaceConfiguration Name="vst_plugin(windows_32bit)" Selected="yes">
       <Environment/>
-      <Project Name="mx_tune" ConfigName="vst2_plugin(32bit)"/>
       <Project Name="JuceLibraryCode" ConfigName="Debug"/>
-    </WorkspaceConfiguration>
-    <WorkspaceConfiguration Name="vst3_plugin(windows_32bit)" Selected="yes">
-      <Environment/>
-      <Project Name="mx_tune" ConfigName="vst3_plugin(windows_32bit)"/>
-      <Project Name="JuceLibraryCode" ConfigName="Debug"/>
+      <Project Name="mx_tune" ConfigName="vst_plugin(windows_32bit)"/>
     </WorkspaceConfiguration>
   </BuildMatrix>
 </CodeLite_Workspace>

@@ -107,20 +107,21 @@ void mx_tune::run(float* in, float *out, int n, float timestamp)
                 //_m_tune.set_outpitch(time_begin, time_end, node);
             }
             
-            if (_auto_tune)
+            if (_conf >= _conf_thresh)
             {
-                outpitch = _tune.tune(inpitch);
-            }
-            
-            
-            manual_tune::pitch_node node = _m_tune.get_outpitch(time_begin);
-            if (node.conf > 0.)
-            {
-                outpitch = node.pitch;
+                if (_auto_tune)
+                {
+                    outpitch = _tune.tune(inpitch);
+                }
+                
+                manual_tune::pitch_node node = _m_tune.get_outpitch(time_begin);
+                if (node.conf >= _conf_thresh)
+                {
+                    outpitch = node.pitch;
+                }
             }
             
             _shifter.update_shifter_variables(inpitch, outpitch);
-            
         }
         out[i] = _shifter.shifter(_buffer);
     }

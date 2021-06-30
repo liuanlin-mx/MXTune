@@ -194,7 +194,7 @@ float pitch_detector::get_period(ring_buffer& buffer, float& conf)
     // Convert to semitones
     tf = (float)-12 * log10((float)_aref * period) * L2SC;
     
-    if(conf >= _vthresh)
+    //if(conf >= _vthresh)
     {
         _pitch = tf;
     }

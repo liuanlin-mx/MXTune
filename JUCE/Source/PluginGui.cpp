@@ -512,7 +512,7 @@ void PluginGui::paint (Graphics& g)
 
         if (is_playing)
         {
-            _cur_time = _proc.get_cur_pos();
+            _cur_time = _proc.get_cur_time();
             float diff = _time_right - _time_left;
             if (_cur_time >= _time_right || _cur_time <= _time_left)
             {

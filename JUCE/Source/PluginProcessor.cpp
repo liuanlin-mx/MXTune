@@ -18,9 +18,9 @@ AutotalentAudioProcessor::AutotalentAudioProcessor()
     : AudioProcessor (BusesProperties()
                      #if ! JucePlugin_IsMidiEffect
                       #if ! JucePlugin_IsSynth
-                       .withInput  ("Input",  AudioChannelSet::mono(), true)
+                       .withInput  ("Input",  AudioChannelSet::stereo(), true)
                       #endif
-                       .withOutput ("Output", AudioChannelSet::mono(), true)
+                       .withOutput ("Output", AudioChannelSet::stereo(), true)
                      #endif
                        )
 #endif
@@ -145,10 +145,6 @@ void AutotalentAudioProcessor::prepareToPlay (double sampleRate, int samplesPerB
 
 void AutotalentAudioProcessor::releaseResources()
 {
-    if (_talent)
-    {
-        _talent.reset();
-    }
     // When playback stops, you can use this as an opportunity to free up any
     // spare memory, etc.
 }
@@ -199,7 +195,7 @@ void AutotalentAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuf
         AudioPlayHead::CurrentPositionInfo result;
         if (play_head->getCurrentPosition(result))
         {
-            _cur_pos = result.timeInSeconds;
+            _cur_time = result.timeInSeconds;
             _is_playing = result.isPlaying;
         }
     }
@@ -211,14 +207,19 @@ void AutotalentAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuf
     // Alternatively, you can process the samples with the channels
     // interleaved by keeping the same state.
     
-    for (int channel = 0; channel < totalNumInputChannels; ++channel)
+    if (totalNumInputChannels > 0)
     {
-        auto* channelData = buffer.getWritePointer (channel);
+        auto* channel_data = buffer.getWritePointer (0);
+        std::int32_t num_samples =  buffer.getNumSamples();
         if (_talent)
         {
-            _talent->run(channelData, channelData, buffer.getNumSamples(), _cur_pos);
+            _talent->run(channel_data, channel_data, num_samples, _cur_time);
         }
-        // ..do something to the data...
+        
+        for (int channel = 1; channel < totalNumInputChannels; ++channel)
+        {
+            buffer.copyFrom(channel, 0, channel_data, num_samples);
+        }
     }
     
 }

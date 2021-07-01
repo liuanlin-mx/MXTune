@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CodeLite_Workspace Name="mx_tune" Database="" Version="10000">
   <Project Name="mx_tune" Path="mx_tune.project" Active="Yes"/>
-  <Project Name="JuceLibraryCode" Path="JUCE/JuceLibraryCode/JuceLibraryCode.project" Active="No"/>
   <BuildMatrix>
     <WorkspaceConfiguration Name="winexe" Selected="no">
       <Environment/>

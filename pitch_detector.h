@@ -14,8 +14,11 @@ public:
 
     void set_vthresh(float vthresh) { _vthresh = vthresh; }
     void set_aref(float aref) { _aref = aref; }
-    float get_period(ring_buffer& buffer, float& conf);
+    bool get_period(float in, float& pitch, float& conf);
+    float get_time() { return (_buffer.get_buf_size() / _noverlap) / _sample_rate; }
     
+private:
+    float _get_period(ring_buffer& buffer, float& conf);
     
 private:
     float _aref;
@@ -36,6 +39,9 @@ private:
     fftwf_complex* _complex;
     fftwf_plan _forward_plan;
     fftwf_plan _reverse_plan;
+    
+    ring_buffer _buffer;
+    std::int32_t _noverlap;
 };
 
 #endif

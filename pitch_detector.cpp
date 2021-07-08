@@ -6,6 +6,8 @@
 #define L2SC (float)3.32192809488736218171
 
 pitch_detector::pitch_detector(float sample_rate)
+    : _buffer(sample_rate)
+    , _noverlap(4)
 {
     _aref = 440;
     _conf = 0;
@@ -96,7 +98,19 @@ pitch_detector::~pitch_detector()
     fftwf_free(_acwinv);
 }
 
-float pitch_detector::get_period(ring_buffer& buffer, float& conf)
+
+bool pitch_detector::get_period(float in, float& pitch, float& conf)
+{
+    _buffer.put(in);
+    if(_buffer.get_idx() % (_buffer.get_buf_size() / _noverlap) == 0)
+    {
+        pitch = _get_period(_buffer, conf);
+        return true;
+    }
+    return false;
+}
+
+float pitch_detector::_get_period(ring_buffer& buffer, float& conf)
 {
     std::int32_t n = buffer.get_buf_size();
     // ---- Obtain autocovariance ----

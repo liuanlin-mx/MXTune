@@ -3,7 +3,6 @@
 mx_tune::mx_tune(unsigned int sample_rate)
     : _detector(sample_rate)
     , _shifter(sample_rate)
-    , _buffer(sample_rate)
     , _sample_rate(sample_rate)
     , _noverlap(4)
     , _inpitch(0)
@@ -82,19 +81,25 @@ void mx_tune::snap_key()
     _m_tune.snap_key(&_tune);
 }
 
-void mx_tune::run(float* in, float *out, int n, float timestamp)
+void mx_tune::snap_to_inpitch()
 {
-    for (int i = 0; i < n; i++)
+    _m_tune.snap_to_inpitch();
+}
+
+void mx_tune::run(float* in, float *out, std::int32_t n, float timestamp)
+{
+    for (std::int32_t i = 0; i < n; i++)
     {
-        _buffer.put(in[i]);
-        if(_buffer.get_idx() % (_buffer.get_buf_size() / _noverlap) == 0)
+        float inpitch;
+        float conf;
+        
+        if (_detector.get_period(in[i], inpitch, conf))
         {
-            float time_begin = timestamp + (float)i / (float)_sample_rate;
-            float time_end = timestamp + (float)(i + _buffer.get_buf_size() / _noverlap) / (float)_sample_rate;
-            
-            float inpitch = _detector.get_period(_buffer, _conf);
+            float time_end = timestamp + (float)i / (float)_sample_rate;
+            float time_begin = time_end - _detector.get_time();
             float outpitch = inpitch;
             _inpitch = inpitch;
+            _conf = conf;
             
             if (_track)
             {
@@ -123,6 +128,7 @@ void mx_tune::run(float* in, float *out, int n, float timestamp)
             
             _shifter.update_shifter_variables(inpitch, outpitch);
         }
-        out[i] = _shifter.shifter(_buffer);
+        
+        out[i] = _shifter.shifter(in[i]);
     }
 }

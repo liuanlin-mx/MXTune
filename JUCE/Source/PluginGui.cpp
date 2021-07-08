@@ -386,6 +386,20 @@ PluginGui::PluginGui (AutotalentAudioProcessor& p)
 
     sliderATAmount->setBounds (184, 56, 40, 24);
 
+    groupComponent6.reset (new GroupComponent ("new group",
+                                               TRANS("Notes")));
+    addAndMakeVisible (groupComponent6.get());
+
+    groupComponent6->setBounds (144, 96, 712, 496);
+
+    textButtonSnapCur.reset (new TextButton ("new button"));
+    addAndMakeVisible (textButtonSnapCur.get());
+    textButtonSnapCur->setButtonText (TRANS("SnapCur"));
+    textButtonSnapCur->addListener (this);
+    textButtonSnapCur->setColour (TextButton::buttonColourId, Colour (0x00a45c94));
+
+    textButtonSnapCur->setBounds (576, 24, 72, 24);
+
 
     //[UserPreSize]
     //[/UserPreSize]
@@ -445,6 +459,8 @@ PluginGui::~PluginGui()
     sliderATSmooth = nullptr;
     label8 = nullptr;
     sliderATAmount = nullptr;
+    groupComponent6 = nullptr;
+    textButtonSnapCur = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -549,7 +565,7 @@ void PluginGui::paint (Graphics& g)
         std::list<std::shared_ptr<manual_tune::tune_node> > list =
             _proc.get_manual_tune().get_tune(_time_left, _time_right);
 
-        
+
         g.setColour (juce::Colours::orange);
         g.setOpacity(0.5);
         for (auto i: list)
@@ -558,7 +574,7 @@ void PluginGui::paint (Graphics& g)
             float end_x = _time_to_x(i->time_end);
             float start_y = _pitch_to_y(i->pitch_start);
             float end_y = _pitch_to_y(i->pitch_end);
-            
+
             _draw_note_limit(start_x, start_y, end_x, end_y);
             g.drawLine(start_x, start_y, end_x, end_y, 12);
         }
@@ -911,6 +927,12 @@ void PluginGui::buttonClicked (Button* buttonThatWasClicked)
         //[UserButtonCode_textButtonClearNote] -- add your button handler code here..
         _proc.get_autotalent()->clear_note();
         //[/UserButtonCode_textButtonClearNote]
+    }
+    else if (buttonThatWasClicked == textButtonSnapCur.get())
+    {
+        //[UserButtonCode_textButtonSnapCur] -- add your button handler code here..
+        _proc.get_autotalent()->snap_to_inpitch();
+        //[/UserButtonCode_textButtonSnapCur]
     }
 
     //[UserbuttonClicked_Post]
@@ -1588,58 +1610,58 @@ void PluginGui::_draw_note_limit(float& start_x, float& start_y, float& end_x, f
     float y0 = start_y;
     float x1 = end_x;
     float y1 = end_y;
-    
+
     if (x0 < _draw_x)
     {
         x0 = _draw_x;
         y0 = start_y + (end_y - start_y) / (end_x - start_x) * (x0 - start_x);
     }
-    
+
     if (x0 >= _draw_x + _draw_w)
     {
         x0 = _draw_x + _draw_w - 1;
         y0 = start_y + (end_y - start_y) / (end_x - start_x) * (x0 - start_x);
     }
-    
+
     if (x1 < _draw_x)
     {
         x1 = _draw_x;
         y1 = start_y + (end_y - start_y) / (end_x - start_x) * (x1 - start_x);
     }
-    
+
     if (x1 >= _draw_x + _draw_w)
     {
         x1 = _draw_x + _draw_w - 1;
         y1 = start_y + (end_y - start_y) / (end_x - start_x) * (x1 - start_x);
     }
-    
-    
-    
+
+
+
     if (y0 < _draw_y)
     {
         y0 = _draw_y;
         x0 = (end_x - start_x) * (y0 - start_y) / (end_y - start_y) + start_x;
     }
-    
+
     if (y0 >= _draw_y + _draw_h)
     {
         y0 = _draw_y + _draw_h - 1;
         x0 = (end_x - start_x) * (y0 - start_y) / (end_y - start_y) + start_x;
     }
-    
-    
+
+
     if (y1 < _draw_y)
     {
         y1 = _draw_y;
         x1 = (end_x - start_x) * (y1 - start_y) / (end_y - start_y) + start_x;
     }
-    
+
     if (y1 >= _draw_y + _draw_h)
     {
         y1 = _draw_y + _draw_h - 1;
         x1 = (end_x - start_x) * (y1 - start_y) / (end_y - start_y) + start_x;
     }
-    
+
     start_x = x0;
     start_y = y0;
     end_x = x1;
@@ -1827,6 +1849,11 @@ BEGIN_JUCER_METADATA
           max="1.0" int="0.01" style="LinearBar" textBoxPos="TextBoxAbove"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1.0"
           needsCallback="1"/>
+  <GROUPCOMPONENT name="new group" id="2efd593a5cb91513" memberName="groupComponent6"
+                  virtualName="" explicitFocusOrder="0" pos="144 96 712 496" title="Notes"/>
+  <TEXTBUTTON name="new button" id="27f7687f35fd023c" memberName="textButtonSnapCur"
+              virtualName="" explicitFocusOrder="0" pos="576 24 72 24" bgColOff="a45c94"
+              buttonText="SnapCur" connectedEdges="0" needsCallback="1" radioGroupId="0"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

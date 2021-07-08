@@ -44,8 +44,8 @@
     </VirtualDirectory>
   </VirtualDirectory>
   <VirtualDirectory Name="mx_tune">
+    <File Name="mx_tune_lv2.cpp"/>
     <File Name="mx_tune.ttl"/>
-    <File Name="mx_une_lv2.cpp"/>
     <File Name="mx_tune.cpp"/>
     <File Name="mx_tune.h"/>
     <File Name="manual_tune.h"/>

@@ -309,6 +309,15 @@ void manual_tune::snap_key(auto_tune *tune)
     }
 }
 
+void manual_tune::snap_to_inpitch()
+{
+    for (std::int32_t i = 0; i < _len; i++)
+    {
+        _outpitch[i].pitch = _inpitch[i].pitch;
+        _outpitch[i].conf = _inpitch[i].conf;
+    }
+}
+    
 std::uint32_t manual_tune::_time2idx(float time)
 {
     if (time < 0.)

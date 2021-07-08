@@ -10,7 +10,7 @@
 class mx_tune
 {
 public:
-    mx_tune(unsigned int sample_rate);
+    mx_tune(std::uint32_t sample_rate);
     ~mx_tune();
     
 public:
@@ -23,7 +23,7 @@ public:
     void set_at_smooth(float smooth);
     void set_at_amount(float amount);
     void set_at_scwarp(int scwarp);
-    float get_latency() { return _buffer.get_buf_size() - 1; }
+    float get_latency() { return _shifter.get_latency(); }
     float get_inpitch() { return _inpitch; }
     float get_conf() { return _conf; }
     float get_conf_thresh() { return _conf_thresh; }
@@ -34,8 +34,10 @@ public:
     void clear_note();
     void clear_pitch();
     void snap_key();
+    void snap_to_inpitch();
     
-    void run(float *in, float *out, int n, float timestamp  = 0.0);
+    
+    void run(float *in, float *out, std::int32_t n, float timestamp  = 0.0);
     
 private:
     auto_tune _tune;
@@ -43,9 +45,9 @@ private:
     
     pitch_detector _detector;
     pitch_shifter _shifter;
-    ring_buffer _buffer;
-    unsigned int _sample_rate;
-    unsigned int _noverlap;
+    
+    std::uint32_t _sample_rate;
+    std::uint32_t _noverlap;
     float _inpitch;
     float _conf;
     float _conf_thresh;

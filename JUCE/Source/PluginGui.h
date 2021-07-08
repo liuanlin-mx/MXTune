@@ -189,6 +189,8 @@ private:
     std::unique_ptr<Slider> sliderATSmooth;
     std::unique_ptr<Label> label8;
     std::unique_ptr<Slider> sliderATAmount;
+    std::unique_ptr<GroupComponent> groupComponent6;
+    std::unique_ptr<TextButton> textButtonSnapCur;
 
 
     //==============================================================================

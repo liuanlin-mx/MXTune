@@ -77,6 +77,7 @@ public:
     void clear_note();
     
     void snap_key(auto_tune *tune);
+    void snap_to_inpitch();
     
     void set_vthresh(float thresh) { _conf_thresh = thresh; }
 private:

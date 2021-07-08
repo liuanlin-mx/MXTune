@@ -6,10 +6,11 @@
 #define PI (float)3.14159265358979323846
 
 pitch_shifter::pitch_shifter(unsigned int sample_rate)
-    :_buffer(sample_rate)
+    : _o_buffer(sample_rate)
+    , _i_buffer(sample_rate)
 {
     _test_idx = 0;
-    unsigned int buf_size = _buffer.get_buf_size();
+    unsigned int buf_size = _o_buffer.get_buf_size();
     _aref = 440;
     _sample_rate = sample_rate;
     
@@ -49,7 +50,15 @@ void pitch_shifter::update_shifter_variables(float inpitch, float outpitch)
     //printf("inpitch:%f outpitch:%f phincfact:%f\n", inpitch, outpitch, _phincfact);
 }
 
-float pitch_shifter::shifter(ring_buffer& ibuffer)
+
+float pitch_shifter::shifter(float in)
+{
+    _i_buffer.put(in);
+    return _shifter(_i_buffer);
+}
+
+    
+float pitch_shifter::_shifter(ring_buffer& ibuffer)
 {
     int n = ibuffer.get_buf_size();
     // *****************
@@ -83,7 +92,7 @@ float pitch_shifter::shifter(ring_buffer& ibuffer)
            
         _phaseout = _phaseout - 1;
         
-        int ti2 = _buffer.get_idx() + n / 2;
+        int ti2 = _o_buffer.get_idx() + n / 2;
         int ti3 = (long int)(((float)_fragsize) / _phincfact);
         if(ti3 >= n / 2)
         {
@@ -108,7 +117,7 @@ float pitch_shifter::shifter(ring_buffer& ibuffer)
             vald = vald + (float)0.5 * val1 * (indd - ind0) * (indd - ind2) * (indd - ind3);
             vald = vald - (float)0.5 * val2 * (indd - ind0) * (indd - ind1) * (indd - ind3);
             vald = vald + (float)0.166666666667 * val3 * (indd - ind0) * (indd - ind1) * (indd - ind2);
-            _buffer[(i + ti2 + n) % n] = _buffer[(i + ti2 + n) % n] + vald * tf;
+            _o_buffer[(i + ti2 + n) % n] = _o_buffer[(i + ti2 + n) % n] + vald * tf;
         }
         _fragsize = 0;
     }
@@ -116,9 +125,9 @@ float pitch_shifter::shifter(ring_buffer& ibuffer)
     _fragsize++;
 
     //   Get output signal from buffer
-    float tf = _buffer.current(); // read buffer
+    float tf = _o_buffer.current(); // read buffer
 
-    _buffer.put(0); // erase for next cycle
+    _o_buffer.put(0); // erase for next cycle
 
     // *********************
     // * END Pitch Shifter *

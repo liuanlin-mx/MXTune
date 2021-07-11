@@ -46,6 +46,7 @@ public:
         PARAMETER_ID_Gb,
         PARAMETER_ID_G,
         PARAMETER_ID_Ab,
+        PARAMETER_ID_DET_ALG,
         PARAMETER_ID_NUM,
     };
     
@@ -128,6 +129,7 @@ private:
     float _at_smooth = 0.7;
     bool _is_enable_at = false;
     bool _is_enable_track = true;
+    std::uint32_t _det_alg = 0;
     
     parameter_item _parameters[PARAMETER_ID_NUM] = {
         {"Snap", 1.0, true, 1.0, 0., 1., NULL},
@@ -155,6 +157,7 @@ private:
         {"Gb", 1., false, 1., 0., 1., NULL},
         {"G", 1., false, 1., 0., 1., NULL},
         {"Ab", 1., false, 1., 0., 1., NULL},
+        {"Detection algorithm ", 0., false, 10., 0., 1., NULL},
     };
     
     volatile std::uint32_t _parameter_update_id = 0;

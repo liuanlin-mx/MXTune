@@ -400,6 +400,29 @@ PluginGui::PluginGui (AutotalentAudioProcessor& p)
 
     textButtonSnapCur->setBounds (576, 24, 72, 24);
 
+    label9.reset (new Label ("Amount:",
+                             TRANS("Det Alg")));
+    addAndMakeVisible (label9.get());
+    label9->setFont (Font (15.00f, Font::plain).withTypefaceStyle ("Regular"));
+    label9->setJustificationType (Justification::centredLeft);
+    label9->setEditable (false, false, false);
+    label9->setColour (TextEditor::textColourId, Colours::black);
+    label9->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+
+    label9->setBounds (16, 536, 56, 24);
+
+    comboBoxDetAlg.reset (new ComboBox ("new combo box"));
+    addAndMakeVisible (comboBoxDetAlg.get());
+    comboBoxDetAlg->setEditableText (false);
+    comboBoxDetAlg->setJustificationType (Justification::centredLeft);
+    comboBoxDetAlg->setTextWhenNothingSelected (TRANS("talent"));
+    comboBoxDetAlg->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
+    comboBoxDetAlg->addItem (TRANS("talent"), 1);
+    comboBoxDetAlg->addItem (TRANS("yin fast"), 2);
+    comboBoxDetAlg->addListener (this);
+
+    comboBoxDetAlg->setBounds (88, 536, 40, 24);
+
 
     //[UserPreSize]
     //[/UserPreSize]
@@ -461,6 +484,8 @@ PluginGui::~PluginGui()
     sliderATAmount = nullptr;
     groupComponent6 = nullptr;
     textButtonSnapCur = nullptr;
+    label9 = nullptr;
+    comboBoxDetAlg = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -592,8 +617,8 @@ void PluginGui::paint (Graphics& g)
             float x = _time_to_x(time);
             float y = _pitch_to_y(node.pitch);
 
-            if ((x > _draw_x && x < _draw_x + _draw_w && y > _draw_y && y < _draw_y + _draw_h) &&
-                node.conf > _proc.get_autotalent()->get_conf_thresh())
+            if ((x > _draw_x && x < _draw_x + _draw_w && y > _draw_y && y < _draw_y + _draw_h)/* &&
+                node.conf > _proc.get_autotalent()->get_conf_thresh()*/)
             {
                 if (flag)
                 {
@@ -959,6 +984,13 @@ void PluginGui::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
         _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY_TYPE, _key_type);
         _update_notes();
         //[/UserComboBoxCode_comboBoxKeyType]
+    }
+    else if (comboBoxThatHasChanged == comboBoxDetAlg.get())
+    {
+        //[UserComboBoxCode_comboBoxDetAlg] -- add your combo box handling code here..
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_DET_ALG, comboBoxThatHasChanged->getSelectedId() - 1);
+        _proc.get_autotalent()->set_detector(comboBoxThatHasChanged->getSelectedId() - 1);
+        //[/UserComboBoxCode_comboBoxDetAlg]
     }
 
     //[UsercomboBoxChanged_Post]
@@ -1362,6 +1394,8 @@ void PluginGui::_update_gui_parameter()
         toggleButtonNoteAb->setToggleState((_notes[_key_Ab] > 0), dontSendNotification);
 
     }
+
+    comboBoxDetAlg->setSelectedId(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_DET_ALG) + 1, dontSendNotification);
 }
 
 float PluginGui::_snap_pitch(float pitch)
@@ -1854,6 +1888,15 @@ BEGIN_JUCER_METADATA
   <TEXTBUTTON name="new button" id="27f7687f35fd023c" memberName="textButtonSnapCur"
               virtualName="" explicitFocusOrder="0" pos="576 24 72 24" bgColOff="a45c94"
               buttonText="SnapCur" connectedEdges="0" needsCallback="1" radioGroupId="0"/>
+  <LABEL name="Amount:" id="654498e4880c91f0" memberName="label9" virtualName=""
+         explicitFocusOrder="0" pos="16 536 56 24" edTextCol="ff000000"
+         edBkgCol="0" labelText="Det Alg" editableSingleClick="0" editableDoubleClick="0"
+         focusDiscardsChanges="0" fontname="Default font" fontsize="15.0"
+         kerning="0.0" bold="0" italic="0" justification="33"/>
+  <COMBOBOX name="new combo box" id="af53d7a6d954cf19" memberName="comboBoxDetAlg"
+            virtualName="" explicitFocusOrder="0" pos="88 536 40 24" editable="0"
+            layout="33" items="talent&#10;yin fast" textWhenNonSelected="talent"
+            textWhenNoItems="(no choices)"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

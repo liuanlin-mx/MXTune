@@ -10,10 +10,18 @@
 class mx_tune
 {
 public:
+    enum
+    {
+        DETECTOR_TYPE_TALENT = 0,
+        DETECTOR_TYPE_YIN_FAST = 1,
+    };
+    
+public:
     mx_tune(std::uint32_t sample_rate);
     ~mx_tune();
     
 public:
+    void set_detector(std::uint32_t detector_type);
     void set_aref(float aref);
     void set_mix(float mix);
     void set_at_note(int notes[12]);
@@ -43,9 +51,11 @@ private:
     auto_tune _tune;
     manual_tune _m_tune;
     
-    pitch_detector _detector;
+    std::uint32_t _detector_type;
+    std::shared_ptr<pitch_detector> _detector;
     pitch_shifter _shifter;
     
+    float _aref;
     std::uint32_t _sample_rate;
     std::uint32_t _noverlap;
     float _inpitch;

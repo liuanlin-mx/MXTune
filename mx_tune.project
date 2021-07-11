@@ -44,6 +44,10 @@
     </VirtualDirectory>
   </VirtualDirectory>
   <VirtualDirectory Name="mx_tune">
+    <File Name="pitch_detector_aubio.h"/>
+    <File Name="pitch_detector_aubio.cpp"/>
+    <File Name="pitch_detector_talent.h"/>
+    <File Name="pitch_detector_talent.cpp"/>
     <File Name="mx_tune_lv2.cpp"/>
     <File Name="mx_tune.ttl"/>
     <File Name="mx_tune.cpp"/>
@@ -60,7 +64,6 @@
     <File Name="ring_buffer.h"/>
     <File Name="ring_buffer.cpp"/>
     <File Name="pitch_detector.h"/>
-    <File Name="pitch_detector.cpp"/>
     <File Name="manifest.ttl"/>
     <File Name="lv2.h"/>
   </VirtualDirectory>
@@ -175,6 +178,7 @@
         <Library Value="shlwapi"/>
         <Library Value="rpcrt4"/>
         <Library Value="opengl32"/>
+        <Library Value="aubio"/>
         <Library Value="fftw3f"/>
       </Linker>
       <ResourceCompiler Options="" Required="no"/>

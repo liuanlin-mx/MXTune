@@ -1,12 +1,13 @@
 #include <math.h>
 #include <string.h>
-#include "pitch_detector.h"
+#include "pitch_detector_talent.h"
 
 #define PI (float)3.14159265358979323846
 #define L2SC (float)3.32192809488736218171
 
-pitch_detector::pitch_detector(float sample_rate)
-    : _buffer(sample_rate)
+pitch_detector_talent::pitch_detector_talent(float sample_rate)
+    : pitch_detector()
+    , _buffer(sample_rate)
     , _noverlap(4)
 {
     _aref = 440;
@@ -87,7 +88,7 @@ pitch_detector::pitch_detector(float sample_rate)
 }
 
 
-pitch_detector::~pitch_detector()
+pitch_detector_talent::~pitch_detector_talent()
 {
     fftwf_destroy_plan(_forward_plan);
     fftwf_destroy_plan(_reverse_plan);
@@ -99,7 +100,7 @@ pitch_detector::~pitch_detector()
 }
 
 
-bool pitch_detector::get_period(float in, float& pitch, float& conf)
+bool pitch_detector_talent::get_period(float in, float& pitch, float& conf)
 {
     _buffer.put(in);
     if(_buffer.get_idx() % (_buffer.get_buf_size() / _noverlap) == 0)
@@ -110,7 +111,7 @@ bool pitch_detector::get_period(float in, float& pitch, float& conf)
     return false;
 }
 
-float pitch_detector::_get_period(ring_buffer& buffer, float& conf)
+float pitch_detector_talent::_get_period(ring_buffer& buffer, float& conf)
 {
     std::int32_t n = buffer.get_buf_size();
     // ---- Obtain autocovariance ----
@@ -208,7 +209,7 @@ float pitch_detector::_get_period(ring_buffer& buffer, float& conf)
     // Convert to semitones
     tf = (float)-12 * log10((float)_aref * period) * L2SC;
     
-    //if(conf >= _vthresh)
+    if(conf >= _vthresh)
     {
         _pitch = tf;
     }

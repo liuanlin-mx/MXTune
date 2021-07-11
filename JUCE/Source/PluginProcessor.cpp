@@ -50,6 +50,7 @@ AutotalentAudioProcessor::AutotalentAudioProcessor()
     _at_smooth = get_parameter(PARAMETER_ID_AT_SMOOTH);
     _is_enable_at = get_parameter(PARAMETER_ID_ENABLE_AUTOTUNE);
     _is_enable_track = get_parameter(PARAMETER_ID_ENABLE_TRACK);
+    _det_alg = get_parameter(PARAMETER_ID_DET_ALG);
 }
 
 AutotalentAudioProcessor::~AutotalentAudioProcessor()
@@ -139,6 +140,7 @@ void AutotalentAudioProcessor::prepareToPlay (double sampleRate, int samplesPerB
             _talent->set_at_smooth(_at_smooth);
             _talent->enable_auto_tune(_is_enable_at);
             _talent->enable_track(_is_enable_track);
+            _talent->set_detector(_det_alg);
         }
     }
 }
@@ -486,6 +488,14 @@ void AutotalentAudioProcessor::parameterValueChanged (int parameterIndex, float 
         if (_talent)
         {
             _talent->enable_track(_is_enable_track);
+        }
+    }
+    else if (parameterIndex == PARAMETER_ID_DET_ALG)
+    {
+        _det_alg = round(newValue * _parameters[parameterIndex].scale);
+        if (_talent)
+        {
+            _talent->set_detector(_det_alg);
         }
     }
     

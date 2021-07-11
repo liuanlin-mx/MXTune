@@ -1,8 +1,12 @@
 #include "mx_tune.h"
+#include "pitch_detector_talent.h"
+#include "pitch_detector_aubio.h"
 
 mx_tune::mx_tune(unsigned int sample_rate)
-    : _detector(sample_rate)
+    : _detector_type(DETECTOR_TYPE_YIN_FAST)
+    , _detector(new pitch_detector_aubio(sample_rate, "yinfast"))
     , _shifter(sample_rate)
+    , _aref(440)
     , _sample_rate(sample_rate)
     , _noverlap(4)
     , _inpitch(0)
@@ -11,7 +15,8 @@ mx_tune::mx_tune(unsigned int sample_rate)
     , _track(false)
     , _auto_tune(false)
 {
-    _detector.set_vthresh(_conf_thresh);
+    _detector->set_vthresh(_conf_thresh);
+    _detector->set_aref(_aref);
     _m_tune.set_vthresh(_conf_thresh);
 }
 
@@ -19,9 +24,33 @@ mx_tune::~mx_tune()
 {
 }
 
+void mx_tune::set_detector(std::uint32_t detector_type)
+{
+    if (detector_type == _detector_type)
+    {
+        return;
+    }
+    
+    if (detector_type == DETECTOR_TYPE_TALENT)
+    {
+        _detector.reset(new pitch_detector_talent(_sample_rate));
+        _detector->set_vthresh(_conf_thresh);
+        _detector->set_aref(_aref);
+        _detector_type = detector_type;
+    }
+    else if (detector_type == DETECTOR_TYPE_YIN_FAST)
+    {
+        _detector.reset(new pitch_detector_aubio(_sample_rate, "yinfast"));
+        _detector->set_vthresh(_conf_thresh);
+        _detector->set_aref(_aref);
+        _detector_type = detector_type;
+    }
+}
+
 void mx_tune::set_aref(float aref)
 {
-    _detector.set_aref(aref);
+    _aref = aref;
+    _detector->set_aref(aref);
     _shifter.set_aref(aref);
 }
 
@@ -93,18 +122,15 @@ void mx_tune::run(float* in, float *out, std::int32_t n, float timestamp)
         float inpitch;
         float conf;
         
-        if (_detector.get_period(in[i], inpitch, conf))
+        if (_detector->get_period(in[i], inpitch, conf))
         {
             float time_end = timestamp + (float)i / (float)_sample_rate;
-            float time_begin = time_end - _detector.get_time();
+            float time_begin = time_end - _detector->get_time();
             float outpitch = inpitch;
-            _inpitch = inpitch;
-            _conf = conf;
-            
             if (_track)
             {
                 manual_tune::pitch_node node;
-                node.conf = _conf;
+                node.conf = conf;
                 node.pitch = inpitch;
                 _m_tune.set_inpitch(time_begin, time_end, node);
                 
@@ -112,8 +138,11 @@ void mx_tune::run(float* in, float *out, std::int32_t n, float timestamp)
                 //_m_tune.set_outpitch(time_begin, time_end, node);
             }
             
-            if (_conf >= _conf_thresh)
+            if (conf >= _conf_thresh)
             {
+                _inpitch = inpitch;
+                _conf = conf;
+            
                 if (_auto_tune)
                 {
                     outpitch = _tune.tune(inpitch);

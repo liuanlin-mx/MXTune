@@ -122,7 +122,7 @@ void mx_tune::run(float* in, float *out, std::int32_t n, float timestamp)
         float inpitch;
         float conf;
         
-        if (_detector->get_period(in[i], inpitch, conf))
+        if (_detector->get_pitch(in[i], inpitch, conf))
         {
             float time_end = timestamp + (float)i / (float)_sample_rate;
             float time_begin = time_end - _detector->get_time();

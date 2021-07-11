@@ -14,7 +14,7 @@ public:
 public:
     void set_vthresh(float vthresh) { _vthresh = vthresh; }
     void set_aref(float aref) { _aref = aref; }
-    bool get_period(float in, float& pitch, float& conf);
+    bool get_pitch(float in, float& pitch, float& conf);
     float get_time() { return (float)_hop_s * 2 / _sample_rate; }
     
 private:

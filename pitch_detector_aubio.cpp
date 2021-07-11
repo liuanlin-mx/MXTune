@@ -30,7 +30,7 @@ pitch_detector_aubio::~pitch_detector_aubio()
 }
 
 
-bool pitch_detector_aubio::get_period(float in, float& pitch, float& conf)
+bool pitch_detector_aubio::get_pitch(float in, float& pitch, float& conf)
 {
     fvec_set_sample(_input, in, _ilen);
     if (++_ilen >= _hop_s)

@@ -100,7 +100,7 @@ pitch_detector_talent::~pitch_detector_talent()
 }
 
 
-bool pitch_detector_talent::get_period(float in, float& pitch, float& conf)
+bool pitch_detector_talent::get_pitch(float in, float& pitch, float& conf)
 {
     _buffer.put(in);
     if(_buffer.get_idx() % (_buffer.get_buf_size() / _noverlap) == 0)

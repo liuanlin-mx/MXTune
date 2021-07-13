@@ -618,7 +618,7 @@ void PluginGui::paint (Graphics& g)
             float y = _pitch_to_y(node.pitch);
 
             if ((x > _draw_x && x < _draw_x + _draw_w && y > _draw_y && y < _draw_y + _draw_h) &&
-                node.conf > _proc.get_autotalent()->get_conf_thresh())
+                node.conf > _proc.get_mt_tune()->get_conf_thresh())
             {
                 if (flag)
                 {
@@ -655,7 +655,7 @@ void PluginGui::paint (Graphics& g)
             float y = _pitch_to_y(node.pitch);
 
             if ((x > _draw_x && x < _draw_x + _draw_w && y > _draw_y && y < _draw_y + _draw_h) &&
-                node.conf > _proc.get_autotalent()->get_conf_thresh())
+                node.conf > _proc.get_mt_tune()->get_conf_thresh())
             {
                 if (flag)
                 {
@@ -932,13 +932,13 @@ void PluginGui::buttonClicked (Button* buttonThatWasClicked)
     else if (buttonThatWasClicked == textButtonSnapKey.get())
     {
         //[UserButtonCode_textButtonSnapKey] -- add your button handler code here..
-        _proc.get_autotalent()->snap_key();
+        _proc.get_mt_tune()->snap_key();
         //[/UserButtonCode_textButtonSnapKey]
     }
     else if (buttonThatWasClicked == textButtonClearPitch.get())
     {
         //[UserButtonCode_textButtonClearPitch] -- add your button handler code here..
-        _proc.get_autotalent()->clear_pitch();
+        _proc.get_mt_tune()->clear_pitch();
         //[/UserButtonCode_textButtonClearPitch]
     }
     else if (buttonThatWasClicked == toggleButtonSnap.get())
@@ -950,13 +950,13 @@ void PluginGui::buttonClicked (Button* buttonThatWasClicked)
     else if (buttonThatWasClicked == textButtonClearNote.get())
     {
         //[UserButtonCode_textButtonClearNote] -- add your button handler code here..
-        _proc.get_autotalent()->clear_note();
+        _proc.get_mt_tune()->clear_note();
         //[/UserButtonCode_textButtonClearNote]
     }
     else if (buttonThatWasClicked == textButtonSnapCur.get())
     {
         //[UserButtonCode_textButtonSnapCur] -- add your button handler code here..
-        _proc.get_autotalent()->snap_to_inpitch();
+        _proc.get_mt_tune()->snap_to_inpitch();
         //[/UserButtonCode_textButtonSnapCur]
     }
 
@@ -989,7 +989,7 @@ void PluginGui::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
     {
         //[UserComboBoxCode_comboBoxDetAlg] -- add your combo box handling code here..
         _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_DET_ALG, comboBoxThatHasChanged->getSelectedId() - 1);
-        _proc.get_autotalent()->set_detector(comboBoxThatHasChanged->getSelectedId() - 1);
+        _proc.get_mt_tune()->set_detector(comboBoxThatHasChanged->getSelectedId() - 1);
         //[/UserComboBoxCode_comboBoxDetAlg]
     }
 

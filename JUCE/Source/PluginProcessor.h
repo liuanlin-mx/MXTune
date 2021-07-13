@@ -103,8 +103,8 @@ public:
     void parameterGestureChanged (int parameterIndex, bool gestureIsStarting) override;
     
 public:
-    const std::shared_ptr<mx_tune>& get_autotalent() { return _talent; }
-    manual_tune& get_manual_tune() { return _talent->get_manual_tune(); }
+    const std::shared_ptr<mx_tune>& get_mt_tune() { return _mx_tune; }
+    manual_tune& get_manual_tune() { return _mx_tune->get_manual_tune(); }
     double get_cur_time() { return _cur_time; }
     bool is_playing() { return _is_playing; }
     
@@ -116,7 +116,7 @@ public:
     
 private:
     std::mutex _mtx;
-    std::shared_ptr<mx_tune> _talent = 0;
+    std::shared_ptr<mx_tune> _mx_tune = 0;
     double _cur_time = 0;
     bool _is_playing = false;
     

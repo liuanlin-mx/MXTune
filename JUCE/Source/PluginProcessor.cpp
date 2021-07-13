@@ -129,18 +129,18 @@ void AutotalentAudioProcessor::prepareToPlay (double sampleRate, int samplesPerB
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
     
-    if (_talent == nullptr)
+    if (_mx_tune == nullptr)
     {
-        _talent.reset(new mx_tune(sampleRate));
-        if (_talent)
+        _mx_tune.reset(new mx_tune(sampleRate));
+        if (_mx_tune)
         {
-            setLatencySamples(_talent->get_latency());
-            _talent->set_at_note(_notes);
-            _talent->set_at_amount(_at_amount);
-            _talent->set_at_smooth(_at_smooth);
-            _talent->enable_auto_tune(_is_enable_at);
-            _talent->enable_track(_is_enable_track);
-            _talent->set_detector(_det_alg);
+            setLatencySamples(_mx_tune->get_latency());
+            _mx_tune->set_at_note(_notes);
+            _mx_tune->set_at_amount(_at_amount);
+            _mx_tune->set_at_smooth(_at_smooth);
+            _mx_tune->enable_auto_tune(_is_enable_at);
+            _mx_tune->enable_track(_is_enable_track);
+            _mx_tune->set_detector(_det_alg);
         }
     }
 }
@@ -213,9 +213,9 @@ void AutotalentAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuf
     {
         auto* channel_data = buffer.getWritePointer (0);
         std::int32_t num_samples =  buffer.getNumSamples();
-        if (_talent)
+        if (_mx_tune)
         {
-            _talent->run(channel_data, channel_data, num_samples, _cur_time);
+            _mx_tune->run(channel_data, channel_data, num_samples, _cur_time);
         }
         
         for (int channel = 1; channel < totalNumInputChannels; ++channel)
@@ -244,7 +244,7 @@ void AutotalentAudioProcessor::getStateInformation (MemoryBlock& destData)
     // You could do that either as raw data, or use the XML or ValueTree classes
     // as intermediaries to make it easy to save and load complex data.
     
-    if (_talent == nullptr)
+    if (_mx_tune == nullptr)
     {
         return;
     }
@@ -252,13 +252,13 @@ void AutotalentAudioProcessor::getStateInformation (MemoryBlock& destData)
     ReferenceCountedObjectPtr<DynamicObject> root(new DynamicObject);
     
     float time_begin = 0;
-    float time_end = _talent->get_manual_tune().get_time_len();
+    float time_end = _mx_tune->get_manual_tune().get_time_len();
     Array<var> inpitch_arr;
     Array<var> outpitch_arr;
     Array<var> tune_arr;
     
     {
-        std::list<std::pair<manual_tune::pitch_node, float> > inpitch = _talent->get_manual_tune().get_inpitch(time_begin, time_end);
+        std::list<std::pair<manual_tune::pitch_node, float> > inpitch = _mx_tune->get_manual_tune().get_inpitch(time_begin, time_end);
         for (auto i: inpitch)
         {
             ReferenceCountedObjectPtr<DynamicObject> item(new DynamicObject);
@@ -270,7 +270,7 @@ void AutotalentAudioProcessor::getStateInformation (MemoryBlock& destData)
         root->setProperty("inpitch", inpitch_arr);
     }
     {
-        std::list<std::pair<manual_tune::pitch_node, float> > outpitch = _talent->get_manual_tune().get_outpitch(time_begin, time_end);
+        std::list<std::pair<manual_tune::pitch_node, float> > outpitch = _mx_tune->get_manual_tune().get_outpitch(time_begin, time_end);
         for (auto i: outpitch)
         {
             
@@ -284,7 +284,7 @@ void AutotalentAudioProcessor::getStateInformation (MemoryBlock& destData)
     }
     
     {
-        std::list<std::shared_ptr<manual_tune::tune_node> > tune = _talent->get_manual_tune().get_tune(time_begin, time_end);
+        std::list<std::shared_ptr<manual_tune::tune_node> > tune = _mx_tune->get_manual_tune().get_tune(time_begin, time_end);
         for (auto i: tune)
         {
             ReferenceCountedObjectPtr<DynamicObject> item(new DynamicObject);
@@ -308,7 +308,7 @@ void AutotalentAudioProcessor::setStateInformation (const void* data, int sizeIn
 {
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.
-    if (sizeInBytes < 1 || _talent == nullptr)
+    if (sizeInBytes < 1 || _mx_tune == nullptr)
     {
         return;
     }
@@ -362,7 +362,7 @@ void AutotalentAudioProcessor::setStateInformation (const void* data, int sizeIn
                     pitch.conf = inpitch[i]["conf"];
                     float time = inpitch[i]["time"];
                     
-                    _talent->get_manual_tune().set_inpitch(last_time, time, last_pitch);
+                    _mx_tune->get_manual_tune().set_inpitch(last_time, time, last_pitch);
                     last_pitch = pitch;
                     last_time = time;
                 }
@@ -399,7 +399,7 @@ void AutotalentAudioProcessor::setStateInformation (const void* data, int sizeIn
                     pitch.conf = outpitch[i]["conf"];
                     float time = outpitch[i]["time"];
                     
-                    _talent->get_manual_tune().set_outpitch(last_time, time, last_pitch);
+                    _mx_tune->get_manual_tune().set_outpitch(last_time, time, last_pitch);
                     last_pitch = pitch;
                     last_time = time;
                 }
@@ -437,7 +437,7 @@ void AutotalentAudioProcessor::setStateInformation (const void* data, int sizeIn
                     node->release = tune[i]["release"];
                     node->amount = tune[i]["amount"];
                     
-                    _talent->get_manual_tune().set_tune(node);
+                    _mx_tune->get_manual_tune().set_tune(node);
                 }
             }
         }
@@ -453,49 +453,49 @@ void AutotalentAudioProcessor::parameterValueChanged (int parameterIndex, float 
     if (parameterIndex >= PARAMETER_ID_A && parameterIndex <= PARAMETER_ID_Ab)
     {
         _notes[parameterIndex - PARAMETER_ID_A] = (newValue > 0)? 1: -1;
-        if (_talent)
+        if (_mx_tune)
         {
-            _talent->set_at_note(_notes);
+            _mx_tune->set_at_note(_notes);
         }
     }
     else if (parameterIndex == PARAMETER_ID_AT_AMOUNT)
     {
         _at_amount = newValue;
-        if (_talent)
+        if (_mx_tune)
         {
-            _talent->set_at_amount(newValue);
+            _mx_tune->set_at_amount(newValue);
         }
     }
     else if (parameterIndex == PARAMETER_ID_AT_SMOOTH)
     {
         _at_smooth = newValue;
-        if (_talent)
+        if (_mx_tune)
         {
-            _talent->set_at_smooth(newValue);
+            _mx_tune->set_at_smooth(newValue);
         }
     }
     else if (parameterIndex == PARAMETER_ID_ENABLE_AUTOTUNE)
     {
         _is_enable_at = newValue > 0.;
-        if (_talent)
+        if (_mx_tune)
         {
-            _talent->enable_auto_tune(_is_enable_at);
+            _mx_tune->enable_auto_tune(_is_enable_at);
         }
     }
     else if (parameterIndex == PARAMETER_ID_ENABLE_TRACK)
     {
         _is_enable_track = newValue > 0.;
-        if (_talent)
+        if (_mx_tune)
         {
-            _talent->enable_track(_is_enable_track);
+            _mx_tune->enable_track(_is_enable_track);
         }
     }
     else if (parameterIndex == PARAMETER_ID_DET_ALG)
     {
         _det_alg = round(newValue * _parameters[parameterIndex].scale);
-        if (_talent)
+        if (_mx_tune)
         {
-            _talent->set_detector(_det_alg);
+            _mx_tune->set_detector(_det_alg);
         }
     }
     

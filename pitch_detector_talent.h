@@ -12,10 +12,11 @@ public:
     ~pitch_detector_talent();
     
 public:
-    void set_vthresh(float vthresh) { _vthresh = vthresh; }
-    void set_aref(float aref) { _aref = aref; }
-    bool get_pitch(float in, float& pitch, float& conf);
-    float get_time() { return (_buffer.get_buf_size() / _noverlap) / _sample_rate; }
+    virtual void set_vthresh(float vthresh) { _vthresh = vthresh; }
+    virtual void set_gate(float db) {}
+    virtual void set_aref(float aref) { _aref = aref; }
+    virtual bool get_pitch(float in, float& pitch, float& conf);
+    virtual float get_time() { return (_buffer.get_buf_size() / _noverlap) / _sample_rate; }
     
 private:
     float _get_period(ring_buffer& buffer, float& conf);
@@ -24,6 +25,7 @@ private:
     float _aref;
     float _conf;
     float _vthresh;
+    float _gate;
     float _pitch;
     float _sample_rate;
     std::int32_t _buf_size;

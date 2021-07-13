@@ -617,8 +617,8 @@ void PluginGui::paint (Graphics& g)
             float x = _time_to_x(time);
             float y = _pitch_to_y(node.pitch);
 
-            if ((x > _draw_x && x < _draw_x + _draw_w && y > _draw_y && y < _draw_y + _draw_h)/* &&
-                node.conf > _proc.get_autotalent()->get_conf_thresh()*/)
+            if ((x > _draw_x && x < _draw_x + _draw_w && y > _draw_y && y < _draw_y + _draw_h) &&
+                node.conf > _proc.get_autotalent()->get_conf_thresh())
             {
                 if (flag)
                 {

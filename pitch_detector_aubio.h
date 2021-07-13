@@ -12,10 +12,11 @@ public:
     ~pitch_detector_aubio();
     
 public:
-    void set_vthresh(float vthresh) { _vthresh = vthresh; }
-    void set_aref(float aref) { _aref = aref; }
-    bool get_pitch(float in, float& pitch, float& conf);
-    float get_time() { return (float)_hop_s * 2 / _sample_rate; }
+    virtual void set_vthresh(float vthresh) { _vthresh = vthresh; }
+    virtual void set_gate(float db) {}
+    virtual void set_aref(float aref) { _aref = aref; }
+    virtual bool get_pitch(float in, float& pitch, float& conf);
+    virtual float get_time() { return (float)_hop_s * 2 / _sample_rate; }
     
 private:
     float _sample_rate;

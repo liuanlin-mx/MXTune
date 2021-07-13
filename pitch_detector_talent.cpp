@@ -13,13 +13,14 @@ pitch_detector_talent::pitch_detector_talent(float sample_rate)
     _aref = 440;
     _conf = 0;
     _vthresh = 0.7;
+    _gate = -50;
     _pitch = 0.;
     
     _buf_size = ring_buffer::get_size_from_rate(sample_rate);
     _corr_size = _buf_size / 2 + 1;
     _sample_rate = sample_rate;
-    _max_period = 1. / 70.;
-    _min_period = 1. / 700.;
+    _max_period = 1. / 80.;
+    _min_period = 1. / 800.;
     _max_idx = (unsigned long)(sample_rate * _max_period);
     _min_idx = (unsigned long)(sample_rate * _min_period);
     
@@ -113,6 +114,7 @@ bool pitch_detector_talent::get_pitch(float in, float& pitch, float& conf)
 
 float pitch_detector_talent::_get_period(ring_buffer& buffer, float& conf)
 {
+    float db = 0;
     std::int32_t n = buffer.get_buf_size();
     // ---- Obtain autocovariance ----
     
@@ -120,9 +122,13 @@ float pitch_detector_talent::_get_period(ring_buffer& buffer, float& conf)
     std::int32_t iwr = buffer.get_idx();
     for(std::int32_t i = 0; i < n; i++)
     {
-        _ffttime[i] = (float)(buffer[(iwr - i + n) % n] * _cbwindow[i]);
+        float v = buffer[(iwr - i + n) % n];
+        _ffttime[i] = (float)(v * _cbwindow[i]);
+        db = db + fabsf(v);
     }
-
+    
+    db = 20 * log10f(db / n);
+    
     // Calculate FFT
     fftwf_execute(_forward_plan);
     
@@ -209,7 +215,12 @@ float pitch_detector_talent::_get_period(ring_buffer& buffer, float& conf)
     // Convert to semitones
     tf = (float)-12 * log10((float)_aref * period) * L2SC;
     
-    if(conf >= _vthresh)
+    if (db < _gate)
+    {
+        conf = 0;
+    }
+    
+    //if(conf >= _vthresh)
     {
         _pitch = tf;
     }

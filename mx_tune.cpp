@@ -154,6 +154,10 @@ void mx_tune::run(float* in, float *out, std::int32_t n, float timestamp)
                     outpitch = node.pitch;
                 }
             }
+            /*else
+            {
+                inpitch = outpitch = -25;
+            }*/
             
             _shifter.update_shifter_variables(inpitch, outpitch);
         }

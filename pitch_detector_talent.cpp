@@ -13,7 +13,7 @@ pitch_detector_talent::pitch_detector_talent(float sample_rate)
     _aref = 440;
     _conf = 0;
     _vthresh = 0.7;
-    _gate = -50;
+    _gate = -60;
     _pitch = 0.;
     
     _buf_size = ring_buffer::get_size_from_rate(sample_rate);
@@ -106,13 +106,13 @@ bool pitch_detector_talent::get_pitch(float in, float& pitch, float& conf)
     _buffer.put(in);
     if(_buffer.get_idx() % (_buffer.get_buf_size() / _noverlap) == 0)
     {
-        pitch = _get_period(_buffer, conf);
+        pitch = _get_pitch(_buffer, conf);
         return true;
     }
     return false;
 }
 
-float pitch_detector_talent::_get_period(ring_buffer& buffer, float& conf)
+float pitch_detector_talent::_get_pitch(ring_buffer& buffer, float& conf)
 {
     float db = 0;
     std::int32_t n = buffer.get_buf_size();
@@ -220,7 +220,7 @@ float pitch_detector_talent::_get_period(ring_buffer& buffer, float& conf)
         conf = 0;
     }
     
-    //if(conf >= _vthresh)
+    if(conf >= _vthresh)
     {
         _pitch = tf;
     }

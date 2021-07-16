@@ -11,13 +11,14 @@ mx_tune::mx_tune(unsigned int sample_rate)
     , _noverlap(4)
     , _inpitch(0)
     , _conf(0.)
-    , _conf_thresh(0.9)
+    , _conf_detect_thresh(0.7)
+    , _conf_shift_thresh(0.9)
     , _track(false)
     , _auto_tune(false)
 {
-    _detector->set_vthresh(_conf_thresh);
+    _detector->set_vthresh(_conf_detect_thresh);
     _detector->set_aref(_aref);
-    _m_tune.set_vthresh(_conf_thresh);
+    _m_tune.set_vthresh(_conf_shift_thresh);
 }
 
 mx_tune::~mx_tune()
@@ -34,14 +35,21 @@ void mx_tune::set_detector(std::uint32_t detector_type)
     if (detector_type == DETECTOR_TYPE_TALENT)
     {
         _detector.reset(new pitch_detector_talent(_sample_rate));
-        _detector->set_vthresh(_conf_thresh);
+        _detector->set_vthresh(_conf_detect_thresh);
         _detector->set_aref(_aref);
         _detector_type = detector_type;
     }
     else if (detector_type == DETECTOR_TYPE_YIN_FAST)
     {
         _detector.reset(new pitch_detector_aubio(_sample_rate, "yinfast"));
-        _detector->set_vthresh(_conf_thresh);
+        _detector->set_vthresh(_conf_detect_thresh);
+        _detector->set_aref(_aref);
+        _detector_type = detector_type;
+    }
+    else if (detector_type == DETECTOR_TYPE_YIN)
+    {
+        _detector.reset(new pitch_detector_aubio(_sample_rate, "yin"));
+        _detector->set_vthresh(_conf_detect_thresh);
         _detector->set_aref(_aref);
         _detector_type = detector_type;
     }
@@ -138,7 +146,7 @@ void mx_tune::run(float* in, float *out, std::int32_t n, float timestamp)
                 //_m_tune.set_outpitch(time_begin, time_end, node);
             }
             
-            if (conf >= _conf_thresh)
+            if (conf >= _conf_shift_thresh)
             {
                 _inpitch = inpitch;
                 _conf = conf;
@@ -149,7 +157,7 @@ void mx_tune::run(float* in, float *out, std::int32_t n, float timestamp)
                 }
                 
                 manual_tune::pitch_node node = _m_tune.get_outpitch(time_begin);
-                if (node.conf >= _conf_thresh)
+                if (node.conf >= _conf_shift_thresh)
                 {
                     outpitch = node.pitch;
                 }

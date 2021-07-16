@@ -14,6 +14,7 @@ public:
     {
         DETECTOR_TYPE_TALENT = 0,
         DETECTOR_TYPE_YIN_FAST = 1,
+        DETECTOR_TYPE_YIN = 2,
     };
     
 public:
@@ -34,7 +35,7 @@ public:
     float get_latency() { return _shifter.get_latency(); }
     float get_inpitch() { return _inpitch; }
     float get_conf() { return _conf; }
-    float get_conf_thresh() { return _conf_thresh; }
+    float get_conf_shift_thresh() { return _conf_shift_thresh; }
     
     void enable_auto_tune(bool b) { _auto_tune = b; }
     manual_tune& get_manual_tune() { return _m_tune; }
@@ -60,7 +61,8 @@ private:
     std::uint32_t _noverlap;
     float _inpitch;
     float _conf;
-    float _conf_thresh;
+    float _conf_detect_thresh;
+    float _conf_shift_thresh;
     
     volatile bool _track;
     volatile bool _auto_tune;

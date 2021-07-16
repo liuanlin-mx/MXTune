@@ -247,6 +247,7 @@
         <Library Value="shlwapi"/>
         <Library Value="rpcrt4"/>
         <Library Value="opengl32"/>
+        <Library Value="aubio"/>
         <Library Value="fftw3f"/>
       </Linker>
       <ResourceCompiler Options="" Required="no"/>

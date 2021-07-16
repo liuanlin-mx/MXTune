@@ -18,7 +18,8 @@ pitch_detector_aubio::pitch_detector_aubio(float sample_rate, const char *method
     , _pitch_detector(new_aubio_pitch(method, _win_s, _hop_s, _sample_rate))
 {
     aubio_pitch_set_unit(_pitch_detector, "Hz");
-    aubio_pitch_set_silence(_pitch_detector, -200);
+    aubio_pitch_set_silence(_pitch_detector, -80);
+    aubio_pitch_set_tolerance(_pitch_detector, 0.8);
 }
 
 

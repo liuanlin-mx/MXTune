@@ -19,7 +19,7 @@ public:
     virtual float get_time() { return (_buffer.get_buf_size() / _noverlap) / _sample_rate; }
     
 private:
-    float _get_period(ring_buffer& buffer, float& conf);
+    float _get_pitch(ring_buffer& buffer, float& conf);
     
 private:
     float _aref;

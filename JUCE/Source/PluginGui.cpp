@@ -618,7 +618,7 @@ void PluginGui::paint (Graphics& g)
             float y = _pitch_to_y(node.pitch);
 
             if ((x > _draw_x && x < _draw_x + _draw_w && y > _draw_y && y < _draw_y + _draw_h) &&
-                node.conf > _proc.get_mt_tune()->get_conf_thresh())
+                node.conf > _proc.get_mt_tune()->get_conf_shift_thresh())
             {
                 if (flag)
                 {
@@ -655,7 +655,7 @@ void PluginGui::paint (Graphics& g)
             float y = _pitch_to_y(node.pitch);
 
             if ((x > _draw_x && x < _draw_x + _draw_w && y > _draw_y && y < _draw_y + _draw_h) &&
-                node.conf > _proc.get_mt_tune()->get_conf_thresh())
+                node.conf > _proc.get_mt_tune()->get_conf_shift_thresh())
             {
                 if (flag)
                 {

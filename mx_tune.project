@@ -60,7 +60,6 @@
     <File Name="net_log.h"/>
     <File Name="mat_helper.h"/>
     <File Name="pitch_shifter.h"/>
-    <File Name="pitch_shifter.cpp"/>
     <File Name="auto_tune.h"/>
     <File Name="auto_tune.cpp"/>
     <File Name="ring_buffer.h"/>

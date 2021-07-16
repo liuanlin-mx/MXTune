@@ -1,8 +1,9 @@
 #ifndef __PITCH_SHIFTER_TALENT_H__
 #define __PITCH_SHIFTER_TALENT_H__
+#include "pitch_shifter.h"
 #include "ring_buffer.h"
 
-class pitch_shifter_talent
+class pitch_shifter_talent: public pitch_shifter
 {
 public:
     pitch_shifter_talent(unsigned int sample_rate);

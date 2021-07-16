@@ -1,11 +1,13 @@
 #include "mx_tune.h"
 #include "pitch_detector_talent.h"
 #include "pitch_detector_aubio.h"
+#include "pitch_shifter_talent.h"
 
 mx_tune::mx_tune(unsigned int sample_rate)
     : _detector_type(DETECTOR_TYPE_YIN_FAST)
     , _detector(new pitch_detector_aubio(sample_rate, "yinfast"))
-    , _shifter(sample_rate)
+    , _shifter_type(SHIFTER_TYPE_SOUND_TOUCH)
+    , _shifter(new pitch_shifter_talent(sample_rate))
     , _aref(440)
     , _sample_rate(sample_rate)
     , _noverlap(4)
@@ -18,6 +20,7 @@ mx_tune::mx_tune(unsigned int sample_rate)
 {
     _detector->set_vthresh(_conf_detect_thresh);
     _detector->set_aref(_aref);
+    _shifter->set_aref(_aref);
     _m_tune.set_vthresh(_conf_shift_thresh);
 }
 
@@ -55,16 +58,37 @@ void mx_tune::set_detector(std::uint32_t detector_type)
     }
 }
 
+void mx_tune::set_shifter(std::uint32_t shifter_type)
+{
+    if (shifter_type == _shifter_type)
+    {
+        return;
+    }
+    
+    if (shifter_type == SHIFTER_TYPE_TALENT)
+    {
+        _shifter.reset(new pitch_shifter_talent(_sample_rate));
+        _shifter->set_aref(_aref);
+        _shifter_type = shifter_type;
+    }
+    else if (shifter_type == SHIFTER_TYPE_SOUND_TOUCH)
+    {
+        _shifter.reset(new pitch_shifter_talent(_sample_rate));
+        _shifter->set_aref(_aref);
+        _shifter_type = shifter_type;
+    }
+}
+
 void mx_tune::set_aref(float aref)
 {
     _aref = aref;
     _detector->set_aref(aref);
-    _shifter.set_aref(aref);
+    _shifter->set_aref(aref);
 }
 
 void mx_tune::set_mix(float mix)
 {
-    _shifter.set_mix(mix);
+    _shifter->set_mix(mix);
 }
 
 void mx_tune::set_at_note(int notes[12])
@@ -163,9 +187,9 @@ void mx_tune::run(float* in, float *out, std::int32_t n, float timestamp)
                 }
             }
             
-            _shifter.update_shifter_variables(inpitch, outpitch);
+            _shifter->update_shifter_variables(inpitch, outpitch);
         }
         
-        out[i] = _shifter.shifter(in[i]);
+        out[i] = _shifter->shifter(in[i]);
     }
 }

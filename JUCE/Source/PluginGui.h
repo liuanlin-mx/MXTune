@@ -193,6 +193,8 @@ private:
     std::unique_ptr<TextButton> textButtonSnapCur;
     std::unique_ptr<Label> label9;
     std::unique_ptr<ComboBox> comboBoxDetAlg;
+    std::unique_ptr<ComboBox> comboBoxSftAlg;
+    std::unique_ptr<Label> label10;
 
 
     //==============================================================================

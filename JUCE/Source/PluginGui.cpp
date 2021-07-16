@@ -229,7 +229,7 @@ PluginGui::PluginGui (AutotalentAudioProcessor& p)
     label->setColour (TextEditor::textColourId, Colours::black);
     label->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
-    label->setBounds (16, 440, 64, 24);
+    label->setBounds (16, 432, 64, 24);
 
     label2.reset (new Label ("Amount:",
                              TRANS("Amount:")));
@@ -240,7 +240,7 @@ PluginGui::PluginGui (AutotalentAudioProcessor& p)
     label2->setColour (TextEditor::textColourId, Colours::black);
     label2->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
-    label2->setBounds (16, 504, 56, 24);
+    label2->setBounds (16, 496, 56, 24);
 
     label3.reset (new Label ("Release(ms):",
                              TRANS("Release(ms):")));
@@ -251,7 +251,7 @@ PluginGui::PluginGui (AutotalentAudioProcessor& p)
     label3->setColour (TextEditor::textColourId, Colours::black);
     label3->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
-    label3->setBounds (16, 472, 72, 24);
+    label3->setBounds (16, 464, 72, 24);
 
     sliderRelease.reset (new Slider ("new slider"));
     addAndMakeVisible (sliderRelease.get());
@@ -326,7 +326,7 @@ PluginGui::PluginGui (AutotalentAudioProcessor& p)
     sliderDefAttack->setTextBoxStyle (Slider::TextBoxAbove, false, 80, 20);
     sliderDefAttack->addListener (this);
 
-    sliderDefAttack->setBounds (88, 440, 40, 24);
+    sliderDefAttack->setBounds (88, 432, 40, 24);
 
     sliderDefRelease.reset (new Slider ("new slider"));
     addAndMakeVisible (sliderDefRelease.get());
@@ -335,7 +335,7 @@ PluginGui::PluginGui (AutotalentAudioProcessor& p)
     sliderDefRelease->setTextBoxStyle (Slider::TextBoxAbove, false, 80, 20);
     sliderDefRelease->addListener (this);
 
-    sliderDefRelease->setBounds (88, 472, 40, 24);
+    sliderDefRelease->setBounds (88, 464, 40, 24);
 
     sliderDefAmount.reset (new Slider ("new slider"));
     addAndMakeVisible (sliderDefAmount.get());
@@ -344,7 +344,7 @@ PluginGui::PluginGui (AutotalentAudioProcessor& p)
     sliderDefAmount->setTextBoxStyle (Slider::TextBoxAbove, false, 80, 20);
     sliderDefAmount->addListener (this);
 
-    sliderDefAmount->setBounds (88, 504, 40, 24);
+    sliderDefAmount->setBounds (88, 496, 40, 24);
 
     label7.reset (new Label ("Smooth",
                              TRANS("Smooth:")));
@@ -401,7 +401,7 @@ PluginGui::PluginGui (AutotalentAudioProcessor& p)
     textButtonSnapCur->setBounds (576, 24, 72, 24);
 
     label9.reset (new Label ("Amount:",
-                             TRANS("Det Alg")));
+                             TRANS("Det Alg:")));
     addAndMakeVisible (label9.get());
     label9->setFont (Font (15.00f, Font::plain).withTypefaceStyle ("Regular"));
     label9->setJustificationType (Justification::centredLeft);
@@ -409,7 +409,7 @@ PluginGui::PluginGui (AutotalentAudioProcessor& p)
     label9->setColour (TextEditor::textColourId, Colours::black);
     label9->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
-    label9->setBounds (16, 536, 56, 24);
+    label9->setBounds (16, 528, 56, 24);
 
     comboBoxDetAlg.reset (new ComboBox ("new combo box"));
     addAndMakeVisible (comboBoxDetAlg.get());
@@ -418,10 +418,33 @@ PluginGui::PluginGui (AutotalentAudioProcessor& p)
     comboBoxDetAlg->setTextWhenNothingSelected (TRANS("talent"));
     comboBoxDetAlg->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
     comboBoxDetAlg->addItem (TRANS("talent"), 1);
-    comboBoxDetAlg->addItem (TRANS("yin fast"), 2);
+    comboBoxDetAlg->addItem (TRANS("aubio(yinfast)"), 2);
     comboBoxDetAlg->addListener (this);
 
-    comboBoxDetAlg->setBounds (88, 536, 40, 24);
+    comboBoxDetAlg->setBounds (88, 528, 40, 24);
+
+    comboBoxSftAlg.reset (new ComboBox ("new combo box"));
+    addAndMakeVisible (comboBoxSftAlg.get());
+    comboBoxSftAlg->setEditableText (false);
+    comboBoxSftAlg->setJustificationType (Justification::centredLeft);
+    comboBoxSftAlg->setTextWhenNothingSelected (TRANS("talent"));
+    comboBoxSftAlg->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
+    comboBoxSftAlg->addItem (TRANS("talent"), 1);
+    comboBoxSftAlg->addItem (TRANS("SoundTouch"), 2);
+    comboBoxSftAlg->addListener (this);
+
+    comboBoxSftAlg->setBounds (88, 560, 40, 24);
+
+    label10.reset (new Label ("Amount:",
+                              TRANS("Sft Alg:")));
+    addAndMakeVisible (label10.get());
+    label10->setFont (Font (15.00f, Font::plain).withTypefaceStyle ("Regular"));
+    label10->setJustificationType (Justification::centredLeft);
+    label10->setEditable (false, false, false);
+    label10->setColour (TextEditor::textColourId, Colours::black);
+    label10->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+
+    label10->setBounds (16, 560, 56, 24);
 
 
     //[UserPreSize]
@@ -486,6 +509,8 @@ PluginGui::~PluginGui()
     textButtonSnapCur = nullptr;
     label9 = nullptr;
     comboBoxDetAlg = nullptr;
+    comboBoxSftAlg = nullptr;
+    label10 = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -989,8 +1014,15 @@ void PluginGui::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
     {
         //[UserComboBoxCode_comboBoxDetAlg] -- add your combo box handling code here..
         _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_DET_ALG, comboBoxThatHasChanged->getSelectedId() - 1);
-        _proc.get_mt_tune()->set_detector(comboBoxThatHasChanged->getSelectedId() - 1);
+        //_proc.get_mt_tune()->set_detector(comboBoxThatHasChanged->getSelectedId() - 1);
         //[/UserComboBoxCode_comboBoxDetAlg]
+    }
+    else if (comboBoxThatHasChanged == comboBoxSftAlg.get())
+    {
+        //[UserComboBoxCode_comboBoxSftAlg] -- add your combo box handling code here..
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_SFT_ALG, comboBoxThatHasChanged->getSelectedId() - 1);
+        //_proc.get_mt_tune()->set_shifter(comboBoxThatHasChanged->getSelectedId() - 1);
+        //[/UserComboBoxCode_comboBoxSftAlg]
     }
 
     //[UsercomboBoxChanged_Post]
@@ -1396,6 +1428,7 @@ void PluginGui::_update_gui_parameter()
     }
 
     comboBoxDetAlg->setSelectedId(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_DET_ALG) + 1, dontSendNotification);
+    comboBoxSftAlg->setSelectedId(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_SFT_ALG) + 1, dontSendNotification);
 }
 
 float PluginGui::_snap_pitch(float pitch)
@@ -1803,17 +1836,17 @@ BEGIN_JUCER_METADATA
   <GROUPCOMPONENT name="Default" id="483f2306d19611c8" memberName="groupComponent3"
                   virtualName="" explicitFocusOrder="0" pos="8 408 136 184" title="Default"/>
   <LABEL name="Attack:" id="e883d57a541fe637" memberName="label" virtualName=""
-         explicitFocusOrder="0" pos="16 440 64 24" edTextCol="ff000000"
+         explicitFocusOrder="0" pos="16 432 64 24" edTextCol="ff000000"
          edBkgCol="0" labelText="Attack(ms):" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15.0" kerning="0.0" bold="0" italic="0" justification="33"/>
   <LABEL name="Amount:" id="361c2d19a3dbf532" memberName="label2" virtualName=""
-         explicitFocusOrder="0" pos="16 504 56 24" edTextCol="ff000000"
+         explicitFocusOrder="0" pos="16 496 56 24" edTextCol="ff000000"
          edBkgCol="0" labelText="Amount:" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="15.0"
          kerning="0.0" bold="0" italic="0" justification="33"/>
   <LABEL name="Release(ms):" id="d6092f1e63583025" memberName="label3"
-         virtualName="" explicitFocusOrder="0" pos="16 472 72 24" edTextCol="ff000000"
+         virtualName="" explicitFocusOrder="0" pos="16 464 72 24" edTextCol="ff000000"
          edBkgCol="0" labelText="Release(ms):" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15.0" kerning="0.0" bold="0" italic="0" justification="33"/>
@@ -1849,17 +1882,17 @@ BEGIN_JUCER_METADATA
               virtualName="" explicitFocusOrder="0" pos="768 64 80 24" bgColOff="a45c94"
               buttonText="ClearNote" connectedEdges="0" needsCallback="1" radioGroupId="0"/>
   <SLIDER name="new slider" id="ae703c6e9d7c2dc3" memberName="sliderDefAttack"
-          virtualName="" explicitFocusOrder="0" pos="88 440 40 24" min="0.0"
+          virtualName="" explicitFocusOrder="0" pos="88 432 40 24" min="0.0"
           max="200.0" int="1.0" style="LinearBar" textBoxPos="TextBoxAbove"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1.0"
           needsCallback="1"/>
   <SLIDER name="new slider" id="ba68a3c568152232" memberName="sliderDefRelease"
-          virtualName="" explicitFocusOrder="0" pos="88 472 40 24" min="0.0"
+          virtualName="" explicitFocusOrder="0" pos="88 464 40 24" min="0.0"
           max="200.0" int="1.0" style="LinearBar" textBoxPos="TextBoxAbove"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1.0"
           needsCallback="1"/>
   <SLIDER name="new slider" id="d182ff421d4b9953" memberName="sliderDefAmount"
-          virtualName="" explicitFocusOrder="0" pos="88 504 40 24" min="0.0"
+          virtualName="" explicitFocusOrder="0" pos="88 496 40 24" min="0.0"
           max="1.0" int="0.01" style="LinearBar" textBoxPos="TextBoxAbove"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1.0"
           needsCallback="1"/>
@@ -1889,14 +1922,23 @@ BEGIN_JUCER_METADATA
               virtualName="" explicitFocusOrder="0" pos="576 24 72 24" bgColOff="a45c94"
               buttonText="SnapCur" connectedEdges="0" needsCallback="1" radioGroupId="0"/>
   <LABEL name="Amount:" id="654498e4880c91f0" memberName="label9" virtualName=""
-         explicitFocusOrder="0" pos="16 536 56 24" edTextCol="ff000000"
-         edBkgCol="0" labelText="Det Alg" editableSingleClick="0" editableDoubleClick="0"
+         explicitFocusOrder="0" pos="16 528 56 24" edTextCol="ff000000"
+         edBkgCol="0" labelText="Det Alg:" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="15.0"
          kerning="0.0" bold="0" italic="0" justification="33"/>
   <COMBOBOX name="new combo box" id="af53d7a6d954cf19" memberName="comboBoxDetAlg"
-            virtualName="" explicitFocusOrder="0" pos="88 536 40 24" editable="0"
-            layout="33" items="talent&#10;yin fast" textWhenNonSelected="talent"
+            virtualName="" explicitFocusOrder="0" pos="88 528 40 24" editable="0"
+            layout="33" items="talent&#10;aubio(yinfast)" textWhenNonSelected="talent"
             textWhenNoItems="(no choices)"/>
+  <COMBOBOX name="new combo box" id="e80a04b02ed7c598" memberName="comboBoxSftAlg"
+            virtualName="" explicitFocusOrder="0" pos="88 560 40 24" editable="0"
+            layout="33" items="talent&#10;SoundTouch" textWhenNonSelected="talent"
+            textWhenNoItems="(no choices)"/>
+  <LABEL name="Amount:" id="8377d5581a9249ca" memberName="label10" virtualName=""
+         explicitFocusOrder="0" pos="16 560 56 24" edTextCol="ff000000"
+         edBkgCol="0" labelText="Sft Alg:" editableSingleClick="0" editableDoubleClick="0"
+         focusDiscardsChanges="0" fontname="Default font" fontsize="15.0"
+         kerning="0.0" bold="0" italic="0" justification="33"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

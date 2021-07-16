@@ -141,6 +141,7 @@ void AutotalentAudioProcessor::prepareToPlay (double sampleRate, int samplesPerB
             _mx_tune->enable_auto_tune(_is_enable_at);
             _mx_tune->enable_track(_is_enable_track);
             _mx_tune->set_detector(_det_alg);
+            _mx_tune->set_shifter(_sft_alg);
         }
     }
 }
@@ -496,6 +497,14 @@ void AutotalentAudioProcessor::parameterValueChanged (int parameterIndex, float 
         if (_mx_tune)
         {
             _mx_tune->set_detector(_det_alg);
+        }
+    }
+    else if (parameterIndex == PARAMETER_ID_SFT_ALG)
+    {
+        _sft_alg = round(newValue * _parameters[parameterIndex].scale);
+        if (_mx_tune)
+        {
+            _mx_tune->set_shifter(_sft_alg);
         }
     }
     

@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include <malloc.h>
 #include <math.h>
-#include "pitch_shifter.h"
+#include "pitch_shifter_talent.h"
 
 #define PI (float)3.14159265358979323846
 
-pitch_shifter::pitch_shifter(unsigned int sample_rate)
+pitch_shifter_talent::pitch_shifter_talent(unsigned int sample_rate)
     : _o_buffer(sample_rate)
     , _i_buffer(sample_rate)
 {
@@ -33,13 +33,13 @@ pitch_shifter::pitch_shifter(unsigned int sample_rate)
     _mix = 1.0;
 }
 
-pitch_shifter::~pitch_shifter()
+pitch_shifter_talent::~pitch_shifter_talent()
 {
     free(_frag);
     free(_hann_window);
 }
 
-void pitch_shifter::update_shifter_variables(float inpitch, float outpitch)
+void pitch_shifter_talent::update_shifter_variables(float inpitch, float outpitch)
 {
     
     // Compute variables for pitch shifter that depend on pitch
@@ -51,14 +51,14 @@ void pitch_shifter::update_shifter_variables(float inpitch, float outpitch)
 }
 
 
-float pitch_shifter::shifter(float in)
+float pitch_shifter_talent::shifter(float in)
 {
     _i_buffer.put(in);
     return _shifter(_i_buffer);
 }
 
     
-float pitch_shifter::_shifter(ring_buffer& ibuffer)
+float pitch_shifter_talent::_shifter(ring_buffer& ibuffer)
 {
     int n = ibuffer.get_buf_size();
     // *****************

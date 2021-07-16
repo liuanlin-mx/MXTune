@@ -44,6 +44,8 @@
     </VirtualDirectory>
   </VirtualDirectory>
   <VirtualDirectory Name="mx_tune">
+    <File Name="pitch_shifter_talent.h"/>
+    <File Name="pitch_shifter_talent.cpp"/>
     <File Name="pitch_detector_aubio.h"/>
     <File Name="pitch_detector_aubio.cpp"/>
     <File Name="pitch_detector_talent.h"/>

@@ -1,12 +1,12 @@
-#ifndef __PITCH_SHIFTER_H__
-#define __PITCH_SHIFTER_H__
+#ifndef __PITCH_SHIFTER_TALENT_H__
+#define __PITCH_SHIFTER_TALENT_H__
 #include "ring_buffer.h"
 
-class pitch_shifter
+class pitch_shifter_talent
 {
 public:
-    pitch_shifter(unsigned int sample_rate);
-    ~pitch_shifter();
+    pitch_shifter_talent(unsigned int sample_rate);
+    ~pitch_shifter_talent();
     
 public:
     void update_shifter_variables(float inpitch, float outpitch);

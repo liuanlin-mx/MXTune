@@ -142,7 +142,7 @@ private:
         {"Auto Tune Amount", 0.6, false, 1., 0., 1., NULL},
         {"Auto Tune Smooth", 0.7, false, 1., 0., 1., NULL},
         
-        {"Enable AutoTune", 1, true, 1., 0., 1., NULL},
+        {"Enable AutoTune", 0, true, 1., 0., 1., NULL},
         {"Enable Track", 0, false, 1., 0., 1., NULL},
         
         {"Key", 3., false, 100., 0., 12, NULL},

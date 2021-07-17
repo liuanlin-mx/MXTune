@@ -15,8 +15,8 @@ pitch_shifter_st::pitch_shifter_st(unsigned int sample_rate)
     
     _st.setPitchSemiTones(0.);
     
-    _st.setSetting(SETTING_USE_QUICKSEEK, 1);
-    _st.setSetting(SETTING_USE_AA_FILTER, 0);
+    _st.setSetting(SETTING_USE_QUICKSEEK, 0);
+    _st.setSetting(SETTING_USE_AA_FILTER, 1);
     
     _st.setSetting(SETTING_SEQUENCE_MS, 40);
     _st.setSetting(SETTING_SEEKWINDOW_MS, 15);

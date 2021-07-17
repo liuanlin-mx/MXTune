@@ -51,6 +51,7 @@ AutotalentAudioProcessor::AutotalentAudioProcessor()
     _is_enable_at = get_parameter(PARAMETER_ID_ENABLE_AUTOTUNE);
     _is_enable_track = get_parameter(PARAMETER_ID_ENABLE_TRACK);
     _det_alg = get_parameter(PARAMETER_ID_DET_ALG);
+    _sft_alg = get_parameter(PARAMETER_ID_SFT_ALG);
 }
 
 AutotalentAudioProcessor::~AutotalentAudioProcessor()
@@ -134,7 +135,6 @@ void AutotalentAudioProcessor::prepareToPlay (double sampleRate, int samplesPerB
         _mx_tune.reset(new mx_tune(sampleRate));
         if (_mx_tune)
         {
-            setLatencySamples(_mx_tune->get_latency());
             _mx_tune->set_at_note(_notes);
             _mx_tune->set_at_amount(_at_amount);
             _mx_tune->set_at_smooth(_at_smooth);
@@ -142,6 +142,7 @@ void AutotalentAudioProcessor::prepareToPlay (double sampleRate, int samplesPerB
             _mx_tune->enable_track(_is_enable_track);
             _mx_tune->set_detector(_det_alg);
             _mx_tune->set_shifter(_sft_alg);
+            setLatencySamples(_mx_tune->get_latency());
         }
     }
 }
@@ -505,6 +506,7 @@ void AutotalentAudioProcessor::parameterValueChanged (int parameterIndex, float 
         if (_mx_tune)
         {
             _mx_tune->set_shifter(_sft_alg);
+            setLatencySamples(_mx_tune->get_latency());
         }
     }
     

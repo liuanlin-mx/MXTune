@@ -160,8 +160,8 @@ private:
         {"Gb", 1., false, 1., 0., 1., NULL},
         {"G", 1., false, 1., 0., 1., NULL},
         {"Ab", 1., false, 1., 0., 1., NULL},
-        {"Detection algorithm ", 0., false, 10., 0., 1., NULL},
-        {"shifter algorithm ", 0., false, 10., 0., 1., NULL},
+        {"Detection algorithm ", 1., false, 10., 0., 1., NULL},
+        {"shifter algorithm ", 1., false, 10., 0., 1., NULL},
     };
     
     volatile std::uint32_t _parameter_update_id = 0;

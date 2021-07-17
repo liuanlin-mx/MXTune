@@ -417,7 +417,7 @@ PluginGui::PluginGui (AutotalentAudioProcessor& p)
     comboBoxDetAlg->setJustificationType (Justification::centredLeft);
     comboBoxDetAlg->setTextWhenNothingSelected (TRANS("talent"));
     comboBoxDetAlg->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
-    comboBoxDetAlg->addItem (TRANS("talent"), 1);
+    comboBoxDetAlg->addItem (TRANS("autotalent"), 1);
     comboBoxDetAlg->addItem (TRANS("aubio(yinfast)"), 2);
     comboBoxDetAlg->addListener (this);
 
@@ -429,7 +429,7 @@ PluginGui::PluginGui (AutotalentAudioProcessor& p)
     comboBoxSftAlg->setJustificationType (Justification::centredLeft);
     comboBoxSftAlg->setTextWhenNothingSelected (TRANS("talent"));
     comboBoxSftAlg->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
-    comboBoxSftAlg->addItem (TRANS("talent"), 1);
+    comboBoxSftAlg->addItem (TRANS("autotalent"), 1);
     comboBoxSftAlg->addItem (TRANS("SoundTouch"), 2);
     comboBoxSftAlg->addListener (this);
 
@@ -1929,11 +1929,11 @@ BEGIN_JUCER_METADATA
          kerning="0.0" bold="0" italic="0" justification="33"/>
   <COMBOBOX name="new combo box" id="af53d7a6d954cf19" memberName="comboBoxDetAlg"
             virtualName="" explicitFocusOrder="0" pos="88 528 40 24" editable="0"
-            layout="33" items="talent&#10;aubio(yinfast)" textWhenNonSelected="talent"
+            layout="33" items="autotalent&#10;aubio(yinfast)" textWhenNonSelected="talent"
             textWhenNoItems="(no choices)"/>
   <COMBOBOX name="new combo box" id="e80a04b02ed7c598" memberName="comboBoxSftAlg"
             virtualName="" explicitFocusOrder="0" pos="88 560 40 24" editable="0"
-            layout="33" items="talent&#10;SoundTouch" textWhenNonSelected="talent"
+            layout="33" items="autotalent&#10;SoundTouch" textWhenNonSelected="talent"
             textWhenNoItems="(no choices)"/>
   <LABEL name="Amount:" id="8377d5581a9249ca" memberName="label10" virtualName=""
          explicitFocusOrder="0" pos="16 560 56 24" edTextCol="ff000000"

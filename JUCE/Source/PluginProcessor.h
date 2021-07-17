@@ -133,6 +133,7 @@ private:
     std::uint32_t _det_alg = 0;
     std::uint32_t _sft_alg = 0;
     
+    /* name def is_boolean scale min max parameter */
     parameter_item _parameters[PARAMETER_ID_NUM] = {
         {"Snap", 1.0, true, 1.0, 0., 1., NULL},
         {"Default Attack", 0.050, false, 1., 0., 0.5, NULL},

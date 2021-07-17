@@ -2,6 +2,7 @@
 #include "pitch_detector_talent.h"
 #include "pitch_detector_aubio.h"
 #include "pitch_shifter_talent.h"
+#include "pitch_shifter_st.h"
 
 mx_tune::mx_tune(unsigned int sample_rate)
     : _detector_type(DETECTOR_TYPE_YIN_FAST)
@@ -73,7 +74,7 @@ void mx_tune::set_shifter(std::uint32_t shifter_type)
     }
     else if (shifter_type == SHIFTER_TYPE_SOUND_TOUCH)
     {
-        _shifter.reset(new pitch_shifter_talent(_sample_rate));
+        _shifter.reset(new pitch_shifter_st(_sample_rate));
         _shifter->set_aref(_aref);
         _shifter_type = shifter_type;
     }

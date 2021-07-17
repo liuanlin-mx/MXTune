@@ -1382,7 +1382,8 @@ void PluginGui::_update_gui_parameter()
 
     _parameter_update_id = _proc.get_parameters_update_id();
 
-    toggleButtonSnap->setToggleState (_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_SNAP) > 0., dontSendNotification);
+    toggleButtonAutoTune->setToggleState(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_ENABLE_AUTOTUNE) > 0., dontSendNotification);
+    toggleButtonSnap->setToggleState(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_SNAP) > 0., dontSendNotification);
     toggleButtonTrack->setToggleState(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_ENABLE_TRACK) > 0., dontSendNotification);
     sliderDefAttack->setValue(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_DEF_ATTACK) * 1000);
     sliderDefRelease->setValue(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_DEF_RELEASE) * 1000);

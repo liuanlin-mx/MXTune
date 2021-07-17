@@ -44,6 +44,8 @@
     </VirtualDirectory>
   </VirtualDirectory>
   <VirtualDirectory Name="mx_tune">
+    <File Name="pitch_shifter_st.h"/>
+    <File Name="pitch_shifter_st.cpp"/>
     <File Name="pitch_shifter_talent.h"/>
     <File Name="pitch_shifter_talent.cpp"/>
     <File Name="pitch_detector_aubio.h"/>
@@ -181,6 +183,7 @@
         <Library Value="opengl32"/>
         <Library Value="aubio"/>
         <Library Value="fftw3f"/>
+        <Library Value="SoundTouch"/>
       </Linker>
       <ResourceCompiler Options="" Required="no"/>
       <General OutputFile="$(IntermediateDirectory)/$(ProjectName).dll" IntermediateDirectory="$(ConfigurationName)" Command="$(OutputFile)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="" PauseExecWhenProcTerminates="yes" IsGUIProgram="no" IsEnabled="yes"/>
@@ -250,6 +253,7 @@
         <Library Value="opengl32"/>
         <Library Value="aubio"/>
         <Library Value="fftw3f"/>
+        <Library Value="SoundTouch"/>
       </Linker>
       <ResourceCompiler Options="" Required="no"/>
       <General OutputFile="$(IntermediateDirectory)/$(ProjectName).dll" IntermediateDirectory="$(ConfigurationName)" Command="$(OutputFile)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="" PauseExecWhenProcTerminates="yes" IsGUIProgram="no" IsEnabled="yes"/>

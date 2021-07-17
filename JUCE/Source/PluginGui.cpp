@@ -1438,14 +1438,21 @@ float PluginGui::_snap_pitch(float pitch)
     std::int32_t left = i;
     std::int32_t right = i;
 
-    if (_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_SNAP) < 1)
+    if (_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_SNAP) < 1 || _is_ctrl)
     {
         return pitch;
     }
-
+    
+    std::int32_t *notes = _notes;
+    std::int32_t notes_chromatic[12] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+    if (_is_shift)
+    {
+        notes = notes_chromatic;
+    }
+    
     for (std::int32_t j = 0; j < 12; j++)
     {
-        if (_notes[(left + 12 * 8) % 12] < 0)
+        if (notes[(left + 12 * 8) % 12] < 0)
         {
             left--;
         }
@@ -1457,7 +1464,7 @@ float PluginGui::_snap_pitch(float pitch)
 
     for (std::int32_t j = 0; j < 11; j++)
     {
-        if (_notes[(right + 12 * 8) % 12] < 0)
+        if (notes[(right + 12 * 8) % 12] < 0)
         {
             right++;
         }

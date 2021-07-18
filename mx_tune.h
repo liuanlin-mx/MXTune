@@ -50,7 +50,7 @@ public:
     void enable_track(bool b) { _track = b; }
     void clear_note();
     void clear_pitch();
-    void snap_key();
+    void snap_key(float time_min_len, float time_max_interval, float attack, float release, float amount);
     void snap_to_inpitch();
     
     
@@ -75,6 +75,8 @@ private:
     
     volatile bool _track;
     volatile bool _auto_tune;
+    
+    std::int32_t _notes[12];
 
 };
 

@@ -52,7 +52,7 @@ PluginGui::PluginGui (AutotalentAudioProcessor& p)
     sliderAttack->setTextBoxStyle (Slider::TextBoxAbove, false, 80, 20);
     sliderAttack->addListener (this);
 
-    sliderAttack->setBounds (312, 56, 64, 24);
+    sliderAttack->setBounds (256, 56, 64, 24);
 
     groupComponent5.reset (new GroupComponent ("new group",
                                                TRANS("Notes")));
@@ -70,7 +70,7 @@ PluginGui::PluginGui (AutotalentAudioProcessor& p)
     addAndMakeVisible (toggleButtonTrack.get());
     toggleButtonTrack->addListener (this);
 
-    toggleButtonTrack->setBounds (664, 24, 88, 24);
+    toggleButtonTrack->setBounds (712, 24, 64, 24);
 
     toggleButtonAutoTune.reset (new ToggleButton ("AutoTune"));
     addAndMakeVisible (toggleButtonAutoTune.get());
@@ -83,99 +83,100 @@ PluginGui::PluginGui (AutotalentAudioProcessor& p)
     toggleButtonNoteA->addListener (this);
     toggleButtonNoteA->setToggleState (true, dontSendNotification);
 
-    toggleButtonNoteA->setBounds (32, 208, 40, 24);
+    toggleButtonNoteA->setBounds (32, 216, 40, 24);
 
     toggleButtonNoteBb.reset (new ToggleButton ("Bb"));
     addAndMakeVisible (toggleButtonNoteBb.get());
     toggleButtonNoteBb->addListener (this);
     toggleButtonNoteBb->setToggleState (true, dontSendNotification);
 
-    toggleButtonNoteBb->setBounds (32, 240, 40, 24);
+    toggleButtonNoteBb->setBounds (32, 248, 40, 24);
 
     toggleButtonNoteB.reset (new ToggleButton ("B"));
     addAndMakeVisible (toggleButtonNoteB.get());
     toggleButtonNoteB->addListener (this);
     toggleButtonNoteB->setToggleState (true, dontSendNotification);
 
-    toggleButtonNoteB->setBounds (32, 272, 40, 24);
+    toggleButtonNoteB->setBounds (32, 280, 40, 24);
 
     toggleButtonNoteC.reset (new ToggleButton ("C"));
     addAndMakeVisible (toggleButtonNoteC.get());
     toggleButtonNoteC->addListener (this);
     toggleButtonNoteC->setToggleState (true, dontSendNotification);
 
-    toggleButtonNoteC->setBounds (32, 304, 40, 24);
+    toggleButtonNoteC->setBounds (32, 312, 40, 24);
 
     toggleButtonNoteDb.reset (new ToggleButton ("Db"));
     addAndMakeVisible (toggleButtonNoteDb.get());
     toggleButtonNoteDb->addListener (this);
     toggleButtonNoteDb->setToggleState (true, dontSendNotification);
 
-    toggleButtonNoteDb->setBounds (32, 336, 40, 24);
+    toggleButtonNoteDb->setBounds (32, 344, 40, 24);
 
     toggleButtonNoteD.reset (new ToggleButton ("D"));
     addAndMakeVisible (toggleButtonNoteD.get());
     toggleButtonNoteD->addListener (this);
     toggleButtonNoteD->setToggleState (true, dontSendNotification);
 
-    toggleButtonNoteD->setBounds (32, 368, 40, 24);
+    toggleButtonNoteD->setBounds (32, 376, 40, 24);
 
     toggleButtonNoteEb.reset (new ToggleButton ("Eb"));
     addAndMakeVisible (toggleButtonNoteEb.get());
     toggleButtonNoteEb->addListener (this);
     toggleButtonNoteEb->setToggleState (true, dontSendNotification);
 
-    toggleButtonNoteEb->setBounds (88, 208, 40, 24);
+    toggleButtonNoteEb->setBounds (88, 216, 40, 24);
 
     toggleButtonNoteE.reset (new ToggleButton ("E"));
     addAndMakeVisible (toggleButtonNoteE.get());
     toggleButtonNoteE->addListener (this);
     toggleButtonNoteE->setToggleState (true, dontSendNotification);
 
-    toggleButtonNoteE->setBounds (88, 240, 40, 24);
+    toggleButtonNoteE->setBounds (88, 248, 40, 24);
 
     toggleButtonNoteF.reset (new ToggleButton ("F"));
     addAndMakeVisible (toggleButtonNoteF.get());
     toggleButtonNoteF->addListener (this);
     toggleButtonNoteF->setToggleState (true, dontSendNotification);
 
-    toggleButtonNoteF->setBounds (88, 272, 40, 24);
+    toggleButtonNoteF->setBounds (88, 280, 40, 24);
 
     toggleButtonNoteGb.reset (new ToggleButton ("Gb"));
     addAndMakeVisible (toggleButtonNoteGb.get());
     toggleButtonNoteGb->addListener (this);
     toggleButtonNoteGb->setToggleState (true, dontSendNotification);
 
-    toggleButtonNoteGb->setBounds (88, 304, 40, 24);
+    toggleButtonNoteGb->setBounds (88, 312, 40, 24);
 
     toggleButtonNoteAb.reset (new ToggleButton ("Ab"));
     addAndMakeVisible (toggleButtonNoteAb.get());
     toggleButtonNoteAb->addListener (this);
     toggleButtonNoteAb->setToggleState (true, dontSendNotification);
 
-    toggleButtonNoteAb->setBounds (88, 368, 40, 24);
+    toggleButtonNoteAb->setBounds (88, 376, 40, 24);
 
     toggleButtonNoteG.reset (new ToggleButton ("G"));
     addAndMakeVisible (toggleButtonNoteG.get());
     toggleButtonNoteG->addListener (this);
     toggleButtonNoteG->setToggleState (true, dontSendNotification);
 
-    toggleButtonNoteG->setBounds (88, 336, 40, 24);
+    toggleButtonNoteG->setBounds (88, 344, 40, 24);
 
     textButtonSnapKey.reset (new TextButton ("new button"));
     addAndMakeVisible (textButtonSnapKey.get());
-    textButtonSnapKey->setButtonText (TRANS("SnapKey"));
+    textButtonSnapKey->setButtonText (TRANS("SKey"));
     textButtonSnapKey->addListener (this);
     textButtonSnapKey->setColour (TextButton::buttonColourId, Colour (0x00a45c94));
 
-    textButtonSnapKey->setBounds (576, 64, 72, 24);
+    textButtonSnapKey->setBounds (656, 64, 48, 24);
 
     textButtonClearPitch.reset (new TextButton ("ClearPitch"));
     addAndMakeVisible (textButtonClearPitch.get());
+    textButtonClearPitch->setButtonText (TRANS("CPitch"));
     textButtonClearPitch->addListener (this);
     textButtonClearPitch->setColour (TextButton::buttonColourId, Colour (0x00a45c94));
 
-    textButtonClearPitch->setBounds (664, 64, 88, 24);
+    textButtonClearPitch->setBounds (712, 64, 64, 24);
 
     comboBoxKey.reset (new ComboBox ("new combo box"));
     addAndMakeVisible (comboBoxKey.get());
@@ -198,7 +199,7 @@ PluginGui::PluginGui (AutotalentAudioProcessor& p)
     comboBoxKey->addItem (TRANS("---"), 13);
     comboBoxKey->addListener (this);
 
-    comboBoxKey->setBounds (32, 128, 88, 24);
+    comboBoxKey->setBounds (32, 120, 88, 24);
 
     comboBoxKeyType.reset (new ComboBox ("new combo box"));
     addAndMakeVisible (comboBoxKeyType.get());
@@ -212,46 +213,13 @@ PluginGui::PluginGui (AutotalentAudioProcessor& p)
     comboBoxKeyType->addItem (TRANS("---"), 4);
     comboBoxKeyType->addListener (this);
 
-    comboBoxKeyType->setBounds (32, 160, 88, 24);
+    comboBoxKeyType->setBounds (32, 152, 88, 24);
 
     groupComponent3.reset (new GroupComponent ("Default",
                                                TRANS("Default")));
     addAndMakeVisible (groupComponent3.get());
 
     groupComponent3->setBounds (8, 408, 136, 184);
-
-    label.reset (new Label ("Attack:",
-                            TRANS("Attack(ms):")));
-    addAndMakeVisible (label.get());
-    label->setFont (Font (15.00f, Font::plain).withTypefaceStyle ("Regular"));
-    label->setJustificationType (Justification::centredLeft);
-    label->setEditable (false, false, false);
-    label->setColour (TextEditor::textColourId, Colours::black);
-    label->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
-
-    label->setBounds (16, 432, 64, 24);
-
-    label2.reset (new Label ("Amount:",
-                             TRANS("Amount:")));
-    addAndMakeVisible (label2.get());
-    label2->setFont (Font (15.00f, Font::plain).withTypefaceStyle ("Regular"));
-    label2->setJustificationType (Justification::centredLeft);
-    label2->setEditable (false, false, false);
-    label2->setColour (TextEditor::textColourId, Colours::black);
-    label2->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
-
-    label2->setBounds (16, 496, 56, 24);
-
-    label3.reset (new Label ("Release(ms):",
-                             TRANS("Release(ms):")));
-    addAndMakeVisible (label3.get());
-    label3->setFont (Font (15.00f, Font::plain).withTypefaceStyle ("Regular"));
-    label3->setJustificationType (Justification::centredLeft);
-    label3->setEditable (false, false, false);
-    label3->setColour (TextEditor::textColourId, Colours::black);
-    label3->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
-
-    label3->setBounds (16, 464, 72, 24);
 
     sliderRelease.reset (new Slider ("new slider"));
     addAndMakeVisible (sliderRelease.get());
@@ -260,7 +228,7 @@ PluginGui::PluginGui (AutotalentAudioProcessor& p)
     sliderRelease->setTextBoxStyle (Slider::TextBoxAbove, false, 80, 20);
     sliderRelease->addListener (this);
 
-    sliderRelease->setBounds (400, 56, 64, 24);
+    sliderRelease->setBounds (328, 56, 64, 24);
 
     sliderAmount.reset (new Slider ("new slider"));
     addAndMakeVisible (sliderAmount.get());
@@ -269,10 +237,10 @@ PluginGui::PluginGui (AutotalentAudioProcessor& p)
     sliderAmount->setTextBoxStyle (Slider::TextBoxAbove, false, 80, 20);
     sliderAmount->addListener (this);
 
-    sliderAmount->setBounds (488, 56, 56, 24);
+    sliderAmount->setBounds (400, 56, 64, 24);
 
     label4.reset (new Label ("Attack(ms)",
-                             TRANS("Attack(ms)")));
+                             TRANS("Atk(ms)")));
     addAndMakeVisible (label4.get());
     label4->setFont (Font (15.00f, Font::plain).withTypefaceStyle ("Regular"));
     label4->setJustificationType (Justification::centredLeft);
@@ -280,10 +248,10 @@ PluginGui::PluginGui (AutotalentAudioProcessor& p)
     label4->setColour (TextEditor::textColourId, Colours::black);
     label4->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
-    label4->setBounds (304, 24, 80, 24);
+    label4->setBounds (256, 24, 64, 24);
 
     label5.reset (new Label ("Release(ms)",
-                             TRANS("Release(ms)")));
+                             TRANS("Rls(ms)")));
     addAndMakeVisible (label5.get());
     label5->setFont (Font (15.00f, Font::plain).withTypefaceStyle ("Regular"));
     label5->setJustificationType (Justification::centredLeft);
@@ -291,7 +259,7 @@ PluginGui::PluginGui (AutotalentAudioProcessor& p)
     label5->setColour (TextEditor::textColourId, Colours::black);
     label5->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
-    label5->setBounds (392, 24, 88, 24);
+    label5->setBounds (328, 24, 64, 24);
 
     label6.reset (new Label ("Amount",
                              TRANS("Amount")));
@@ -302,7 +270,7 @@ PluginGui::PluginGui (AutotalentAudioProcessor& p)
     label6->setColour (TextEditor::textColourId, Colours::black);
     label6->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
-    label6->setBounds (488, 24, 56, 24);
+    label6->setBounds (400, 24, 56, 24);
 
     toggleButtonSnap.reset (new ToggleButton ("new toggle button"));
     addAndMakeVisible (toggleButtonSnap.get());
@@ -310,41 +278,15 @@ PluginGui::PluginGui (AutotalentAudioProcessor& p)
     toggleButtonSnap->addListener (this);
     toggleButtonSnap->setToggleState (true, dontSendNotification);
 
-    toggleButtonSnap->setBounds (768, 24, 77, 24);
+    toggleButtonSnap->setBounds (784, 24, 64, 24);
 
     textButtonClearNote.reset (new TextButton ("ClearNote"));
     addAndMakeVisible (textButtonClearNote.get());
+    textButtonClearNote->setButtonText (TRANS("CNote"));
     textButtonClearNote->addListener (this);
     textButtonClearNote->setColour (TextButton::buttonColourId, Colour (0x00a45c94));
 
-    textButtonClearNote->setBounds (768, 64, 80, 24);
-
-    sliderDefAttack.reset (new Slider ("new slider"));
-    addAndMakeVisible (sliderDefAttack.get());
-    sliderDefAttack->setRange (0, 200, 1);
-    sliderDefAttack->setSliderStyle (Slider::LinearBar);
-    sliderDefAttack->setTextBoxStyle (Slider::TextBoxAbove, false, 80, 20);
-    sliderDefAttack->addListener (this);
-
-    sliderDefAttack->setBounds (88, 432, 40, 24);
-
-    sliderDefRelease.reset (new Slider ("new slider"));
-    addAndMakeVisible (sliderDefRelease.get());
-    sliderDefRelease->setRange (0, 200, 1);
-    sliderDefRelease->setSliderStyle (Slider::LinearBar);
-    sliderDefRelease->setTextBoxStyle (Slider::TextBoxAbove, false, 80, 20);
-    sliderDefRelease->addListener (this);
-
-    sliderDefRelease->setBounds (88, 464, 40, 24);
-
-    sliderDefAmount.reset (new Slider ("new slider"));
-    addAndMakeVisible (sliderDefAmount.get());
-    sliderDefAmount->setRange (0, 1, 0.01);
-    sliderDefAmount->setSliderStyle (Slider::LinearBar);
-    sliderDefAmount->setTextBoxStyle (Slider::TextBoxAbove, false, 80, 20);
-    sliderDefAmount->addListener (this);
-
-    sliderDefAmount->setBounds (88, 496, 40, 24);
+    textButtonClearNote->setBounds (784, 64, 64, 24);
 
     label7.reset (new Label ("Smooth",
                              TRANS("Smooth:")));
@@ -394,11 +336,11 @@ PluginGui::PluginGui (AutotalentAudioProcessor& p)
 
     textButtonSnapCur.reset (new TextButton ("new button"));
     addAndMakeVisible (textButtonSnapCur.get());
-    textButtonSnapCur->setButtonText (TRANS("SnapCur"));
+    textButtonSnapCur->setButtonText (TRANS("SCur"));
     textButtonSnapCur->addListener (this);
     textButtonSnapCur->setColour (TextButton::buttonColourId, Colour (0x00a45c94));
 
-    textButtonSnapCur->setBounds (576, 24, 72, 24);
+    textButtonSnapCur->setBounds (656, 24, 48, 24);
 
     label9.reset (new Label ("Amount:",
                              TRANS("Det Alg:")));
@@ -446,6 +388,14 @@ PluginGui::PluginGui (AutotalentAudioProcessor& p)
 
     label10->setBounds (16, 560, 56, 24);
 
+    textButtonCheckKey.reset (new TextButton ("new button"));
+    addAndMakeVisible (textButtonCheckKey.get());
+    textButtonCheckKey->setButtonText (TRANS("Check"));
+    textButtonCheckKey->addListener (this);
+    textButtonCheckKey->setColour (TextButton::buttonColourId, Colour (0x00a45c94));
+
+    textButtonCheckKey->setBounds (32, 184, 88, 24);
+
 
     //[UserPreSize]
     //[/UserPreSize]
@@ -488,9 +438,6 @@ PluginGui::~PluginGui()
     comboBoxKey = nullptr;
     comboBoxKeyType = nullptr;
     groupComponent3 = nullptr;
-    label = nullptr;
-    label2 = nullptr;
-    label3 = nullptr;
     sliderRelease = nullptr;
     sliderAmount = nullptr;
     label4 = nullptr;
@@ -498,9 +445,6 @@ PluginGui::~PluginGui()
     label6 = nullptr;
     toggleButtonSnap = nullptr;
     textButtonClearNote = nullptr;
-    sliderDefAttack = nullptr;
-    sliderDefRelease = nullptr;
-    sliderDefAmount = nullptr;
     label7 = nullptr;
     sliderATSmooth = nullptr;
     label8 = nullptr;
@@ -511,6 +455,7 @@ PluginGui::~PluginGui()
     comboBoxDetAlg = nullptr;
     comboBoxSftAlg = nullptr;
     label10 = nullptr;
+    textButtonCheckKey = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -608,6 +553,33 @@ void PluginGui::paint (Graphics& g)
         g.setColour (juce::Colours::red);
         g.setOpacity(0.5);
         g.drawLine(start_x, start_y, end_x, end_y, 12);
+
+        
+        {
+            int x = end_x;
+            int y = end_y;
+            int width = 80;
+            int height = 30;
+            
+            char str[32] = {0};
+            if (_cur_node->time_end > _cur_node->time_start)
+            {
+                sprintf(str, "%d(ms)", (std::uint32_t)((_cur_node->time_end - _cur_node->time_start) * 1000));
+            }
+            else
+            {
+                sprintf(str, "%d(ms)", (std::uint32_t)((_cur_node->time_start - _cur_node->time_end) * 1000));
+            }
+        
+            String text (str);
+            Colour fillColour = Colours::black;
+            g.setColour (fillColour);
+            g.setFont (Font (15.00f, Font::plain).withTypefaceStyle ("Regular"));
+            g.drawText (text, x, y, width, height,
+                        Justification::centred, true);
+        }
+
+
     }
 
     // draw notes
@@ -726,6 +698,10 @@ void PluginGui::sliderValueChanged (Slider* sliderThatWasMoved)
         {
             _cur_node->attack = sliderThatWasMoved->getValue() / 1000.;
         }
+        else
+        {
+            _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_DEF_ATTACK, sliderThatWasMoved->getValue() / 1000.);
+        }
         //[/UserSliderCode_sliderAttack]
     }
     else if (sliderThatWasMoved == sliderRelease.get())
@@ -734,6 +710,10 @@ void PluginGui::sliderValueChanged (Slider* sliderThatWasMoved)
         if (_cur_node)
         {
             _cur_node->release = sliderThatWasMoved->getValue() / 1000.;
+        }
+        else
+        {
+            _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_DEF_RELEASE, sliderThatWasMoved->getValue() / 1000.);
         }
         //[/UserSliderCode_sliderRelease]
     }
@@ -744,25 +724,11 @@ void PluginGui::sliderValueChanged (Slider* sliderThatWasMoved)
         {
             _cur_node->amount = sliderThatWasMoved->getValue();
         }
+        else
+        {
+            _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_DEF_AMOUNT, sliderThatWasMoved->getValue());
+        }
         //[/UserSliderCode_sliderAmount]
-    }
-    else if (sliderThatWasMoved == sliderDefAttack.get())
-    {
-        //[UserSliderCode_sliderDefAttack] -- add your slider handling code here..
-        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_DEF_ATTACK, sliderThatWasMoved->getValue() / 1000.);
-        //[/UserSliderCode_sliderDefAttack]
-    }
-    else if (sliderThatWasMoved == sliderDefRelease.get())
-    {
-        //[UserSliderCode_sliderDefRelease] -- add your slider handling code here..
-        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_DEF_RELEASE, sliderThatWasMoved->getValue() / 1000.);
-        //[/UserSliderCode_sliderDefRelease]
-    }
-    else if (sliderThatWasMoved == sliderDefAmount.get())
-    {
-        //[UserSliderCode_sliderDefAmount] -- add your slider handling code here..
-        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_DEF_AMOUNT, sliderThatWasMoved->getValue());
-        //[/UserSliderCode_sliderDefAmount]
     }
     else if (sliderThatWasMoved == sliderATSmooth.get())
     {
@@ -957,7 +923,11 @@ void PluginGui::buttonClicked (Button* buttonThatWasClicked)
     else if (buttonThatWasClicked == textButtonSnapKey.get())
     {
         //[UserButtonCode_textButtonSnapKey] -- add your button handler code here..
-        _proc.get_mt_tune()->snap_key();
+
+        float attack = _proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_DEF_ATTACK);
+        float release = _proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_DEF_RELEASE);
+        float amount = _proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_DEF_AMOUNT);
+        _proc.get_mt_tune()->snap_key(0.2, 0.03, attack, release, amount);
         //[/UserButtonCode_textButtonSnapKey]
     }
     else if (buttonThatWasClicked == textButtonClearPitch.get())
@@ -983,6 +953,49 @@ void PluginGui::buttonClicked (Button* buttonThatWasClicked)
         //[UserButtonCode_textButtonSnapCur] -- add your button handler code here..
         _proc.get_mt_tune()->snap_to_inpitch();
         //[/UserButtonCode_textButtonSnapCur]
+    }
+    else if (buttonThatWasClicked == textButtonCheckKey.get())
+    {
+        //[UserButtonCode_textButtonCheckKey] -- add your button handler code here..
+
+        _proc.get_manual_tune().check_key(_notes, 0.2, 0.1);
+
+        _key = _key_custom;
+        _key_type = _key_type_custom;
+        comboBoxKey->setSelectedId(_key + 1, dontSendNotification);
+        comboBoxKeyType->setSelectedId(_key_type + 1, dontSendNotification);
+
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY, _key);
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY, _key_type);
+
+
+        toggleButtonNoteA->setToggleState((_notes[0] > 0), dontSendNotification);
+        toggleButtonNoteBb->setToggleState((_notes[1] > 0), dontSendNotification);
+        toggleButtonNoteB->setToggleState((_notes[2] > 0), dontSendNotification);
+        toggleButtonNoteC->setToggleState((_notes[3] > 0), dontSendNotification);
+        toggleButtonNoteDb->setToggleState((_notes[4] > 0), dontSendNotification);
+        toggleButtonNoteD->setToggleState((_notes[5] > 0), dontSendNotification);
+        toggleButtonNoteEb->setToggleState((_notes[6] > 0), dontSendNotification);
+        toggleButtonNoteE->setToggleState((_notes[7] > 0), dontSendNotification);
+        toggleButtonNoteF->setToggleState((_notes[8] > 0), dontSendNotification);
+        toggleButtonNoteGb->setToggleState((_notes[9] > 0), dontSendNotification);
+        toggleButtonNoteG->setToggleState((_notes[10] > 0), dontSendNotification);
+        toggleButtonNoteAb->setToggleState((_notes[11] > 0), dontSendNotification);
+
+
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_A, (_notes[0] > 0)? 1.: 0.);
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_Bb, (_notes[1] > 0)? 1.: 0.);
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_B, (_notes[2] > 0)? 1.: 0.);
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_C, (_notes[3] > 0)? 1.: 0.);
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_Db, (_notes[4] > 0)? 1.: 0.);
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_D, (_notes[5] > 0)? 1.: 0.);
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_Eb, (_notes[6] > 0)? 1.: 0.);
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_E, (_notes[7] > 0)? 1.: 0.);
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_F, (_notes[8] > 0)? 1.: 0.);
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_Gb, (_notes[9] > 0)? 1.: 0.);
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_G, (_notes[10] > 0)? 1.: 0.);
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_Ab, (_notes[11] > 0)? 1.: 0.);
+        //[/UserButtonCode_textButtonCheckKey]
     }
 
     //[UserbuttonClicked_Post]
@@ -1063,7 +1076,12 @@ void PluginGui::mouseDown (const MouseEvent& e)
             _select_yd = _cur_node->pitch_end - _y_to_pitch(y);
         }
     }
-
+    else
+    {
+        sliderAttack->setValue(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_DEF_ATTACK) * 1000);
+        sliderRelease->setValue(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_DEF_RELEASE) * 1000);
+        sliderAmount->setValue(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_DEF_AMOUNT));
+    }
 
     repaint();
     //[/UserCode_mouseDown]
@@ -1385,9 +1403,10 @@ void PluginGui::_update_gui_parameter()
     toggleButtonAutoTune->setToggleState(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_ENABLE_AUTOTUNE) > 0., dontSendNotification);
     toggleButtonSnap->setToggleState(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_SNAP) > 0., dontSendNotification);
     toggleButtonTrack->setToggleState(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_ENABLE_TRACK) > 0., dontSendNotification);
-    sliderDefAttack->setValue(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_DEF_ATTACK) * 1000);
-    sliderDefRelease->setValue(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_DEF_RELEASE) * 1000);
-    sliderDefAmount->setValue(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_DEF_AMOUNT));
+
+    sliderAttack->setValue(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_DEF_ATTACK) * 1000);
+    sliderRelease->setValue(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_DEF_RELEASE) * 1000);
+    sliderAmount->setValue(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_DEF_AMOUNT));
 
     sliderATAmount->setValue(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_AT_AMOUNT));
     sliderATSmooth->setValue(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_AT_SMOOTH));
@@ -1442,14 +1461,14 @@ float PluginGui::_snap_pitch(float pitch)
     {
         return pitch;
     }
-    
+
     std::int32_t *notes = _notes;
     std::int32_t notes_chromatic[12] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
     if (_is_shift)
     {
         notes = notes_chromatic;
     }
-    
+
     for (std::int32_t j = 0; j < 12; j++)
     {
         if (notes[(left + 12 * 8) % 12] < 0)
@@ -1663,7 +1682,7 @@ void PluginGui::_y_zoom(bool in)
     std::int32_t diff = _pitch_up - _pitch_down;
     if (in)
     {
-        if (diff > 4)
+        if (diff > 2)
         {
             _pitch_down++;
             _pitch_up--;
@@ -1776,7 +1795,7 @@ BEGIN_JUCER_METADATA
   <GROUPCOMPONENT name="Key" id="c819674330435c53" memberName="groupComponent2"
                   virtualName="" explicitFocusOrder="0" pos="8 96 136 312" title="Key"/>
   <SLIDER name="new slider" id="970facfde35ebf14" memberName="sliderAttack"
-          virtualName="" explicitFocusOrder="0" pos="312 56 64 24" min="0.0"
+          virtualName="" explicitFocusOrder="0" pos="256 56 64 24" min="0.0"
           max="500.0" int="1.0" style="LinearBar" textBoxPos="TextBoxAbove"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1.0"
           needsCallback="1"/>
@@ -1785,125 +1804,94 @@ BEGIN_JUCER_METADATA
   <GROUPCOMPONENT name="new group" id="c7e247cd0bd1faa6" memberName="groupComponent"
                   virtualName="" explicitFocusOrder="0" pos="8 8 240 88" title=""/>
   <TOGGLEBUTTON name="Track" id="96b9e7d23267fe2e" memberName="toggleButtonTrack"
-                virtualName="" explicitFocusOrder="0" pos="664 24 88 24" buttonText="Track"
+                virtualName="" explicitFocusOrder="0" pos="712 24 64 24" buttonText="Track"
                 connectedEdges="0" needsCallback="1" radioGroupId="0" state="0"/>
   <TOGGLEBUTTON name="AutoTune" id="f4d4a673f50ff58f" memberName="toggleButtonAutoTune"
                 virtualName="" explicitFocusOrder="0" pos="16 24 96 24" buttonText="AutoTune"
                 connectedEdges="0" needsCallback="1" radioGroupId="0" state="0"/>
   <TOGGLEBUTTON name="A" id="379b4bb7d2fbcace" memberName="toggleButtonNoteA"
-                virtualName="" explicitFocusOrder="0" pos="32 208 40 24" buttonText="A"
+                virtualName="" explicitFocusOrder="0" pos="32 216 40 24" buttonText="A"
                 connectedEdges="0" needsCallback="1" radioGroupId="0" state="1"/>
   <TOGGLEBUTTON name="Bb" id="c5a5631674e84c6d" memberName="toggleButtonNoteBb"
-                virtualName="" explicitFocusOrder="0" pos="32 240 40 24" buttonText="Bb"
+                virtualName="" explicitFocusOrder="0" pos="32 248 40 24" buttonText="Bb"
                 connectedEdges="0" needsCallback="1" radioGroupId="0" state="1"/>
   <TOGGLEBUTTON name="B" id="118f5e02b9feb93a" memberName="toggleButtonNoteB"
-                virtualName="" explicitFocusOrder="0" pos="32 272 40 24" buttonText="B"
+                virtualName="" explicitFocusOrder="0" pos="32 280 40 24" buttonText="B"
                 connectedEdges="0" needsCallback="1" radioGroupId="0" state="1"/>
   <TOGGLEBUTTON name="C" id="64fa9722fea3f930" memberName="toggleButtonNoteC"
-                virtualName="" explicitFocusOrder="0" pos="32 304 40 24" buttonText="C"
+                virtualName="" explicitFocusOrder="0" pos="32 312 40 24" buttonText="C"
                 connectedEdges="0" needsCallback="1" radioGroupId="0" state="1"/>
   <TOGGLEBUTTON name="Db" id="fe20e3be7521d3e5" memberName="toggleButtonNoteDb"
-                virtualName="" explicitFocusOrder="0" pos="32 336 40 24" buttonText="Db"
+                virtualName="" explicitFocusOrder="0" pos="32 344 40 24" buttonText="Db"
                 connectedEdges="0" needsCallback="1" radioGroupId="0" state="1"/>
   <TOGGLEBUTTON name="D" id="6c379b8e283b6172" memberName="toggleButtonNoteD"
-                virtualName="" explicitFocusOrder="0" pos="32 368 40 24" buttonText="D"
+                virtualName="" explicitFocusOrder="0" pos="32 376 40 24" buttonText="D"
                 connectedEdges="0" needsCallback="1" radioGroupId="0" state="1"/>
   <TOGGLEBUTTON name="Eb" id="4f9effd6fff17c8c" memberName="toggleButtonNoteEb"
-                virtualName="" explicitFocusOrder="0" pos="88 208 40 24" buttonText="Eb"
+                virtualName="" explicitFocusOrder="0" pos="88 216 40 24" buttonText="Eb"
                 connectedEdges="0" needsCallback="1" radioGroupId="0" state="1"/>
   <TOGGLEBUTTON name="E" id="b85394a33c50f2b4" memberName="toggleButtonNoteE"
-                virtualName="" explicitFocusOrder="0" pos="88 240 40 24" buttonText="E"
+                virtualName="" explicitFocusOrder="0" pos="88 248 40 24" buttonText="E"
                 connectedEdges="0" needsCallback="1" radioGroupId="0" state="1"/>
   <TOGGLEBUTTON name="F" id="99e08323176a0a04" memberName="toggleButtonNoteF"
-                virtualName="" explicitFocusOrder="0" pos="88 272 40 24" buttonText="F"
+                virtualName="" explicitFocusOrder="0" pos="88 280 40 24" buttonText="F"
                 connectedEdges="0" needsCallback="1" radioGroupId="0" state="1"/>
   <TOGGLEBUTTON name="Gb" id="4de424495467f77f" memberName="toggleButtonNoteGb"
-                virtualName="" explicitFocusOrder="0" pos="88 304 40 24" buttonText="Gb"
+                virtualName="" explicitFocusOrder="0" pos="88 312 40 24" buttonText="Gb"
                 connectedEdges="0" needsCallback="1" radioGroupId="0" state="1"/>
   <TOGGLEBUTTON name="Ab" id="b13f751ddb7ba042" memberName="toggleButtonNoteAb"
-                virtualName="" explicitFocusOrder="0" pos="88 368 40 24" buttonText="Ab"
+                virtualName="" explicitFocusOrder="0" pos="88 376 40 24" buttonText="Ab"
                 connectedEdges="0" needsCallback="1" radioGroupId="0" state="1"/>
   <TOGGLEBUTTON name="G" id="6d2077e61f10a098" memberName="toggleButtonNoteG"
-                virtualName="" explicitFocusOrder="0" pos="88 336 40 24" buttonText="G"
+                virtualName="" explicitFocusOrder="0" pos="88 344 40 24" buttonText="G"
                 connectedEdges="0" needsCallback="1" radioGroupId="0" state="1"/>
   <TEXTBUTTON name="new button" id="6322078c6ba4dfdb" memberName="textButtonSnapKey"
-              virtualName="" explicitFocusOrder="0" pos="576 64 72 24" bgColOff="a45c94"
-              buttonText="SnapKey" connectedEdges="0" needsCallback="1" radioGroupId="0"/>
+              virtualName="" explicitFocusOrder="0" pos="656 64 48 24" bgColOff="a45c94"
+              buttonText="SKey" connectedEdges="0" needsCallback="1" radioGroupId="0"/>
   <TEXTBUTTON name="ClearPitch" id="2162a44ccaf901a6" memberName="textButtonClearPitch"
-              virtualName="" explicitFocusOrder="0" pos="664 64 88 24" bgColOff="a45c94"
-              buttonText="ClearPitch" connectedEdges="0" needsCallback="1"
-              radioGroupId="0"/>
+              virtualName="" explicitFocusOrder="0" pos="712 64 64 24" bgColOff="a45c94"
+              buttonText="CPitch" connectedEdges="0" needsCallback="1" radioGroupId="0"/>
   <COMBOBOX name="new combo box" id="fe39f8a969668fb0" memberName="comboBoxKey"
-            virtualName="" explicitFocusOrder="0" pos="32 128 88 24" editable="0"
+            virtualName="" explicitFocusOrder="0" pos="32 120 88 24" editable="0"
             layout="33" items="A&#10;Bb&#10;B&#10;C&#10;Db&#10;D&#10;Eb&#10;E&#10;F&#10;Gb&#10;G&#10;Ab&#10;---"
             textWhenNonSelected="C" textWhenNoItems="(no choices)"/>
   <COMBOBOX name="new combo box" id="735378d9912f9354" memberName="comboBoxKeyType"
-            virtualName="" explicitFocusOrder="0" pos="32 160 88 24" editable="0"
+            virtualName="" explicitFocusOrder="0" pos="32 152 88 24" editable="0"
             layout="33" items="Major&#10;Minor&#10;Chromatic&#10;---" textWhenNonSelected="Chromatic"
             textWhenNoItems="(no choices)"/>
   <GROUPCOMPONENT name="Default" id="483f2306d19611c8" memberName="groupComponent3"
                   virtualName="" explicitFocusOrder="0" pos="8 408 136 184" title="Default"/>
-  <LABEL name="Attack:" id="e883d57a541fe637" memberName="label" virtualName=""
-         explicitFocusOrder="0" pos="16 432 64 24" edTextCol="ff000000"
-         edBkgCol="0" labelText="Attack(ms):" editableSingleClick="0"
-         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
-         fontsize="15.0" kerning="0.0" bold="0" italic="0" justification="33"/>
-  <LABEL name="Amount:" id="361c2d19a3dbf532" memberName="label2" virtualName=""
-         explicitFocusOrder="0" pos="16 496 56 24" edTextCol="ff000000"
-         edBkgCol="0" labelText="Amount:" editableSingleClick="0" editableDoubleClick="0"
-         focusDiscardsChanges="0" fontname="Default font" fontsize="15.0"
-         kerning="0.0" bold="0" italic="0" justification="33"/>
-  <LABEL name="Release(ms):" id="d6092f1e63583025" memberName="label3"
-         virtualName="" explicitFocusOrder="0" pos="16 464 72 24" edTextCol="ff000000"
-         edBkgCol="0" labelText="Release(ms):" editableSingleClick="0"
-         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
-         fontsize="15.0" kerning="0.0" bold="0" italic="0" justification="33"/>
   <SLIDER name="new slider" id="3ba450cd3750e8bc" memberName="sliderRelease"
-          virtualName="" explicitFocusOrder="0" pos="400 56 64 24" min="0.0"
+          virtualName="" explicitFocusOrder="0" pos="328 56 64 24" min="0.0"
           max="500.0" int="1.0" style="LinearBar" textBoxPos="TextBoxAbove"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1.0"
           needsCallback="1"/>
   <SLIDER name="new slider" id="f581cb7cddbce5f" memberName="sliderAmount"
-          virtualName="" explicitFocusOrder="0" pos="488 56 56 24" min="0.0"
+          virtualName="" explicitFocusOrder="0" pos="400 56 64 24" min="0.0"
           max="1.0" int="0.01" style="LinearBar" textBoxPos="TextBoxAbove"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1.0"
           needsCallback="1"/>
   <LABEL name="Attack(ms)" id="1ae5d807d1d03286" memberName="label4" virtualName=""
-         explicitFocusOrder="0" pos="304 24 80 24" edTextCol="ff000000"
-         edBkgCol="0" labelText="Attack(ms)" editableSingleClick="0" editableDoubleClick="0"
+         explicitFocusOrder="0" pos="256 24 64 24" edTextCol="ff000000"
+         edBkgCol="0" labelText="Atk(ms)" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="15.0"
          kerning="0.0" bold="0" italic="0" justification="33"/>
   <LABEL name="Release(ms)" id="40333d99763aadcd" memberName="label5"
-         virtualName="" explicitFocusOrder="0" pos="392 24 88 24" edTextCol="ff000000"
-         edBkgCol="0" labelText="Release(ms)" editableSingleClick="0"
-         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
-         fontsize="15.0" kerning="0.0" bold="0" italic="0" justification="33"/>
+         virtualName="" explicitFocusOrder="0" pos="328 24 64 24" edTextCol="ff000000"
+         edBkgCol="0" labelText="Rls(ms)" editableSingleClick="0" editableDoubleClick="0"
+         focusDiscardsChanges="0" fontname="Default font" fontsize="15.0"
+         kerning="0.0" bold="0" italic="0" justification="33"/>
   <LABEL name="Amount" id="e338f10f9eadcccf" memberName="label6" virtualName=""
-         explicitFocusOrder="0" pos="488 24 56 24" edTextCol="ff000000"
+         explicitFocusOrder="0" pos="400 24 56 24" edTextCol="ff000000"
          edBkgCol="0" labelText="Amount" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="15.0"
          kerning="0.0" bold="0" italic="0" justification="33"/>
   <TOGGLEBUTTON name="new toggle button" id="b054268f61961dfe" memberName="toggleButtonSnap"
-                virtualName="" explicitFocusOrder="0" pos="768 24 77 24" buttonText="Snap"
+                virtualName="" explicitFocusOrder="0" pos="784 24 64 24" buttonText="Snap"
                 connectedEdges="0" needsCallback="1" radioGroupId="0" state="1"/>
   <TEXTBUTTON name="ClearNote" id="5c74ee40a315b111" memberName="textButtonClearNote"
-              virtualName="" explicitFocusOrder="0" pos="768 64 80 24" bgColOff="a45c94"
-              buttonText="ClearNote" connectedEdges="0" needsCallback="1" radioGroupId="0"/>
-  <SLIDER name="new slider" id="ae703c6e9d7c2dc3" memberName="sliderDefAttack"
-          virtualName="" explicitFocusOrder="0" pos="88 432 40 24" min="0.0"
-          max="200.0" int="1.0" style="LinearBar" textBoxPos="TextBoxAbove"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1.0"
-          needsCallback="1"/>
-  <SLIDER name="new slider" id="ba68a3c568152232" memberName="sliderDefRelease"
-          virtualName="" explicitFocusOrder="0" pos="88 464 40 24" min="0.0"
-          max="200.0" int="1.0" style="LinearBar" textBoxPos="TextBoxAbove"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1.0"
-          needsCallback="1"/>
-  <SLIDER name="new slider" id="d182ff421d4b9953" memberName="sliderDefAmount"
-          virtualName="" explicitFocusOrder="0" pos="88 496 40 24" min="0.0"
-          max="1.0" int="0.01" style="LinearBar" textBoxPos="TextBoxAbove"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1.0"
-          needsCallback="1"/>
+              virtualName="" explicitFocusOrder="0" pos="784 64 64 24" bgColOff="a45c94"
+              buttonText="CNote" connectedEdges="0" needsCallback="1" radioGroupId="0"/>
   <LABEL name="Smooth" id="73e3856f04859fc1" memberName="label7" virtualName=""
          explicitFocusOrder="0" pos="16 56 56 24" edTextCol="ff000000"
          edBkgCol="0" labelText="Smooth:" editableSingleClick="0" editableDoubleClick="0"
@@ -1927,8 +1915,8 @@ BEGIN_JUCER_METADATA
   <GROUPCOMPONENT name="new group" id="2efd593a5cb91513" memberName="groupComponent6"
                   virtualName="" explicitFocusOrder="0" pos="144 96 712 496" title="Notes"/>
   <TEXTBUTTON name="new button" id="27f7687f35fd023c" memberName="textButtonSnapCur"
-              virtualName="" explicitFocusOrder="0" pos="576 24 72 24" bgColOff="a45c94"
-              buttonText="SnapCur" connectedEdges="0" needsCallback="1" radioGroupId="0"/>
+              virtualName="" explicitFocusOrder="0" pos="656 24 48 24" bgColOff="a45c94"
+              buttonText="SCur" connectedEdges="0" needsCallback="1" radioGroupId="0"/>
   <LABEL name="Amount:" id="654498e4880c91f0" memberName="label9" virtualName=""
          explicitFocusOrder="0" pos="16 528 56 24" edTextCol="ff000000"
          edBkgCol="0" labelText="Det Alg:" editableSingleClick="0" editableDoubleClick="0"
@@ -1947,6 +1935,9 @@ BEGIN_JUCER_METADATA
          edBkgCol="0" labelText="Sft Alg:" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="15.0"
          kerning="0.0" bold="0" italic="0" justification="33"/>
+  <TEXTBUTTON name="new button" id="f86e3d01596458b4" memberName="textButtonCheckKey"
+              virtualName="" explicitFocusOrder="0" pos="32 184 88 24" bgColOff="a45c94"
+              buttonText="Check" connectedEdges="0" needsCallback="1" radioGroupId="0"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

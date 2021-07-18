@@ -24,6 +24,11 @@ mx_tune::mx_tune(unsigned int sample_rate)
     _detector->set_aref(_aref);
     _shifter->set_aref(_aref);
     _m_tune.set_vthresh(_conf_shift_thresh);
+    
+    for (std::int32_t i = 0; i < 12; i++)
+    {
+        _notes[i] = 1;
+    }
 }
 
 mx_tune::~mx_tune()
@@ -100,6 +105,11 @@ void mx_tune::set_mix(float mix)
 void mx_tune::set_at_note(int notes[12])
 {
     _tune.set_note(notes);
+    
+    for (std::int32_t i = 0; i < 12; i++)
+    {
+        _notes[i] = notes[i];
+    }
 }
 
 void mx_tune::set_at_pull(float pull)
@@ -143,9 +153,9 @@ void mx_tune::clear_pitch()
     _m_tune.clear_outpitch();
 }
 
-void mx_tune::snap_key()
+void mx_tune::snap_key(float time_min_len, float time_max_interval, float attack, float release, float amount)
 {
-    _m_tune.snap_key(&_tune);
+    _m_tune.snap_key(_notes, time_min_len, time_max_interval, attack, release, amount);
 }
 
 void mx_tune::snap_to_inpitch()

@@ -58,9 +58,11 @@ public:
     
 public:
     float get_time_len() { return _idx2time(_len); }
+    
     void set_inpitch(float time_begin, float time_end, const pitch_node& node);
     pitch_node get_inpitch(float time);
     std::list<std::pair<pitch_node, float> > get_inpitch(float time_begin, float time_end);
+    
     void set_outpitch(float time_begin, float time_end, const pitch_node& node);
     pitch_node get_outpitch(float time);
     std::list<std::pair<pitch_node, float> > get_outpitch(float time_begin, float time_end);
@@ -71,13 +73,17 @@ public:
     void set_tune(std::shared_ptr<tune_node>& tune);
     std::list<std::shared_ptr<tune_node> > get_tune(float time_begin, float time_end);
     std::shared_ptr<tune_node> get_tune(float time);
+    
     std::shared_ptr<tune_node> select_tune(float time, float pitch, std::uint32_t& pos);
     void unselect_tune();
     void del_selected();
+    
     void clear_note();
     
-    void snap_key(auto_tune *tune);
+    void snap_key(const std::int32_t notes[12], float time_min_len, float time_max_interval, float attack, float release, float amount);
     void snap_to_inpitch();
+    
+    void check_key(std::int32_t notes[12], float time_min_len, float time_max_interval);
     
     void set_vthresh(float thresh) { _conf_thresh = thresh; }
 private:
@@ -91,6 +97,8 @@ private:
     
     void _linear_fit_from_inpitch(float time_begin, float time_end, float& a, float& b);
     float _tune2pitch(const std::shared_ptr<tune_node>& tune, float time, float inpitch, float a, float b);
+    
+    float _snap_pitch(const std::int32_t notes[12], float pitch);
     
 private:
     pitch_node *_inpitch;

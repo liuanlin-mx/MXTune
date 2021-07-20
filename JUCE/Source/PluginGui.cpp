@@ -52,7 +52,7 @@ PluginGui::PluginGui (AutotalentAudioProcessor& p)
     sliderAttack->setTextBoxStyle (Slider::TextBoxAbove, false, 80, 20);
     sliderAttack->addListener (this);
 
-    sliderAttack->setBounds (256, 56, 64, 24);
+    sliderAttack->setBounds (280, 56, 64, 24);
 
     groupComponent5.reset (new GroupComponent ("new group",
                                                TRANS("Notes")));
@@ -215,8 +215,8 @@ PluginGui::PluginGui (AutotalentAudioProcessor& p)
 
     comboBoxKeyType->setBounds (32, 152, 88, 24);
 
-    groupComponent3.reset (new GroupComponent ("Default",
-                                               TRANS("Default")));
+    groupComponent3.reset (new GroupComponent ("Setting",
+                                               TRANS("Setting")));
     addAndMakeVisible (groupComponent3.get());
 
     groupComponent3->setBounds (8, 408, 136, 184);
@@ -228,7 +228,7 @@ PluginGui::PluginGui (AutotalentAudioProcessor& p)
     sliderRelease->setTextBoxStyle (Slider::TextBoxAbove, false, 80, 20);
     sliderRelease->addListener (this);
 
-    sliderRelease->setBounds (328, 56, 64, 24);
+    sliderRelease->setBounds (368, 56, 64, 24);
 
     sliderAmount.reset (new Slider ("new slider"));
     addAndMakeVisible (sliderAmount.get());
@@ -237,10 +237,10 @@ PluginGui::PluginGui (AutotalentAudioProcessor& p)
     sliderAmount->setTextBoxStyle (Slider::TextBoxAbove, false, 80, 20);
     sliderAmount->addListener (this);
 
-    sliderAmount->setBounds (400, 56, 64, 24);
+    sliderAmount->setBounds (456, 56, 64, 24);
 
     label4.reset (new Label ("Attack(ms)",
-                             TRANS("Atk(ms)")));
+                             TRANS("Attack(ms)")));
     addAndMakeVisible (label4.get());
     label4->setFont (Font (15.00f, Font::plain).withTypefaceStyle ("Regular"));
     label4->setJustificationType (Justification::centredLeft);
@@ -248,10 +248,10 @@ PluginGui::PluginGui (AutotalentAudioProcessor& p)
     label4->setColour (TextEditor::textColourId, Colours::black);
     label4->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
-    label4->setBounds (256, 24, 64, 24);
+    label4->setBounds (272, 24, 80, 24);
 
     label5.reset (new Label ("Release(ms)",
-                             TRANS("Rls(ms)")));
+                             TRANS("Release(ms)")));
     addAndMakeVisible (label5.get());
     label5->setFont (Font (15.00f, Font::plain).withTypefaceStyle ("Regular"));
     label5->setJustificationType (Justification::centredLeft);
@@ -259,7 +259,7 @@ PluginGui::PluginGui (AutotalentAudioProcessor& p)
     label5->setColour (TextEditor::textColourId, Colours::black);
     label5->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
-    label5->setBounds (328, 24, 64, 24);
+    label5->setBounds (360, 24, 80, 24);
 
     label6.reset (new Label ("Amount",
                              TRANS("Amount")));
@@ -270,7 +270,7 @@ PluginGui::PluginGui (AutotalentAudioProcessor& p)
     label6->setColour (TextEditor::textColourId, Colours::black);
     label6->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
-    label6->setBounds (400, 24, 56, 24);
+    label6->setBounds (456, 24, 64, 24);
 
     toggleButtonSnap.reset (new ToggleButton ("new toggle button"));
     addAndMakeVisible (toggleButtonSnap.get());
@@ -342,7 +342,7 @@ PluginGui::PluginGui (AutotalentAudioProcessor& p)
 
     textButtonSnapCur->setBounds (656, 24, 48, 24);
 
-    label9.reset (new Label ("Amount:",
+    label9.reset (new Label ("Det alg",
                              TRANS("Det Alg:")));
     addAndMakeVisible (label9.get());
     label9->setFont (Font (15.00f, Font::plain).withTypefaceStyle ("Regular"));
@@ -377,7 +377,7 @@ PluginGui::PluginGui (AutotalentAudioProcessor& p)
 
     comboBoxSftAlg->setBounds (88, 560, 40, 24);
 
-    label10.reset (new Label ("Amount:",
+    label10.reset (new Label ("Sft Alg",
                               TRANS("Sft Alg:")));
     addAndMakeVisible (label10.get());
     label10->setFont (Font (15.00f, Font::plain).withTypefaceStyle ("Regular"));
@@ -395,6 +395,66 @@ PluginGui::PluginGui (AutotalentAudioProcessor& p)
     textButtonCheckKey->setColour (TextButton::buttonColourId, Colour (0x00a45c94));
 
     textButtonCheckKey->setBounds (32, 184, 88, 24);
+
+    label2.reset (new Label ("VThresh",
+                             TRANS("VThresh:")));
+    addAndMakeVisible (label2.get());
+    label2->setFont (Font (15.00f, Font::plain).withTypefaceStyle ("Regular"));
+    label2->setJustificationType (Justification::centredLeft);
+    label2->setEditable (false, false, false);
+    label2->setColour (TextEditor::textColourId, Colours::black);
+    label2->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+
+    label2->setBounds (16, 432, 56, 24);
+
+    sliderVThresh.reset (new Slider ("new slider"));
+    addAndMakeVisible (sliderVThresh.get());
+    sliderVThresh->setRange (0.1, 1, 0.01);
+    sliderVThresh->setSliderStyle (Slider::LinearBar);
+    sliderVThresh->setTextBoxStyle (Slider::TextBoxAbove, false, 80, 20);
+    sliderVThresh->addListener (this);
+
+    sliderVThresh->setBounds (88, 432, 40, 24);
+
+    label3.reset (new Label ("Length",
+                             TRANS("Length:")));
+    addAndMakeVisible (label3.get());
+    label3->setFont (Font (15.00f, Font::plain).withTypefaceStyle ("Regular"));
+    label3->setJustificationType (Justification::centredLeft);
+    label3->setEditable (false, false, false);
+    label3->setColour (TextEditor::textColourId, Colours::black);
+    label3->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+
+    label3->setBounds (16, 464, 56, 24);
+
+    sliderMinLen.reset (new Slider ("new slider"));
+    addAndMakeVisible (sliderMinLen.get());
+    sliderMinLen->setRange (0, 1, 0.01);
+    sliderMinLen->setSliderStyle (Slider::LinearBar);
+    sliderMinLen->setTextBoxStyle (Slider::TextBoxAbove, false, 80, 20);
+    sliderMinLen->addListener (this);
+
+    sliderMinLen->setBounds (88, 464, 40, 24);
+
+    label11.reset (new Label ("Interval",
+                              TRANS("Interval:")));
+    addAndMakeVisible (label11.get());
+    label11->setFont (Font (15.00f, Font::plain).withTypefaceStyle ("Regular"));
+    label11->setJustificationType (Justification::centredLeft);
+    label11->setEditable (false, false, false);
+    label11->setColour (TextEditor::textColourId, Colours::black);
+    label11->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+
+    label11->setBounds (16, 496, 56, 24);
+
+    sliderMaxInterval.reset (new Slider ("new slider"));
+    addAndMakeVisible (sliderMaxInterval.get());
+    sliderMaxInterval->setRange (0, 1, 0.01);
+    sliderMaxInterval->setSliderStyle (Slider::LinearBar);
+    sliderMaxInterval->setTextBoxStyle (Slider::TextBoxAbove, false, 80, 20);
+    sliderMaxInterval->addListener (this);
+
+    sliderMaxInterval->setBounds (88, 496, 40, 24);
 
 
     //[UserPreSize]
@@ -456,6 +516,12 @@ PluginGui::~PluginGui()
     comboBoxSftAlg = nullptr;
     label10 = nullptr;
     textButtonCheckKey = nullptr;
+    label2 = nullptr;
+    sliderVThresh = nullptr;
+    label3 = nullptr;
+    sliderMinLen = nullptr;
+    label11 = nullptr;
+    sliderMaxInterval = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -554,13 +620,13 @@ void PluginGui::paint (Graphics& g)
         g.setOpacity(0.5);
         g.drawLine(start_x, start_y, end_x, end_y, 12);
 
-        
+
         {
             int x = end_x;
             int y = end_y;
             int width = 80;
             int height = 30;
-            
+
             char str[32] = {0};
             if (_cur_node->time_end > _cur_node->time_start)
             {
@@ -570,7 +636,7 @@ void PluginGui::paint (Graphics& g)
             {
                 sprintf(str, "%d(ms)", (std::uint32_t)((_cur_node->time_start - _cur_node->time_end) * 1000));
             }
-        
+
             String text (str);
             Colour fillColour = Colours::black;
             g.setColour (fillColour);
@@ -741,6 +807,24 @@ void PluginGui::sliderValueChanged (Slider* sliderThatWasMoved)
         //[UserSliderCode_sliderATAmount] -- add your slider handling code here..
         _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_AT_AMOUNT, sliderThatWasMoved->getValue());
         //[/UserSliderCode_sliderATAmount]
+    }
+    else if (sliderThatWasMoved == sliderVThresh.get())
+    {
+        //[UserSliderCode_sliderVThresh] -- add your slider handling code here..
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_VTHRESH, sliderThatWasMoved->getValue());
+        //[/UserSliderCode_sliderVThresh]
+    }
+    else if (sliderThatWasMoved == sliderMinLen.get())
+    {
+        //[UserSliderCode_sliderMinLen] -- add your slider handling code here..
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_SNAP_MIN_LENGHT, sliderThatWasMoved->getValue());
+        //[/UserSliderCode_sliderMinLen]
+    }
+    else if (sliderThatWasMoved == sliderMaxInterval.get())
+    {
+        //[UserSliderCode_sliderMaxInterval] -- add your slider handling code here..
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_SNAP_MAX_INTERVAL, sliderThatWasMoved->getValue());
+        //[/UserSliderCode_sliderMaxInterval]
     }
 
     //[UsersliderValueChanged_Post]
@@ -927,7 +1011,10 @@ void PluginGui::buttonClicked (Button* buttonThatWasClicked)
         float attack = _proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_DEF_ATTACK);
         float release = _proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_DEF_RELEASE);
         float amount = _proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_DEF_AMOUNT);
-        _proc.get_mt_tune()->snap_key(0.2, 0.03, attack, release, amount);
+        float min_length = _proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_SNAP_MIN_LENGHT);
+        float max_interval = _proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_SNAP_MAX_INTERVAL);
+        
+        _proc.get_mt_tune()->snap_key(min_length, max_interval, attack, release, amount);
         //[/UserButtonCode_textButtonSnapKey]
     }
     else if (buttonThatWasClicked == textButtonClearPitch.get())
@@ -958,43 +1045,79 @@ void PluginGui::buttonClicked (Button* buttonThatWasClicked)
     {
         //[UserButtonCode_textButtonCheckKey] -- add your button handler code here..
 
-        _proc.get_manual_tune().check_key(_notes, 0.2, 0.1);
+        float min_length = _proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_SNAP_MIN_LENGHT);
+        float max_interval = _proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_SNAP_MAX_INTERVAL);
+        
+        std::int32_t notes[12];
+        if (_proc.get_manual_tune().check_key(notes, min_length, max_interval))
+        {
+            for (std::int32_t i = 0; i < 12; i++)
+            {
+                _notes[i] = notes[i];
+            }
+            _key = _key_custom;
+            _key_type = _key_type_custom;
+            
+            std::int32_t major[12] = {1, -1, 1, -1, 1, 1, -1, 1, -1, 1, -1, 1};
+            for (std::int32_t i = 0; i < 12; i++)
+            {
+                bool found = true;
+                for (std::uint32_t j = 0; j < 12; j++)
+                {
+                    if (_notes[(j + i) % 12] != major[j])
+                    {
+                        found = false;
+                        break;
+                    }
+                }
+                if (found)
+                {
+                    _key = i;
+                    _key_type = _key_type_major;
+                }
+            }
+            
+            
+            for (int i = 0; i < 12; i++)
+            {
+                net_log_debug("%d\n", _notes[i]);
+            }
+            
+            comboBoxKey->setSelectedId(_key + 1, dontSendNotification);
+            comboBoxKeyType->setSelectedId(_key_type + 1, dontSendNotification);
 
-        _key = _key_custom;
-        _key_type = _key_type_custom;
-        comboBoxKey->setSelectedId(_key + 1, dontSendNotification);
-        comboBoxKeyType->setSelectedId(_key_type + 1, dontSendNotification);
-
-        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY, _key);
-        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY, _key_type);
+            _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY, _key);
+            _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY, _key_type);
 
 
-        toggleButtonNoteA->setToggleState((_notes[0] > 0), dontSendNotification);
-        toggleButtonNoteBb->setToggleState((_notes[1] > 0), dontSendNotification);
-        toggleButtonNoteB->setToggleState((_notes[2] > 0), dontSendNotification);
-        toggleButtonNoteC->setToggleState((_notes[3] > 0), dontSendNotification);
-        toggleButtonNoteDb->setToggleState((_notes[4] > 0), dontSendNotification);
-        toggleButtonNoteD->setToggleState((_notes[5] > 0), dontSendNotification);
-        toggleButtonNoteEb->setToggleState((_notes[6] > 0), dontSendNotification);
-        toggleButtonNoteE->setToggleState((_notes[7] > 0), dontSendNotification);
-        toggleButtonNoteF->setToggleState((_notes[8] > 0), dontSendNotification);
-        toggleButtonNoteGb->setToggleState((_notes[9] > 0), dontSendNotification);
-        toggleButtonNoteG->setToggleState((_notes[10] > 0), dontSendNotification);
-        toggleButtonNoteAb->setToggleState((_notes[11] > 0), dontSendNotification);
+            toggleButtonNoteA->setToggleState((_notes[0] > 0), dontSendNotification);
+            toggleButtonNoteBb->setToggleState((_notes[1] > 0), dontSendNotification);
+            toggleButtonNoteB->setToggleState((_notes[2] > 0), dontSendNotification);
+            toggleButtonNoteC->setToggleState((_notes[3] > 0), dontSendNotification);
+            toggleButtonNoteDb->setToggleState((_notes[4] > 0), dontSendNotification);
+            toggleButtonNoteD->setToggleState((_notes[5] > 0), dontSendNotification);
+            toggleButtonNoteEb->setToggleState((_notes[6] > 0), dontSendNotification);
+            toggleButtonNoteE->setToggleState((_notes[7] > 0), dontSendNotification);
+            toggleButtonNoteF->setToggleState((_notes[8] > 0), dontSendNotification);
+            toggleButtonNoteGb->setToggleState((_notes[9] > 0), dontSendNotification);
+            toggleButtonNoteG->setToggleState((_notes[10] > 0), dontSendNotification);
+            toggleButtonNoteAb->setToggleState((_notes[11] > 0), dontSendNotification);
 
 
-        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_A, (_notes[0] > 0)? 1.: 0.);
-        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_Bb, (_notes[1] > 0)? 1.: 0.);
-        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_B, (_notes[2] > 0)? 1.: 0.);
-        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_C, (_notes[3] > 0)? 1.: 0.);
-        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_Db, (_notes[4] > 0)? 1.: 0.);
-        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_D, (_notes[5] > 0)? 1.: 0.);
-        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_Eb, (_notes[6] > 0)? 1.: 0.);
-        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_E, (_notes[7] > 0)? 1.: 0.);
-        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_F, (_notes[8] > 0)? 1.: 0.);
-        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_Gb, (_notes[9] > 0)? 1.: 0.);
-        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_G, (_notes[10] > 0)? 1.: 0.);
-        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_Ab, (_notes[11] > 0)? 1.: 0.);
+            _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_A, (_notes[0] > 0)? 1.: 0.);
+            _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_Bb, (_notes[1] > 0)? 1.: 0.);
+            _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_B, (_notes[2] > 0)? 1.: 0.);
+            _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_C, (_notes[3] > 0)? 1.: 0.);
+            _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_Db, (_notes[4] > 0)? 1.: 0.);
+            _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_D, (_notes[5] > 0)? 1.: 0.);
+            _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_Eb, (_notes[6] > 0)? 1.: 0.);
+            _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_E, (_notes[7] > 0)? 1.: 0.);
+            _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_F, (_notes[8] > 0)? 1.: 0.);
+            _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_Gb, (_notes[9] > 0)? 1.: 0.);
+            _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_G, (_notes[10] > 0)? 1.: 0.);
+            _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_Ab, (_notes[11] > 0)? 1.: 0.);
+            
+        }
         //[/UserButtonCode_textButtonCheckKey]
     }
 
@@ -1404,12 +1527,12 @@ void PluginGui::_update_gui_parameter()
     toggleButtonSnap->setToggleState(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_SNAP) > 0., dontSendNotification);
     toggleButtonTrack->setToggleState(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_ENABLE_TRACK) > 0., dontSendNotification);
 
-    sliderAttack->setValue(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_DEF_ATTACK) * 1000);
-    sliderRelease->setValue(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_DEF_RELEASE) * 1000);
-    sliderAmount->setValue(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_DEF_AMOUNT));
+    sliderAttack->setValue(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_DEF_ATTACK) * 1000, dontSendNotification);
+    sliderRelease->setValue(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_DEF_RELEASE) * 1000, dontSendNotification);
+    sliderAmount->setValue(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_DEF_AMOUNT), dontSendNotification);
 
-    sliderATAmount->setValue(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_AT_AMOUNT));
-    sliderATSmooth->setValue(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_AT_SMOOTH));
+    sliderATAmount->setValue(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_AT_AMOUNT), dontSendNotification);
+    sliderATSmooth->setValue(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_AT_SMOOTH), dontSendNotification);
 
 
     {
@@ -1449,6 +1572,10 @@ void PluginGui::_update_gui_parameter()
 
     comboBoxDetAlg->setSelectedId(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_DET_ALG) + 1, dontSendNotification);
     comboBoxSftAlg->setSelectedId(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_SFT_ALG) + 1, dontSendNotification);
+
+    sliderVThresh->setValue(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_VTHRESH), dontSendNotification);
+    sliderMinLen->setValue(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_SNAP_MIN_LENGHT), dontSendNotification);
+    sliderMaxInterval->setValue(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_SNAP_MAX_INTERVAL), dontSendNotification);
 }
 
 float PluginGui::_snap_pitch(float pitch)
@@ -1531,9 +1658,9 @@ float PluginGui::_x_to_time(float x)
 
 void PluginGui::_update_notes()
 {
-    if (_key < _key_custom && _key_type < _key_type_custom)
+    if (_key_type < _key_type_custom)
     {
-        if (_key_type == 0)
+        if (_key < _key_custom && _key_type == _key_type_major)
         {
             std::int32_t major[12] = {1, -1, 1, -1, 1, 1, -1, 1, -1, 1, -1, 1};
             for (std::int32_t i = 0; i < 12; i++)
@@ -1541,7 +1668,7 @@ void PluginGui::_update_notes()
                 _notes[(_key + i) % 12] = major[i];
             }
         }
-        else if (_key_type == 1)
+        else if (_key < _key_custom && _key_type == _key_type_minor)
         {
             std::int32_t minor[12] = {1, -1, 1, 1, -1, 1, -1, 1, 1, -1, 1, -1};
             for (std::int32_t i = 0; i < 12; i++)
@@ -1549,7 +1676,7 @@ void PluginGui::_update_notes()
                 _notes[(_key + i) % 12] = minor[i];
             }
         }
-        else if (_key_type == 2)
+        else if (_key_type == _key_type_chromatic)
         {
             for (std::int32_t i = 0; i < 12; i++)
             {
@@ -1795,7 +1922,7 @@ BEGIN_JUCER_METADATA
   <GROUPCOMPONENT name="Key" id="c819674330435c53" memberName="groupComponent2"
                   virtualName="" explicitFocusOrder="0" pos="8 96 136 312" title="Key"/>
   <SLIDER name="new slider" id="970facfde35ebf14" memberName="sliderAttack"
-          virtualName="" explicitFocusOrder="0" pos="256 56 64 24" min="0.0"
+          virtualName="" explicitFocusOrder="0" pos="280 56 64 24" min="0.0"
           max="500.0" int="1.0" style="LinearBar" textBoxPos="TextBoxAbove"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1.0"
           needsCallback="1"/>
@@ -1859,30 +1986,30 @@ BEGIN_JUCER_METADATA
             virtualName="" explicitFocusOrder="0" pos="32 152 88 24" editable="0"
             layout="33" items="Major&#10;Minor&#10;Chromatic&#10;---" textWhenNonSelected="Chromatic"
             textWhenNoItems="(no choices)"/>
-  <GROUPCOMPONENT name="Default" id="483f2306d19611c8" memberName="groupComponent3"
-                  virtualName="" explicitFocusOrder="0" pos="8 408 136 184" title="Default"/>
+  <GROUPCOMPONENT name="Setting" id="483f2306d19611c8" memberName="groupComponent3"
+                  virtualName="" explicitFocusOrder="0" pos="8 408 136 184" title="Setting"/>
   <SLIDER name="new slider" id="3ba450cd3750e8bc" memberName="sliderRelease"
-          virtualName="" explicitFocusOrder="0" pos="328 56 64 24" min="0.0"
+          virtualName="" explicitFocusOrder="0" pos="368 56 64 24" min="0.0"
           max="500.0" int="1.0" style="LinearBar" textBoxPos="TextBoxAbove"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1.0"
           needsCallback="1"/>
   <SLIDER name="new slider" id="f581cb7cddbce5f" memberName="sliderAmount"
-          virtualName="" explicitFocusOrder="0" pos="400 56 64 24" min="0.0"
+          virtualName="" explicitFocusOrder="0" pos="456 56 64 24" min="0.0"
           max="1.0" int="0.01" style="LinearBar" textBoxPos="TextBoxAbove"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1.0"
           needsCallback="1"/>
   <LABEL name="Attack(ms)" id="1ae5d807d1d03286" memberName="label4" virtualName=""
-         explicitFocusOrder="0" pos="256 24 64 24" edTextCol="ff000000"
-         edBkgCol="0" labelText="Atk(ms)" editableSingleClick="0" editableDoubleClick="0"
+         explicitFocusOrder="0" pos="272 24 80 24" edTextCol="ff000000"
+         edBkgCol="0" labelText="Attack(ms)" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="15.0"
          kerning="0.0" bold="0" italic="0" justification="33"/>
   <LABEL name="Release(ms)" id="40333d99763aadcd" memberName="label5"
-         virtualName="" explicitFocusOrder="0" pos="328 24 64 24" edTextCol="ff000000"
-         edBkgCol="0" labelText="Rls(ms)" editableSingleClick="0" editableDoubleClick="0"
-         focusDiscardsChanges="0" fontname="Default font" fontsize="15.0"
-         kerning="0.0" bold="0" italic="0" justification="33"/>
+         virtualName="" explicitFocusOrder="0" pos="360 24 80 24" edTextCol="ff000000"
+         edBkgCol="0" labelText="Release(ms)" editableSingleClick="0"
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
+         fontsize="15.0" kerning="0.0" bold="0" italic="0" justification="33"/>
   <LABEL name="Amount" id="e338f10f9eadcccf" memberName="label6" virtualName=""
-         explicitFocusOrder="0" pos="400 24 56 24" edTextCol="ff000000"
+         explicitFocusOrder="0" pos="456 24 64 24" edTextCol="ff000000"
          edBkgCol="0" labelText="Amount" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="15.0"
          kerning="0.0" bold="0" italic="0" justification="33"/>
@@ -1917,7 +2044,7 @@ BEGIN_JUCER_METADATA
   <TEXTBUTTON name="new button" id="27f7687f35fd023c" memberName="textButtonSnapCur"
               virtualName="" explicitFocusOrder="0" pos="656 24 48 24" bgColOff="a45c94"
               buttonText="SCur" connectedEdges="0" needsCallback="1" radioGroupId="0"/>
-  <LABEL name="Amount:" id="654498e4880c91f0" memberName="label9" virtualName=""
+  <LABEL name="Det alg" id="654498e4880c91f0" memberName="label9" virtualName=""
          explicitFocusOrder="0" pos="16 528 56 24" edTextCol="ff000000"
          edBkgCol="0" labelText="Det Alg:" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="15.0"
@@ -1930,7 +2057,7 @@ BEGIN_JUCER_METADATA
             virtualName="" explicitFocusOrder="0" pos="88 560 40 24" editable="0"
             layout="33" items="autotalent&#10;SoundTouch" textWhenNonSelected="talent"
             textWhenNoItems="(no choices)"/>
-  <LABEL name="Amount:" id="8377d5581a9249ca" memberName="label10" virtualName=""
+  <LABEL name="Sft Alg" id="8377d5581a9249ca" memberName="label10" virtualName=""
          explicitFocusOrder="0" pos="16 560 56 24" edTextCol="ff000000"
          edBkgCol="0" labelText="Sft Alg:" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="15.0"
@@ -1938,6 +2065,36 @@ BEGIN_JUCER_METADATA
   <TEXTBUTTON name="new button" id="f86e3d01596458b4" memberName="textButtonCheckKey"
               virtualName="" explicitFocusOrder="0" pos="32 184 88 24" bgColOff="a45c94"
               buttonText="Check" connectedEdges="0" needsCallback="1" radioGroupId="0"/>
+  <LABEL name="VThresh" id="a2d5069765991727" memberName="label2" virtualName=""
+         explicitFocusOrder="0" pos="16 432 56 24" edTextCol="ff000000"
+         edBkgCol="0" labelText="VThresh:" editableSingleClick="0" editableDoubleClick="0"
+         focusDiscardsChanges="0" fontname="Default font" fontsize="15.0"
+         kerning="0.0" bold="0" italic="0" justification="33"/>
+  <SLIDER name="new slider" id="76d9b803899a8e99" memberName="sliderVThresh"
+          virtualName="" explicitFocusOrder="0" pos="88 432 40 24" min="0.1"
+          max="1.0" int="0.01" style="LinearBar" textBoxPos="TextBoxAbove"
+          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1.0"
+          needsCallback="1"/>
+  <LABEL name="Length" id="dc4dd3223ddffbdd" memberName="label3" virtualName=""
+         explicitFocusOrder="0" pos="16 464 56 24" edTextCol="ff000000"
+         edBkgCol="0" labelText="Length:" editableSingleClick="0" editableDoubleClick="0"
+         focusDiscardsChanges="0" fontname="Default font" fontsize="15.0"
+         kerning="0.0" bold="0" italic="0" justification="33"/>
+  <SLIDER name="new slider" id="1f530dc457b303af" memberName="sliderMinLen"
+          virtualName="" explicitFocusOrder="0" pos="88 464 40 24" min="0.0"
+          max="1.0" int="0.01" style="LinearBar" textBoxPos="TextBoxAbove"
+          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1.0"
+          needsCallback="1"/>
+  <LABEL name="Interval" id="621be6075a1201a" memberName="label11" virtualName=""
+         explicitFocusOrder="0" pos="16 496 56 24" edTextCol="ff000000"
+         edBkgCol="0" labelText="Interval:" editableSingleClick="0" editableDoubleClick="0"
+         focusDiscardsChanges="0" fontname="Default font" fontsize="15.0"
+         kerning="0.0" bold="0" italic="0" justification="33"/>
+  <SLIDER name="new slider" id="b808f0a215270bf5" memberName="sliderMaxInterval"
+          virtualName="" explicitFocusOrder="0" pos="88 496 40 24" min="0.0"
+          max="1.0" int="0.01" style="LinearBar" textBoxPos="TextBoxAbove"
+          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1.0"
+          needsCallback="1"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

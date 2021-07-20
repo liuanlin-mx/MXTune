@@ -48,6 +48,9 @@ public:
         PARAMETER_ID_Ab,
         PARAMETER_ID_DET_ALG,
         PARAMETER_ID_SFT_ALG,
+        PARAMETER_ID_VTHRESH,
+        PARAMETER_ID_SNAP_MIN_LENGHT,
+        PARAMETER_ID_SNAP_MAX_INTERVAL,
         PARAMETER_ID_NUM,
     };
     
@@ -132,15 +135,16 @@ private:
     bool _is_enable_track = true;
     std::uint32_t _det_alg = 0;
     std::uint32_t _sft_alg = 0;
+    float _conf_thresh = 0.9;
     
     /* name def is_boolean scale min max parameter */
     parameter_item _parameters[PARAMETER_ID_NUM] = {
         {"Snap", 1.0, true, 1.0, 0., 1., NULL},
-        {"Default Attack", 0.050, false, 1., 0., 0.5, NULL},
-        {"Default Release", 0.050, false, 1., 0., 0.5, NULL},
-        {"Default Amount", 0.5, false, 1., 0., 1., NULL},
-        {"Auto Tune Amount", 0.6, false, 1., 0., 1., NULL},
-        {"Auto Tune Smooth", 0.7, false, 1., 0., 1., NULL},
+        {"Default Attack", 0.02, false, 1., 0., 0.5, NULL},
+        {"Default Release", 0.02, false, 1., 0., 0.5, NULL},
+        {"Default Amount", 0.7, false, 1., 0., 1., NULL},
+        {"Auto Tune Amount", 0.7, false, 1., 0., 1., NULL},
+        {"Auto Tune Smooth", 0.5, false, 1., 0., 1., NULL},
         
         {"Enable AutoTune", 0, true, 1., 0., 1., NULL},
         {"Enable Track", 0, false, 1., 0., 1., NULL},
@@ -160,8 +164,11 @@ private:
         {"Gb", 1., false, 1., 0., 1., NULL},
         {"G", 1., false, 1., 0., 1., NULL},
         {"Ab", 1., false, 1., 0., 1., NULL},
-        {"Detection algorithm ", 1., false, 10., 0., 1., NULL},
+        {"detection algorithm ", 1., false, 10., 0., 1., NULL},
         {"shifter algorithm ", 1., false, 10., 0., 1., NULL},
+        {"conf thresh", 0.9, false, 1., 0., 1., NULL},
+        {"snap min length", 0.1, false, 1., 0., 1., NULL},
+        {"snap max interval", 0.02, false, 1., 0., 1., NULL},
     };
     
     volatile std::uint32_t _parameter_update_id = 0;

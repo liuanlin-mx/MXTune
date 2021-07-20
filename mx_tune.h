@@ -44,6 +44,8 @@ public:
     float get_inpitch() { return _inpitch; }
     float get_conf() { return _conf; }
     float get_conf_shift_thresh() { return _conf_shift_thresh; }
+    void set_conf_shift_thresh(float thresh) { _conf_shift_thresh = thresh; }
+    void set_conf_detect_thresh(float thresh) { _conf_detect_thresh = thresh; }
     
     void enable_auto_tune(bool b) { _auto_tune = b; }
     manual_tune& get_manual_tune() { return _m_tune; }
@@ -73,8 +75,8 @@ private:
     float _conf_detect_thresh;
     float _conf_shift_thresh;
     
-    volatile bool _track;
-    volatile bool _auto_tune;
+    bool _track;
+    bool _auto_tune;
     
     std::int32_t _notes[12];
 

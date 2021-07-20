@@ -304,6 +304,12 @@ void manual_tune::snap_key(const std::int32_t notes[12], float time_min_len, flo
     std::uint32_t idx_end = 0;
     float pitch = 0.;
     
+    
+    for (std::int32_t i = 0; i < _max_len; i++)
+    {
+        _tune_list[i].reset();
+    }
+    
     for (std::int32_t i = 0; i < _len; i++)
     {
         const pitch_node& inpitch = _inpitch[i];
@@ -380,7 +386,7 @@ void manual_tune::snap_to_inpitch()
     }
 }
 
-void manual_tune::check_key(std::int32_t notes[12], float time_min_len, float time_max_interval)
+bool manual_tune::check_key(std::int32_t notes[12], float time_min_len, float time_max_interval)
 {
     pitch_node last;
     bool flag = true;
@@ -390,11 +396,8 @@ void manual_tune::check_key(std::int32_t notes[12], float time_min_len, float ti
     
     std::int32_t notes_chromatic[12] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
     std::uint32_t notes_count[12] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    std::int32_t notes_[12] = {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
     
-    for (std::int32_t i = 0; i < 12; i++)
-    {
-        notes[i] = -1;
-    }
     
     
     for (std::int32_t i = 0; i < _len; i++)
@@ -453,11 +456,18 @@ void manual_tune::check_key(std::int32_t notes[12], float time_min_len, float ti
         }
         if (max_idx < 0)
         {
-            break;
+            return false;
         }
         notes_count[max_idx] = 0;
-        notes[max_idx] = 1;
+        notes_[max_idx] = 1;
     }
+    
+    for (std::int32_t i = 0; i < 12; i++)
+    {
+        notes[i] = notes_[i];
+    }
+    
+    return true;
 }
 
     

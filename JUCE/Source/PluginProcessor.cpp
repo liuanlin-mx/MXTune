@@ -52,6 +52,8 @@ AutotalentAudioProcessor::AutotalentAudioProcessor()
     _is_enable_track = get_parameter(PARAMETER_ID_ENABLE_TRACK);
     _det_alg = get_parameter(PARAMETER_ID_DET_ALG);
     _sft_alg = get_parameter(PARAMETER_ID_SFT_ALG);
+    
+    _conf_thresh = get_parameter(PARAMETER_ID_VTHRESH);
 }
 
 AutotalentAudioProcessor::~AutotalentAudioProcessor()
@@ -142,6 +144,8 @@ void AutotalentAudioProcessor::prepareToPlay (double sampleRate, int samplesPerB
             _mx_tune->enable_track(_is_enable_track);
             _mx_tune->set_detector(_det_alg);
             _mx_tune->set_shifter(_sft_alg);
+            _mx_tune->set_conf_shift_thresh(_conf_thresh);
+            _mx_tune->set_conf_detect_thresh((_conf_thresh > 0.2)? (_conf_thresh - 0.2): 0.1);
             setLatencySamples(_mx_tune->get_latency());
         }
     }
@@ -507,6 +511,15 @@ void AutotalentAudioProcessor::parameterValueChanged (int parameterIndex, float 
         {
             _mx_tune->set_shifter(_sft_alg);
             setLatencySamples(_mx_tune->get_latency());
+        }
+    }
+    else if (parameterIndex == PARAMETER_ID_VTHRESH)
+    {
+        _conf_thresh = newValue * _parameters[parameterIndex].scale;
+        if (_mx_tune)
+        {
+            _mx_tune->set_conf_shift_thresh(_conf_thresh);
+            _mx_tune->set_conf_detect_thresh((_conf_thresh > 0.2)? (_conf_thresh - 0.2): 0.1);
         }
     }
     

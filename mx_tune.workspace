@@ -1,26 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CodeLite_Workspace Name="mx_tune" Database="" Version="10000">
   <Project Name="mx_tune" Path="mx_tune.project" Active="Yes"/>
+  <Project Name="JuceLibraryCode" Path="JUCE/JuceLibraryCode/JuceLibraryCode.project" Active="No"/>
   <BuildMatrix>
     <WorkspaceConfiguration Name="winexe" Selected="no">
       <Environment/>
       <Project Name="mx_tune" ConfigName="winexe"/>
+      <Project Name="JuceLibraryCode" ConfigName="Debug"/>
       <Project Name="JuceLibraryCode" ConfigName="Debug"/>
     </WorkspaceConfiguration>
     <WorkspaceConfiguration Name="lv2_plugin" Selected="no">
       <Environment/>
       <Project Name="mx_tune" ConfigName="lv2_plugin"/>
       <Project Name="JuceLibraryCode" ConfigName="Debug"/>
+      <Project Name="JuceLibraryCode" ConfigName="Debug"/>
     </WorkspaceConfiguration>
     <WorkspaceConfiguration Name="vst_plugin(windows_64bit)" Selected="no">
       <Environment/>
       <Project Name="JuceLibraryCode" ConfigName="Debug"/>
       <Project Name="mx_tune" ConfigName="vst_plugin(windows_64bit)"/>
+      <Project Name="JuceLibraryCode" ConfigName="Debug"/>
     </WorkspaceConfiguration>
     <WorkspaceConfiguration Name="vst_plugin(windows_32bit)" Selected="yes">
       <Environment/>
       <Project Name="JuceLibraryCode" ConfigName="Debug"/>
       <Project Name="mx_tune" ConfigName="vst_plugin(windows_32bit)"/>
+      <Project Name="JuceLibraryCode" ConfigName="Debug"/>
     </WorkspaceConfiguration>
   </BuildMatrix>
 </CodeLite_Workspace>

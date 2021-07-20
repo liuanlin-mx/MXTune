@@ -7,6 +7,9 @@
               pluginVSTCategory="kPlugCategEffect">
   <MAINGROUP id="ok7jMT" name="MXTune">
     <GROUP id="{F13C5646-EBC5-7FEE-A7A0-D2D433F1E308}" name="Source">
+      <FILE id="J25HH7" name="KeyDetectGui.cpp" compile="1" resource="0"
+            file="Source/KeyDetectGui.cpp"/>
+      <FILE id="Gcdqki" name="KeyDetectGui.h" compile="0" resource="0" file="Source/KeyDetectGui.h"/>
       <FILE id="Q4FwQO" name="PluginGui.cpp" compile="1" resource="0" file="Source/PluginGui.cpp"/>
       <FILE id="haSkaB" name="PluginGui.h" compile="0" resource="0" file="Source/PluginGui.h"/>
       <FILE id="iy1iiB" name="PluginProcessor.cpp" compile="1" resource="0"

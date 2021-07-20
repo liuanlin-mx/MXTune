@@ -35,6 +35,8 @@
       <File Name="JUCE/JuceLibraryCode/AppConfig.h"/>
     </VirtualDirectory>
     <VirtualDirectory Name="Source">
+      <File Name="JUCE/Source/KeyDetectGui.h"/>
+      <File Name="JUCE/Source/KeyDetectGui.cpp"/>
       <File Name="JUCE/Source/PluginParameter.h"/>
       <File Name="JUCE/Source/PluginParameter.cpp"/>
       <File Name="JUCE/Source/PluginGui.h"/>

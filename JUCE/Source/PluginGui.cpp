@@ -18,6 +18,7 @@
 */
 
 //[Headers] You can add your own extra header files here...
+#include "KeyDetectGui.h"
 //[/Headers]
 
 #include "PluginGui.h"
@@ -388,13 +389,13 @@ PluginGui::PluginGui (AutotalentAudioProcessor& p)
 
     label10->setBounds (16, 560, 56, 24);
 
-    textButtonCheckKey.reset (new TextButton ("new button"));
-    addAndMakeVisible (textButtonCheckKey.get());
-    textButtonCheckKey->setButtonText (TRANS("Check"));
-    textButtonCheckKey->addListener (this);
-    textButtonCheckKey->setColour (TextButton::buttonColourId, Colour (0x00a45c94));
+    textButtonDetectKey.reset (new TextButton ("new button"));
+    addAndMakeVisible (textButtonDetectKey.get());
+    textButtonDetectKey->setButtonText (TRANS("Detect"));
+    textButtonDetectKey->addListener (this);
+    textButtonDetectKey->setColour (TextButton::buttonColourId, Colour (0x00a45c94));
 
-    textButtonCheckKey->setBounds (32, 184, 88, 24);
+    textButtonDetectKey->setBounds (32, 184, 88, 24);
 
     label2.reset (new Label ("VThresh",
                              TRANS("VThresh:")));
@@ -515,7 +516,7 @@ PluginGui::~PluginGui()
     comboBoxDetAlg = nullptr;
     comboBoxSftAlg = nullptr;
     label10 = nullptr;
-    textButtonCheckKey = nullptr;
+    textButtonDetectKey = nullptr;
     label2 = nullptr;
     sliderVThresh = nullptr;
     label3 = nullptr;
@@ -1041,84 +1042,74 @@ void PluginGui::buttonClicked (Button* buttonThatWasClicked)
         _proc.get_mt_tune()->snap_to_inpitch();
         //[/UserButtonCode_textButtonSnapCur]
     }
-    else if (buttonThatWasClicked == textButtonCheckKey.get())
+    else if (buttonThatWasClicked == textButtonDetectKey.get())
     {
-        //[UserButtonCode_textButtonCheckKey] -- add your button handler code here..
-
+        //[UserButtonCode_textButtonDetectKey] -- add your button handler code here..
         float min_length = _proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_SNAP_MIN_LENGHT);
         float max_interval = _proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_SNAP_MAX_INTERVAL);
-        
-        std::int32_t notes[12];
-        if (_proc.get_manual_tune().check_key(notes, min_length, max_interval))
+
+        float notes_weights[12];
+        if (_proc.get_manual_tune().check_key(notes_weights, min_length, max_interval))
         {
-            for (std::int32_t i = 0; i < 12; i++)
-            {
-                _notes[i] = notes[i];
-            }
-            _key = _key_custom;
-            _key_type = _key_type_custom;
+            std::int32_t notes[12] = {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
+            std::int32_t key = _key_custom;
+            KeyDetectGui component(notes_weights, notes, &key);
             
-            std::int32_t major[12] = {1, -1, 1, -1, 1, 1, -1, 1, -1, 1, -1, 1};
-            for (std::int32_t i = 0; i < 12; i++)
+            std::int32_t r = juce::DialogWindow::showModalDialog("Key Detect", &component, 0, juce::Colours::whitesmoke, false, false, false);
+            if (r > 0)
             {
-                bool found = true;
-                for (std::uint32_t j = 0; j < 12; j++)
+                if (key == _key_custom)
                 {
-                    if (_notes[(j + i) % 12] != major[j])
-                    {
-                        found = false;
-                        break;
-                    }
+                    _key = _key_custom;
+                    _key_type = _key_type_custom;
                 }
-                if (found)
+                else
                 {
-                    _key = i;
+                    _key = key;
                     _key_type = _key_type_major;
                 }
+                
+                for (std::int32_t i = 0; i < 12; i++)
+                {
+                    _notes[i] = notes[i];
+                }
+
+                comboBoxKey->setSelectedId(_key + 1, dontSendNotification);
+                comboBoxKeyType->setSelectedId(_key_type + 1, dontSendNotification);
+
+                _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY, _key);
+                _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY, _key_type);
+
+
+                toggleButtonNoteA->setToggleState((_notes[0] > 0), dontSendNotification);
+                toggleButtonNoteBb->setToggleState((_notes[1] > 0), dontSendNotification);
+                toggleButtonNoteB->setToggleState((_notes[2] > 0), dontSendNotification);
+                toggleButtonNoteC->setToggleState((_notes[3] > 0), dontSendNotification);
+                toggleButtonNoteDb->setToggleState((_notes[4] > 0), dontSendNotification);
+                toggleButtonNoteD->setToggleState((_notes[5] > 0), dontSendNotification);
+                toggleButtonNoteEb->setToggleState((_notes[6] > 0), dontSendNotification);
+                toggleButtonNoteE->setToggleState((_notes[7] > 0), dontSendNotification);
+                toggleButtonNoteF->setToggleState((_notes[8] > 0), dontSendNotification);
+                toggleButtonNoteGb->setToggleState((_notes[9] > 0), dontSendNotification);
+                toggleButtonNoteG->setToggleState((_notes[10] > 0), dontSendNotification);
+                toggleButtonNoteAb->setToggleState((_notes[11] > 0), dontSendNotification);
+
+
+                _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_A, (_notes[0] > 0)? 1.: 0.);
+                _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_Bb, (_notes[1] > 0)? 1.: 0.);
+                _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_B, (_notes[2] > 0)? 1.: 0.);
+                _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_C, (_notes[3] > 0)? 1.: 0.);
+                _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_Db, (_notes[4] > 0)? 1.: 0.);
+                _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_D, (_notes[5] > 0)? 1.: 0.);
+                _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_Eb, (_notes[6] > 0)? 1.: 0.);
+                _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_E, (_notes[7] > 0)? 1.: 0.);
+                _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_F, (_notes[8] > 0)? 1.: 0.);
+                _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_Gb, (_notes[9] > 0)? 1.: 0.);
+                _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_G, (_notes[10] > 0)? 1.: 0.);
+                _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_Ab, (_notes[11] > 0)? 1.: 0.);
             }
-            
-            
-            for (int i = 0; i < 12; i++)
-            {
-                net_log_debug("%d\n", _notes[i]);
-            }
-            
-            comboBoxKey->setSelectedId(_key + 1, dontSendNotification);
-            comboBoxKeyType->setSelectedId(_key_type + 1, dontSendNotification);
-
-            _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY, _key);
-            _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY, _key_type);
-
-
-            toggleButtonNoteA->setToggleState((_notes[0] > 0), dontSendNotification);
-            toggleButtonNoteBb->setToggleState((_notes[1] > 0), dontSendNotification);
-            toggleButtonNoteB->setToggleState((_notes[2] > 0), dontSendNotification);
-            toggleButtonNoteC->setToggleState((_notes[3] > 0), dontSendNotification);
-            toggleButtonNoteDb->setToggleState((_notes[4] > 0), dontSendNotification);
-            toggleButtonNoteD->setToggleState((_notes[5] > 0), dontSendNotification);
-            toggleButtonNoteEb->setToggleState((_notes[6] > 0), dontSendNotification);
-            toggleButtonNoteE->setToggleState((_notes[7] > 0), dontSendNotification);
-            toggleButtonNoteF->setToggleState((_notes[8] > 0), dontSendNotification);
-            toggleButtonNoteGb->setToggleState((_notes[9] > 0), dontSendNotification);
-            toggleButtonNoteG->setToggleState((_notes[10] > 0), dontSendNotification);
-            toggleButtonNoteAb->setToggleState((_notes[11] > 0), dontSendNotification);
-
-
-            _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_A, (_notes[0] > 0)? 1.: 0.);
-            _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_Bb, (_notes[1] > 0)? 1.: 0.);
-            _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_B, (_notes[2] > 0)? 1.: 0.);
-            _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_C, (_notes[3] > 0)? 1.: 0.);
-            _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_Db, (_notes[4] > 0)? 1.: 0.);
-            _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_D, (_notes[5] > 0)? 1.: 0.);
-            _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_Eb, (_notes[6] > 0)? 1.: 0.);
-            _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_E, (_notes[7] > 0)? 1.: 0.);
-            _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_F, (_notes[8] > 0)? 1.: 0.);
-            _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_Gb, (_notes[9] > 0)? 1.: 0.);
-            _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_G, (_notes[10] > 0)? 1.: 0.);
-            _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_Ab, (_notes[11] > 0)? 1.: 0.);
-            
         }
-        //[/UserButtonCode_textButtonCheckKey]
+        //[/UserButtonCode_textButtonDetectKey]
     }
 
     //[UserbuttonClicked_Post]
@@ -2062,9 +2053,9 @@ BEGIN_JUCER_METADATA
          edBkgCol="0" labelText="Sft Alg:" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="15.0"
          kerning="0.0" bold="0" italic="0" justification="33"/>
-  <TEXTBUTTON name="new button" id="f86e3d01596458b4" memberName="textButtonCheckKey"
+  <TEXTBUTTON name="new button" id="f86e3d01596458b4" memberName="textButtonDetectKey"
               virtualName="" explicitFocusOrder="0" pos="32 184 88 24" bgColOff="a45c94"
-              buttonText="Check" connectedEdges="0" needsCallback="1" radioGroupId="0"/>
+              buttonText="Detect" connectedEdges="0" needsCallback="1" radioGroupId="0"/>
   <LABEL name="VThresh" id="a2d5069765991727" memberName="label2" virtualName=""
          explicitFocusOrder="0" pos="16 432 56 24" edTextCol="ff000000"
          edBkgCol="0" labelText="VThresh:" editableSingleClick="0" editableDoubleClick="0"

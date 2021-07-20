@@ -83,7 +83,7 @@ public:
     void snap_key(const std::int32_t notes[12], float time_min_len, float time_max_interval, float attack, float release, float amount);
     void snap_to_inpitch();
     
-    bool check_key(std::int32_t notes[12], float time_min_len, float time_max_interval);
+    bool check_key(float notes_weights[12], float time_min_len, float time_max_interval);
     
     void set_vthresh(float thresh) { _conf_thresh = thresh; }
 private:

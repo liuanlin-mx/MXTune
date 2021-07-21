@@ -347,7 +347,7 @@ void manual_tune::snap_key(const std::int32_t notes[12], float time_min_len, flo
         {
             float time = _idx2time(i);
             float time_end = _idx2time(idx_end);
-            if (time - time_end > time_max_interval || fabs(snap_pitch - pitch) > 1.0)
+            if (time - time_end > time_max_interval || fabs(snap_pitch - pitch) > 2.0)
             {
                 end = true;
             }
@@ -540,7 +540,6 @@ void manual_tune::_remove_overlap(const std::shared_ptr<tune_node>& tune)
     std::shared_ptr<tune_node> right;
     if (idx_begin > 0)
     {
-        
         left = _tune_list[idx_begin - 1];
     }
     
@@ -655,7 +654,7 @@ float manual_tune::_snap_pitch(const std::int32_t notes[12], float pitch)
         }
     }
 
-    for (std::int32_t j = 0; j < 11; j++)
+    for (std::int32_t j = 0; j < 12; j++)
     {
         if (notes[(right + 12 * 8) % 12] < 0)
         {
@@ -667,7 +666,7 @@ float manual_tune::_snap_pitch(const std::int32_t notes[12], float pitch)
         }
     }
 
-    if (abs(i - left) > abs(right - i))
+    if (fabs(pitch - (float)left) < fabs((float)right - pitch))
     {
         return left;
     }

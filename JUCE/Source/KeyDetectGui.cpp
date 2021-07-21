@@ -516,7 +516,7 @@ void KeyDetectGui::_update_key()
     _key = _key_custom;
     std::int32_t major[12] = {1, -1, 1, -1, 1, 1, -1, 1, -1, 1, -1, 1};
     const char *notes_name[12] = {"A", "Bb", "B", "C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab"};
-    
+
     for (std::int32_t i = 0; i < 12; i++)
     {
         bool found = true;

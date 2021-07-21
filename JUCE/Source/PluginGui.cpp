@@ -1014,7 +1014,7 @@ void PluginGui::buttonClicked (Button* buttonThatWasClicked)
         float amount = _proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_DEF_AMOUNT);
         float min_length = _proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_SNAP_MIN_LENGHT);
         float max_interval = _proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_SNAP_MAX_INTERVAL);
-        
+
         _proc.get_mt_tune()->snap_key(min_length, max_interval, attack, release, amount);
         //[/UserButtonCode_textButtonSnapKey]
     }
@@ -1054,7 +1054,7 @@ void PluginGui::buttonClicked (Button* buttonThatWasClicked)
             std::int32_t notes[12] = {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
             std::int32_t key = _key_custom;
             KeyDetectGui component(notes_weights, notes, &key);
-            
+
             std::int32_t r = juce::DialogWindow::showModalDialog("Key Detect", &component, 0, juce::Colours::whitesmoke, false, false, false);
             if (r > 0)
             {
@@ -1068,7 +1068,7 @@ void PluginGui::buttonClicked (Button* buttonThatWasClicked)
                     _key = key;
                     _key_type = _key_type_major;
                 }
-                
+
                 for (std::int32_t i = 0; i < 12; i++)
                 {
                     _notes[i] = notes[i];
@@ -1599,7 +1599,7 @@ float PluginGui::_snap_pitch(float pitch)
         }
     }
 
-    for (std::int32_t j = 0; j < 11; j++)
+    for (std::int32_t j = 0; j < 12; j++)
     {
         if (notes[(right + 12 * 8) % 12] < 0)
         {
@@ -1611,7 +1611,7 @@ float PluginGui::_snap_pitch(float pitch)
         }
     }
 
-    if (abs(i - left) > abs(right - i))
+    if (fabs(pitch - (float)left) < fabs((float)right - pitch))
     {
         return left;
     }

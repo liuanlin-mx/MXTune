@@ -1462,6 +1462,30 @@ bool PluginGui::keyPressed (const KeyPress& key)
         _y_move(false);
         repaint();
     }
+    else if (key.getKeyCode() == '-' || key.getKeyCode() == 'Q')
+    {
+        if (!_is_ctrl)
+        {
+            _x_zoom(false);
+        }
+        else
+        {
+            _y_zoom(false);
+        }
+        repaint();
+    }
+    else if (key.getKeyCode() == '=' || key.getKeyCode() == 'E')
+    {
+        if (!_is_ctrl)
+        {
+            _x_zoom(true);
+        }
+        else
+        {
+            _y_zoom(true);
+        }
+        repaint();
+    }
 
     return false;  // Return true if your handler uses this key event, or false to allow it to be passed-on.
     //[/UserCode_keyPressed]
@@ -1585,7 +1609,7 @@ float PluginGui::_snap_pitch(float pitch)
 
     std::int32_t *notes = _notes;
     std::int32_t notes_chromatic[12] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
-    if (_is_shift)
+    if (_is_alt)
     {
         notes = notes_chromatic;
     }

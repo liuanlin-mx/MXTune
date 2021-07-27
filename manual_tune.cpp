@@ -294,6 +294,16 @@ void manual_tune::clear_note()
     }
 }
 
+void manual_tune::clear_auto_note()
+{
+    for (std::int32_t i = 0; i < _max_len; i++)
+    {
+        if (_tune_list[i] && !_tune_list[i]->is_manual)
+        {
+            _tune_list[i].reset();
+        }
+    }
+}
 
 
 void manual_tune::snap_key(const std::int32_t notes[12], float time_min_len, float time_max_interval, float attack, float release, float amount)
@@ -307,7 +317,10 @@ void manual_tune::snap_key(const std::int32_t notes[12], float time_min_len, flo
     
     for (std::int32_t i = 0; i < _max_len; i++)
     {
-        _tune_list[i].reset();
+        if (_tune_list[i] && !_tune_list[i]->is_manual)
+        {
+            _tune_list[i].reset();
+        }
     }
     
     for (std::int32_t i = 0; i < _len; i++)
@@ -369,8 +382,7 @@ void manual_tune::snap_key(const std::int32_t notes[12], float time_min_len, flo
                 tune->release = release;
                 tune->amount = amount;
                 
-                _write_tune(tune);
-                _remove_overlap(tune);
+                _add_auto_tune(tune);
             }
             i = idx_end;
         }
@@ -492,7 +504,7 @@ void manual_tune::_write_tune(const std::shared_ptr<tune_node>& tune)
         std::swap(tune->pitch_start, tune->pitch_end);
     }
     
-    if (tune->time_end - tune->time_start < 0.0001)
+    if (tune->time_end - tune->time_start < 0.001)
     {
         return;
     }
@@ -571,6 +583,25 @@ void manual_tune::_remove_overlap(const std::shared_ptr<tune_node>& tune)
     }
     _erase_tune_if(left, left && left->time_end - left->time_start < _min_time);
     _erase_tune_if(right, right && right->time_end - right->time_start < _min_time);
+}
+
+
+void manual_tune::_add_auto_tune(const std::shared_ptr<tune_node>& tune)
+{
+    std::uint32_t idx_begin = _time2idx(tune->time_start);
+    std::uint32_t idx_end = _time2idx(tune->time_end);
+    
+    while (idx_begin < idx_end)
+    {
+        if (_tune_list[idx_begin] && _tune_list[idx_begin]->is_manual)
+        {
+            return;
+        }
+        idx_begin++;
+    }
+    
+    _write_tune(tune);
+    _remove_overlap(tune);
 }
 
 

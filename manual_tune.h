@@ -41,6 +41,7 @@ public:
             amount = 1.;
         }
         
+        bool is_manual = false;
         float time_start = 0.;
         float time_end = 0.;
         float pitch_start = 0.;
@@ -79,6 +80,7 @@ public:
     void del_selected();
     
     void clear_note();
+    void clear_auto_note();
     
     void snap_key(const std::int32_t notes[12], float time_min_len, float time_max_interval, float attack, float release, float amount);
     void snap_to_inpitch();
@@ -94,6 +96,7 @@ private:
     void _erase_tune(const std::shared_ptr<tune_node>& tune);
     void _erase_tune_if(const std::shared_ptr<tune_node>& tune, bool b);
     void _remove_overlap(const std::shared_ptr<tune_node>& node);
+    void _add_auto_tune(const std::shared_ptr<tune_node>& tune);
     
     void _linear_fit_from_inpitch(float time_begin, float time_end, float& a, float& b);
     float _tune2pitch(const std::shared_ptr<tune_node>& tune, float time, float inpitch, float a, float b);

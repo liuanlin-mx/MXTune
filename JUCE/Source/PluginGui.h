@@ -148,6 +148,7 @@ private:
     //[/UserVariables]
 
     //==============================================================================
+    std::unique_ptr<GroupComponent> groupComponent6;
     std::unique_ptr<GroupComponent> groupComponent4;
     std::unique_ptr<GroupComponent> groupComponent2;
     std::unique_ptr<Slider> sliderAttack;
@@ -183,8 +184,7 @@ private:
     std::unique_ptr<Slider> sliderATSmooth;
     std::unique_ptr<Label> label8;
     std::unique_ptr<Slider> sliderATAmount;
-    std::unique_ptr<GroupComponent> groupComponent6;
-    std::unique_ptr<TextButton> textButtonSnapCur;
+    std::unique_ptr<TextButton> textButtonCANote;
     std::unique_ptr<Label> label9;
     std::unique_ptr<ComboBox> comboBoxDetAlg;
     std::unique_ptr<ComboBox> comboBoxSftAlg;

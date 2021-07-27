@@ -34,6 +34,12 @@ PluginGui::PluginGui (AutotalentAudioProcessor& p)
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]
 
+    groupComponent6.reset (new GroupComponent ("new group",
+                                               TRANS("Notes")));
+    addAndMakeVisible (groupComponent6.get());
+
+    groupComponent6->setBounds (144, 96, 712, 496);
+
     groupComponent4.reset (new GroupComponent ("new group",
                                                String()));
     addAndMakeVisible (groupComponent4.get());
@@ -165,11 +171,11 @@ PluginGui::PluginGui (AutotalentAudioProcessor& p)
 
     textButtonSnapKey.reset (new TextButton ("new button"));
     addAndMakeVisible (textButtonSnapKey.get());
-    textButtonSnapKey->setButtonText (TRANS("SKey"));
+    textButtonSnapKey->setButtonText (TRANS("Snap Key"));
     textButtonSnapKey->addListener (this);
     textButtonSnapKey->setColour (TextButton::buttonColourId, Colour (0x00a45c94));
 
-    textButtonSnapKey->setBounds (656, 64, 48, 24);
+    textButtonSnapKey->setBounds (624, 24, 80, 24);
 
     textButtonClearPitch.reset (new TextButton ("ClearPitch"));
     addAndMakeVisible (textButtonClearPitch.get());
@@ -177,7 +183,7 @@ PluginGui::PluginGui (AutotalentAudioProcessor& p)
     textButtonClearPitch->addListener (this);
     textButtonClearPitch->setColour (TextButton::buttonColourId, Colour (0x00a45c94));
 
-    textButtonClearPitch->setBounds (712, 64, 64, 24);
+    textButtonClearPitch->setBounds (784, 64, 64, 24);
 
     comboBoxKey.reset (new ComboBox ("new combo box"));
     addAndMakeVisible (comboBoxKey.get());
@@ -287,7 +293,7 @@ PluginGui::PluginGui (AutotalentAudioProcessor& p)
     textButtonClearNote->addListener (this);
     textButtonClearNote->setColour (TextButton::buttonColourId, Colour (0x00a45c94));
 
-    textButtonClearNote->setBounds (784, 64, 64, 24);
+    textButtonClearNote->setBounds (712, 64, 64, 24);
 
     label7.reset (new Label ("Smooth",
                              TRANS("Smooth:")));
@@ -329,19 +335,13 @@ PluginGui::PluginGui (AutotalentAudioProcessor& p)
 
     sliderATAmount->setBounds (184, 56, 40, 24);
 
-    groupComponent6.reset (new GroupComponent ("new group",
-                                               TRANS("Notes")));
-    addAndMakeVisible (groupComponent6.get());
+    textButtonCANote.reset (new TextButton ("new button"));
+    addAndMakeVisible (textButtonCANote.get());
+    textButtonCANote->setButtonText (TRANS("CAutoNote"));
+    textButtonCANote->addListener (this);
+    textButtonCANote->setColour (TextButton::buttonColourId, Colour (0x00a45c94));
 
-    groupComponent6->setBounds (144, 96, 712, 496);
-
-    textButtonSnapCur.reset (new TextButton ("new button"));
-    addAndMakeVisible (textButtonSnapCur.get());
-    textButtonSnapCur->setButtonText (TRANS("SCur"));
-    textButtonSnapCur->addListener (this);
-    textButtonSnapCur->setColour (TextButton::buttonColourId, Colour (0x00a45c94));
-
-    textButtonSnapCur->setBounds (656, 24, 48, 24);
+    textButtonCANote->setBounds (624, 64, 80, 24);
 
     label9.reset (new Label ("Det alg",
                              TRANS("Det Alg:")));
@@ -475,6 +475,7 @@ PluginGui::~PluginGui()
     //[Destructor_pre]. You can add your own custom destruction code here..
     //[/Destructor_pre]
 
+    groupComponent6 = nullptr;
     groupComponent4 = nullptr;
     groupComponent2 = nullptr;
     sliderAttack = nullptr;
@@ -510,8 +511,7 @@ PluginGui::~PluginGui()
     sliderATSmooth = nullptr;
     label8 = nullptr;
     sliderATAmount = nullptr;
-    groupComponent6 = nullptr;
-    textButtonSnapCur = nullptr;
+    textButtonCANote = nullptr;
     label9 = nullptr;
     comboBoxDetAlg = nullptr;
     comboBoxSftAlg = nullptr;
@@ -1036,11 +1036,11 @@ void PluginGui::buttonClicked (Button* buttonThatWasClicked)
         _proc.get_mt_tune()->clear_note();
         //[/UserButtonCode_textButtonClearNote]
     }
-    else if (buttonThatWasClicked == textButtonSnapCur.get())
+    else if (buttonThatWasClicked == textButtonCANote.get())
     {
-        //[UserButtonCode_textButtonSnapCur] -- add your button handler code here..
-        _proc.get_mt_tune()->snap_to_inpitch();
-        //[/UserButtonCode_textButtonSnapCur]
+        //[UserButtonCode_textButtonCANote] -- add your button handler code here..
+        _proc.get_manual_tune().clear_auto_note();
+        //[/UserButtonCode_textButtonCANote]
     }
     else if (buttonThatWasClicked == textButtonDetectKey.get())
     {
@@ -1211,6 +1211,7 @@ void PluginGui::mouseDrag (const MouseEvent& e)
         _new_tune = true;
 
         _cur_node.reset(new manual_tune::tune_node);
+        _cur_node->is_manual = true;
         _cur_node->attack = _proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_DEF_ATTACK);
         _cur_node->release = _proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_DEF_RELEASE);
         _cur_node->amount = _proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_DEF_AMOUNT);
@@ -1244,6 +1245,8 @@ void PluginGui::mouseDrag (const MouseEvent& e)
     }
     else if (_modify_tune)
     {
+
+        _cur_node->is_manual = true;
         if (_select_pos == manual_tune::SELECT_MID)
         {
             float time_start = _x_to_time(x) + _select_xd;
@@ -1908,6 +1911,8 @@ BEGIN_JUCER_METADATA
   <BACKGROUND backgroundColour="ff323e44">
     <RECT pos="152 112 696 472" fill="solid: 4000000" hasStroke="0"/>
   </BACKGROUND>
+  <GROUPCOMPONENT name="new group" id="2efd593a5cb91513" memberName="groupComponent6"
+                  virtualName="" explicitFocusOrder="0" pos="144 96 712 496" title="Notes"/>
   <GROUPCOMPONENT name="new group" id="fe9a3479d2a7d612" memberName="groupComponent4"
                   virtualName="" explicitFocusOrder="0" pos="248 8 608 88" title=""/>
   <GROUPCOMPONENT name="Key" id="c819674330435c53" memberName="groupComponent2"
@@ -1964,10 +1969,10 @@ BEGIN_JUCER_METADATA
                 virtualName="" explicitFocusOrder="0" pos="88 344 40 24" buttonText="G"
                 connectedEdges="0" needsCallback="1" radioGroupId="0" state="1"/>
   <TEXTBUTTON name="new button" id="6322078c6ba4dfdb" memberName="textButtonSnapKey"
-              virtualName="" explicitFocusOrder="0" pos="656 64 48 24" bgColOff="a45c94"
-              buttonText="SKey" connectedEdges="0" needsCallback="1" radioGroupId="0"/>
+              virtualName="" explicitFocusOrder="0" pos="624 24 80 24" bgColOff="a45c94"
+              buttonText="Snap Key" connectedEdges="0" needsCallback="1" radioGroupId="0"/>
   <TEXTBUTTON name="ClearPitch" id="2162a44ccaf901a6" memberName="textButtonClearPitch"
-              virtualName="" explicitFocusOrder="0" pos="712 64 64 24" bgColOff="a45c94"
+              virtualName="" explicitFocusOrder="0" pos="784 64 64 24" bgColOff="a45c94"
               buttonText="CPitch" connectedEdges="0" needsCallback="1" radioGroupId="0"/>
   <COMBOBOX name="new combo box" id="fe39f8a969668fb0" memberName="comboBoxKey"
             virtualName="" explicitFocusOrder="0" pos="32 120 88 24" editable="0"
@@ -2008,7 +2013,7 @@ BEGIN_JUCER_METADATA
                 virtualName="" explicitFocusOrder="0" pos="784 24 64 24" buttonText="Snap"
                 connectedEdges="0" needsCallback="1" radioGroupId="0" state="1"/>
   <TEXTBUTTON name="ClearNote" id="5c74ee40a315b111" memberName="textButtonClearNote"
-              virtualName="" explicitFocusOrder="0" pos="784 64 64 24" bgColOff="a45c94"
+              virtualName="" explicitFocusOrder="0" pos="712 64 64 24" bgColOff="a45c94"
               buttonText="CNote" connectedEdges="0" needsCallback="1" radioGroupId="0"/>
   <LABEL name="Smooth" id="73e3856f04859fc1" memberName="label7" virtualName=""
          explicitFocusOrder="0" pos="16 56 56 24" edTextCol="ff000000"
@@ -2030,11 +2035,9 @@ BEGIN_JUCER_METADATA
           max="1.0" int="0.01" style="LinearBar" textBoxPos="TextBoxAbove"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1.0"
           needsCallback="1"/>
-  <GROUPCOMPONENT name="new group" id="2efd593a5cb91513" memberName="groupComponent6"
-                  virtualName="" explicitFocusOrder="0" pos="144 96 712 496" title="Notes"/>
-  <TEXTBUTTON name="new button" id="27f7687f35fd023c" memberName="textButtonSnapCur"
-              virtualName="" explicitFocusOrder="0" pos="656 24 48 24" bgColOff="a45c94"
-              buttonText="SCur" connectedEdges="0" needsCallback="1" radioGroupId="0"/>
+  <TEXTBUTTON name="new button" id="27f7687f35fd023c" memberName="textButtonCANote"
+              virtualName="" explicitFocusOrder="0" pos="624 64 80 24" bgColOff="a45c94"
+              buttonText="CAutoNote" connectedEdges="0" needsCallback="1" radioGroupId="0"/>
   <LABEL name="Det alg" id="654498e4880c91f0" memberName="label9" virtualName=""
          explicitFocusOrder="0" pos="16 528 56 24" edTextCol="ff000000"
          edBkgCol="0" labelText="Det Alg:" editableSingleClick="0" editableDoubleClick="0"

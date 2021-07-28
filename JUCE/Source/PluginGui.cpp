@@ -631,11 +631,11 @@ void PluginGui::paint (Graphics& g)
             char str[32] = {0};
             if (_cur_node->time_end > _cur_node->time_start)
             {
-                sprintf(str, "%d(ms)", (std::uint32_t)((_cur_node->time_end - _cur_node->time_start) * 1000));
+                sprintf(str, "%u(ms)", (std::uint32_t)((_cur_node->time_end - _cur_node->time_start) * 1000));
             }
             else
             {
-                sprintf(str, "%d(ms)", (std::uint32_t)((_cur_node->time_start - _cur_node->time_end) * 1000));
+                sprintf(str, "%u(ms)", (std::uint32_t)((_cur_node->time_start - _cur_node->time_end) * 1000));
             }
 
             String text (str);
@@ -1053,7 +1053,7 @@ void PluginGui::buttonClicked (Button* buttonThatWasClicked)
         {
             std::int32_t notes[12] = {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
             std::int32_t key = _key_custom;
-            KeyDetectGui component(notes_weights, notes, &key);
+            KeyDetectGui component(notes_weights, notes, key);
 
             std::int32_t r = juce::DialogWindow::showModalDialog("Key Detect", &component, 0, juce::Colours::whitesmoke, false, false, false);
             if (r > 0)

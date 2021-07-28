@@ -22,7 +22,7 @@ public:
         float pitch = 0.;
         float conf = 0.;
         
-        bool is_same(const pitch_node& other)
+        bool is_same(const pitch_node& other) const
         {
             return abs(other.pitch - pitch) < 0.0001 && abs(other.conf - conf) < 0.0001;
         }
@@ -53,9 +53,12 @@ public:
     
     
 public:
-    manual_tune(unsigned int len = 10 * 60 * 1000);
+    explicit manual_tune(std::uint32_t len = 10 * 60 * 1000);
     ~manual_tune();
     
+private:
+    manual_tune(const manual_tune&);
+    manual_tune& operator=(const manual_tune&);
     
 public:
     float get_time_len() { return _idx2time(_len); }

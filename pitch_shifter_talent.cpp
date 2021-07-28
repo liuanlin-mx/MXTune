@@ -5,32 +5,32 @@
 
 #define PI (float)3.14159265358979323846
 
-pitch_shifter_talent::pitch_shifter_talent(unsigned int sample_rate)
-    : _o_buffer(sample_rate)
+pitch_shifter_talent::pitch_shifter_talent(std::uint32_t sample_rate)
+    : pitch_shifter()
+    , _aref(440)
+    , _sample_rate(sample_rate)
+    , _hann_window(NULL)
+    , _phasein(0.)
+    , _phaseout(0.)
+    , _inphinc(0.)
+    , _outphinc(0.)
+    , _phincfact(0.)
+    , _frag(NULL)
+    , _fragsize(0)
+    , _mix(1.0)
+    , _o_buffer(sample_rate)
     , _i_buffer(sample_rate)
 {
-    _test_idx = 0;
-    unsigned int buf_size = _o_buffer.get_buf_size();
-    _aref = 440;
-    _sample_rate = sample_rate;
+    std::uint32_t buf_size = _o_buffer.get_buf_size();
     
     _frag = (float *)calloc(buf_size, sizeof(float));
-    _fragsize = 0;
+    
     // Standard raised cosine window, max height at N/2
     _hann_window = (float *)calloc(buf_size, sizeof(float));
-    for(int i = 0; i < (int)buf_size; i++)
+    for(std::uint32_t i = 0; i < buf_size; i++)
     {
         _hann_window[i] = -0.5 * cos(2 * PI * i / buf_size) + 0.5;
     }
-    
-    _phasein = 0.;
-    _phaseout = 0.;
-    _inphinc = 0.;
-    _outphinc = 0.;
-    _phincfact = 0.;
-    
-    
-    _mix = 1.0;
 }
 
 pitch_shifter_talent::~pitch_shifter_talent()

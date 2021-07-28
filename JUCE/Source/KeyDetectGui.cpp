@@ -27,7 +27,7 @@
 //[/MiscUserDefs]
 
 //==============================================================================
-KeyDetectGui::KeyDetectGui (const float *notes_weights, std::int32_t *notes, std::int32_t *key)
+KeyDetectGui::KeyDetectGui (const float *notes_weights, std::int32_t *notes, std::int32_t& key)
     : _o_notes(notes), _o_key(key)
 {
     //[Constructor_pre] You can add your own custom stuff here..
@@ -494,7 +494,7 @@ void KeyDetectGui::buttonClicked (Button* buttonThatWasClicked)
         {
             _o_notes[i] = _notes[i];
         }
-        *_o_key = _key;
+        _o_key = _key;
         if (DialogWindow* dw = findParentComponentOfClass<DialogWindow>())
         {
             dw->exitModalState(1);
@@ -515,7 +515,6 @@ void KeyDetectGui::_update_key()
 {
     _key = _key_custom;
     std::int32_t major[12] = {1, -1, 1, -1, 1, 1, -1, 1, -1, 1, -1, 1};
-    const char *notes_name[12] = {"A", "Bb", "B", "C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab"};
 
     for (std::int32_t i = 0; i < 12; i++)
     {
@@ -542,6 +541,7 @@ void KeyDetectGui::_update_key()
     else
     {
         char str[32] = {0};
+        const char *notes_name[12] = {"A", "Bb", "B", "C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab"};
         sprintf(str, "1=%s", notes_name[_key]);
         labelKey->setText(str, dontSendNotification);
     }

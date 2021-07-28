@@ -7,29 +7,34 @@
 
 pitch_detector_talent::pitch_detector_talent(float sample_rate)
     : pitch_detector()
+    , _aref(440)
+    , _conf(0)
+    , _vthresh(0.7)
+    , _gate(-60)
+    , _pitch(0.)
+    , _sample_rate(sample_rate)
+    , _buf_size(ring_buffer::get_size_from_rate(sample_rate))
+    , _corr_size(_buf_size / 2 + 1)
+    , _max_period(1. / 80.)
+    , _min_period(1. / 800.)
+    , _max_idx((std::int32_t)(sample_rate * _max_period))
+    , _min_idx((std::int32_t)(sample_rate * _min_period))
+    
+    , _cbwindow(NULL)
+    , _ffttime(NULL)
+    , _acwinv(NULL)
+    , _complex(NULL)
+    , _forward_plan()
+    , _reverse_plan()
+    
     , _buffer(sample_rate)
     , _noverlap(4)
+    
 {
-    _aref = 440;
-    _conf = 0;
-    _vthresh = 0.7;
-    _gate = -60;
-    _pitch = 0.;
-    
-    _buf_size = ring_buffer::get_size_from_rate(sample_rate);
-    _corr_size = _buf_size / 2 + 1;
-    _sample_rate = sample_rate;
-    _max_period = 1. / 80.;
-    _min_period = 1. / 800.;
-    _max_idx = (unsigned long)(sample_rate * _max_period);
-    _min_idx = (unsigned long)(sample_rate * _min_period);
-    
     if (_max_idx > _corr_size)
     {
         _max_idx = _corr_size;
     }
-    
-    
     
     // Generate a window with a single raised cosine from N/4 to 3N/4
     _cbwindow = (float *)fftwf_malloc(_buf_size * sizeof(float));

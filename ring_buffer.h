@@ -4,8 +4,12 @@
 struct ring_buffer
 {
 public:
-    ring_buffer(unsigned int sample_rate);
+    explicit ring_buffer(unsigned int sample_rate);
     ~ring_buffer();
+    
+private:
+    ring_buffer(const ring_buffer&);
+    ring_buffer& operator=(const ring_buffer&);
     
 public:
     static unsigned int get_size_from_rate(unsigned int sample_rate)

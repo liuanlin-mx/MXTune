@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CodeLite_Project Name="mx_tune" Version="11000" InternalType="">
   <Plugins>
+    <Plugin Name="CppCheck"/>
     <Plugin Name="qmake">
       <![CDATA[00120001N0005Debug0000000000000001N0010lv2_plugin0000000000000001N0006plugin0000000000000001N0011vst2_plugin0000000000000001N0018vst2_plugin(32bit)0000000000000001N0018vst2_plugin(64bit)0000000000000001N0026vst3_plugin(windows_32bit)0000000000000001N0025vst_plugin(windows 32bit)0000000000000001N0025vst_plugin(windows 64bit)0000000000000001N0025vst_plugin(windows_32bit)0000000000000001N0025vst_plugin(windows_64bit)0000000000000001N0006winexe000000000000]]>
     </Plugin>

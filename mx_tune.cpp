@@ -3,10 +3,11 @@
 #include "pitch_detector_aubio.h"
 #include "pitch_shifter_talent.h"
 #include "pitch_shifter_st.h"
-#include "net_log.h"
 
 mx_tune::mx_tune(unsigned int sample_rate)
-    : _detector_type(DETECTOR_TYPE_YIN_FAST)
+    : _tune()
+    , _m_tune()
+    , _detector_type(DETECTOR_TYPE_YIN_FAST)
     , _detector(new pitch_detector_aubio(sample_rate, "yinfast"))
     , _shifter_type(SHIFTER_TYPE_SOUND_TOUCH)
     , _shifter(new pitch_shifter_st(sample_rate))
@@ -67,23 +68,19 @@ void mx_tune::set_detector(std::uint32_t detector_type)
 
 void mx_tune::set_shifter(std::uint32_t shifter_type)
 {
-    net_log_debug("\n");
     if (shifter_type == _shifter_type)
     {
-    net_log_debug("\n");
         return;
     }
     
     if (shifter_type == SHIFTER_TYPE_TALENT)
     {
-    net_log_debug("\n");
         _shifter.reset(new pitch_shifter_talent(_sample_rate));
         _shifter->set_aref(_aref);
         _shifter_type = shifter_type;
     }
     else if (shifter_type == SHIFTER_TYPE_SOUND_TOUCH)
     {
-    net_log_debug("\n");
         _shifter.reset(new pitch_shifter_st(_sample_rate));
         _shifter->set_aref(_aref);
         _shifter_type = shifter_type;

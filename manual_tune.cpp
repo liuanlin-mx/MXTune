@@ -2,16 +2,16 @@
 #include <math.h>
 #include "manual_tune.h"
 
-manual_tune::manual_tune(unsigned int len)
+manual_tune::manual_tune(std::uint32_t len)
+    : _inpitch(new pitch_node[len])
+    , _outpitch(new pitch_node[len])
+    , _tune_list(new std::shared_ptr<tune_node>[len])
+    , _select()
+    , _max_len(0)
+    , _len(0)
+    , _min_time(0.01)
+    , _conf_thresh(0.7)
 {
-    _max_len = len;
-    _len = 0;
-    _inpitch = new pitch_node[len];
-    _outpitch = new pitch_node[len];
-    _tune_list = new std::shared_ptr<tune_node>[len];
-    
-    _min_time = 0.01;
-    _conf_thresh = 0.7;
 }
 
 manual_tune::~manual_tune()
@@ -23,15 +23,15 @@ manual_tune::~manual_tune()
 
 void manual_tune::set_inpitch(float time_begin, float time_end, const pitch_node& node)
 {
-    int begin = _time2idx(time_begin);
-    int end = _time2idx(time_end);
+    std::uint32_t begin = _time2idx(time_begin);
+    std::uint32_t end = _time2idx(time_end);
     
     if (end > _len)
     {
         _len = end;
     }
     
-    for (int i = begin; i < end; i++)
+    for (std::uint32_t i = begin; i < end; i++)
     {
         _inpitch[i] = node;
     }
@@ -39,19 +39,19 @@ void manual_tune::set_inpitch(float time_begin, float time_end, const pitch_node
 
 manual_tune::pitch_node manual_tune::get_inpitch(float time)
 {
-    unsigned int idx = _time2idx(time);
+    std::uint32_t idx = _time2idx(time);
     return _inpitch[idx];
 }
 
 
 std::list<std::pair<manual_tune::pitch_node, float> > manual_tune::get_inpitch(float time_begin, float time_end)
 {
-    int begin = _time2idx(time_begin);
-    int end = _time2idx(time_end);
+    std::uint32_t begin = _time2idx(time_begin);
+    std::uint32_t end = _time2idx(time_end);
     
     std::list<std::pair<manual_tune::pitch_node, float> > list;
     pitch_node last;
-    for (int i = begin; i < end; i++)
+    for (std::uint32_t i = begin; i < end; i++)
     {
         pitch_node& tmp = _inpitch[i];
             
@@ -66,15 +66,15 @@ std::list<std::pair<manual_tune::pitch_node, float> > manual_tune::get_inpitch(f
 
 void manual_tune::set_outpitch(float time_begin, float time_end, const pitch_node& node)
 {
-    int begin = _time2idx(time_begin);
-    int end = _time2idx(time_end);
+    std::uint32_t begin = _time2idx(time_begin);
+    std::uint32_t end = _time2idx(time_end);
     
     if (end > _len)
     {
         _len = end;
     }
     
-    for (int i = begin; i < end; i++)
+    for (std::uint32_t i = begin; i < end; i++)
     {
         _outpitch[i] = node;
     }
@@ -114,8 +114,8 @@ manual_tune::pitch_node manual_tune::get_outpitch(float time)
 
 std::list<std::pair<manual_tune::pitch_node, float> > manual_tune::get_outpitch(float time_begin, float time_end)
 {
-    int begin = _time2idx(time_begin);
-    int end = _time2idx(time_end);
+    std::uint32_t begin = _time2idx(time_begin);
+    std::uint32_t end = _time2idx(time_end);
     
     
     std::list<std::pair<manual_tune::pitch_node, float> > list;
@@ -126,10 +126,9 @@ std::list<std::pair<manual_tune::pitch_node, float> > manual_tune::get_outpitch(
     float b = 0;
     std::shared_ptr<tune_node> last_tune;
     
-    for (int i = begin; i < end; i++)
+    for (std::uint32_t i = begin; i < end; i++)
     {
         pitch_node& inpitch = _inpitch[i];
-        pitch_node& outpitch = _outpitch[i];
         std::shared_ptr<tune_node> tune = _tune_list[i];
         
         if (inpitch.is_same(last_inpitch))
@@ -173,7 +172,7 @@ std::list<std::pair<manual_tune::pitch_node, float> > manual_tune::get_outpitch(
 void manual_tune::clear_inpitch()
 {
     pitch_node tmp;
-    for (std::int32_t i = 0; i < _max_len; i++)
+    for (std::uint32_t i = 0; i < _max_len; i++)
     {
         _inpitch[i] = tmp;
     }
@@ -182,7 +181,7 @@ void manual_tune::clear_inpitch()
 void manual_tune::clear_outpitch()
 {
     pitch_node tmp;
-    for (std::int32_t i = 0; i < _max_len; i++)
+    for (std::uint32_t i = 0; i < _max_len; i++)
     {
         _outpitch[i] = tmp;
     }
@@ -232,8 +231,6 @@ std::shared_ptr<manual_tune::tune_node> manual_tune::select_tune(float time, flo
         pos = SELECT_NONE;
         return std::shared_ptr<tune_node>();
     }
-    std::uint32_t begin = _time2idx(node->time_start);
-    std::uint32_t end = _time2idx(node->time_end);
     
     float x0 = node->time_start;
     float y0 = node->pitch_start;
@@ -288,7 +285,7 @@ void manual_tune::del_selected()
 
 void manual_tune::clear_note()
 {
-    for (std::int32_t i = 0; i < _max_len; i++)
+    for (std::uint32_t i = 0; i < _max_len; i++)
     {
         _tune_list[i].reset();
     }
@@ -296,7 +293,7 @@ void manual_tune::clear_note()
 
 void manual_tune::clear_auto_note()
 {
-    for (std::int32_t i = 0; i < _max_len; i++)
+    for (std::uint32_t i = 0; i < _max_len; i++)
     {
         if (_tune_list[i] && !_tune_list[i]->is_manual)
         {
@@ -315,7 +312,7 @@ void manual_tune::snap_key(const std::int32_t notes[12], float time_min_len, flo
     float pitch = 0.;
     
     
-    for (std::int32_t i = 0; i < _max_len; i++)
+    for (std::uint32_t i = 0; i < _max_len; i++)
     {
         if (_tune_list[i] && !_tune_list[i]->is_manual)
         {
@@ -323,7 +320,7 @@ void manual_tune::snap_key(const std::int32_t notes[12], float time_min_len, flo
         }
     }
     
-    for (std::int32_t i = 0; i < _len; i++)
+    for (std::uint32_t i = 0; i < _len; i++)
     {
         const pitch_node& inpitch = _inpitch[i];
         
@@ -391,7 +388,7 @@ void manual_tune::snap_key(const std::int32_t notes[12], float time_min_len, flo
 
 void manual_tune::snap_to_inpitch()
 {
-    for (std::int32_t i = 0; i < (std::int32_t)_len; i++)
+    for (std::uint32_t i = 0; i < _len; i++)
     {
         _outpitch[i].pitch = _inpitch[i].pitch;
         _outpitch[i].conf = _inpitch[i].conf;
@@ -410,7 +407,7 @@ bool manual_tune::check_key(float notes_weights[12], float time_min_len, float t
     std::uint32_t notes_count[12] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     
     
-    for (std::int32_t i = 0; i < _len; i++)
+    for (std::uint32_t i = 0; i < _len; i++)
     {
         const pitch_node& inpitch = _inpitch[i];
         
@@ -420,14 +417,12 @@ bool manual_tune::check_key(float notes_weights[12], float time_min_len, float t
         }
         last = inpitch;
         
-        bool end = false;
         if (inpitch.conf < _conf_thresh)
         {
             if (flag)
             {
                 continue;
             }
-            end = true;
         }
         
         float snap_pitch = _snap_pitch(notes_chromatic, inpitch.pitch);

@@ -6,7 +6,8 @@
 #define L2SC (float)3.32192809488736218171
 
 pitch_detector_aubio::pitch_detector_aubio(float sample_rate, const char *method)
-    : _sample_rate(sample_rate)
+    : pitch_detector()
+    , _sample_rate(sample_rate)
     , _aref(440)
     , _vthresh(0.9)
     , _pitch(0)

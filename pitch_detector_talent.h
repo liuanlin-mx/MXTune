@@ -8,15 +8,19 @@
 class pitch_detector_talent: public pitch_detector
 {
 public:
-    pitch_detector_talent(float sample_rate);
+    explicit pitch_detector_talent(float sample_rate);
     ~pitch_detector_talent();
     
+private:
+    pitch_detector_talent(const pitch_detector_talent&);
+    pitch_detector_talent& operator=(const pitch_detector_talent&);
+    
 public:
-    virtual void set_vthresh(float vthresh) { _vthresh = vthresh; }
-    virtual void set_gate(float db) {}
-    virtual void set_aref(float aref) { _aref = aref; }
-    virtual bool get_pitch(float in, float& pitch, float& conf);
-    virtual float get_time() { return (_buffer.get_buf_size() / _noverlap) / _sample_rate; }
+    virtual void set_vthresh(float vthresh) override { _vthresh = vthresh; }
+    virtual void set_gate(float db) override {}
+    virtual void set_aref(float aref) override { _aref = aref; }
+    virtual bool get_pitch(float in, float& pitch, float& conf) override;
+    virtual float get_time() override { return (_buffer.get_buf_size() / _noverlap) / _sample_rate; }
     
 private:
     float _get_pitch(ring_buffer& buffer, float& conf);

@@ -4,19 +4,21 @@
 #define PI (float)3.14159265358979323846
 
 auto_tune::auto_tune()
+    : _num_notes(0)
+    , _pull(0.)
+    , _fixed(0.)
+    , _shift(0.)
+    , _smooth(1.0)
+    , _amount(1.0)
+    , _scwarp(0)
 {
     for (int i = 0; i < 12; i++)
     {
         _notes[i] = 0;
+        _pitch2note[i] = 0;
+        _note2pitch[i] = 0;
     }
     
-    _pull = 0.;
-    _fixed = 0.;
-    _shift = 0.;
-    
-    _smooth = 1.0;
-    _amount = 1.0;
-    _scwarp = 0;
     _update();
 }
 

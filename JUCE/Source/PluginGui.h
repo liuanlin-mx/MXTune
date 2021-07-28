@@ -42,7 +42,7 @@ class PluginGui  : public AudioProcessorEditor,
 {
 public:
     //==============================================================================
-    PluginGui (AutotalentAudioProcessor& p);
+    explicit PluginGui (AutotalentAudioProcessor& p);
     ~PluginGui() override;
 
     //==============================================================================

@@ -25,7 +25,7 @@ AutotalentAudioProcessor::AutotalentAudioProcessor()
                        )
 #endif
 {
-    for (std::int32_t i = 0; i < sizeof(_parameters) / sizeof(_parameters[0]); i++)
+    for (std::uint32_t i = 0; i < sizeof(_parameters) / sizeof(_parameters[0]); i++)
     {
         _parameters[i].parameter = new PluginParameter(_parameters[i].name, _parameters[i].def / _parameters[i].scale,
             _parameters[i].min / _parameters[i].scale, _parameters[i].max / _parameters[i].scale, _parameters[i].is_boolean);
@@ -58,7 +58,7 @@ AutotalentAudioProcessor::AutotalentAudioProcessor()
 
 AutotalentAudioProcessor::~AutotalentAudioProcessor()
 {
-    for (std::int32_t i = 0; i < sizeof(_parameters) / sizeof(_parameters[0]); i++)
+    for (std::uint32_t i = 0; i < sizeof(_parameters) / sizeof(_parameters[0]); i++)
     {
         _parameters[i].parameter->removeListener(this);
     }

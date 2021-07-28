@@ -38,7 +38,7 @@ class KeyDetectGui  : public Component,
 {
 public:
     //==============================================================================
-    KeyDetectGui (const float *notes_weights, std::int32_t *notes, std::int32_t *key);
+    KeyDetectGui (const float *notes_weights, std::int32_t *notes, std::int32_t& key);
     ~KeyDetectGui() override;
 
     //==============================================================================
@@ -73,7 +73,7 @@ private:
     };
 
     std::int32_t *_o_notes;
-    std::int32_t *_o_key;
+    std::int32_t& _o_key;
     std::int32_t _notes[12];
     std::int32_t _key;
     //[/UserVariables]

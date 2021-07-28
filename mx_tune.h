@@ -25,7 +25,7 @@ public:
     
     
 public:
-    mx_tune(std::uint32_t sample_rate);
+    explicit mx_tune(std::uint32_t sample_rate);
     ~mx_tune();
     
 public:

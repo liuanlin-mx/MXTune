@@ -20,11 +20,15 @@
       <Project Name="mx_tune" ConfigName="vst_plugin(windows_64bit)"/>
       <Project Name="JuceLibraryCode" ConfigName="Debug"/>
     </WorkspaceConfiguration>
-    <WorkspaceConfiguration Name="vst_plugin(windows_32bit)" Selected="yes">
+    <WorkspaceConfiguration Name="vst_plugin(windows_32bit)" Selected="no">
       <Environment/>
       <Project Name="JuceLibraryCode" ConfigName="Debug"/>
       <Project Name="mx_tune" ConfigName="vst_plugin(windows_32bit)"/>
       <Project Name="JuceLibraryCode" ConfigName="Debug"/>
+    </WorkspaceConfiguration>
+    <WorkspaceConfiguration Name="cmake" Selected="yes">
+      <Environment/>
+      <Project Name="mx_tune" ConfigName="cmake"/>
     </WorkspaceConfiguration>
   </BuildMatrix>
 </CodeLite_Workspace>

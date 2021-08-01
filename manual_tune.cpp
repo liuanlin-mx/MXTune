@@ -2,12 +2,12 @@
 #include <math.h>
 #include "manual_tune.h"
 
-manual_tune::manual_tune(std::uint32_t len)
-    : _inpitch(new pitch_node[len])
-    , _outpitch(new pitch_node[len])
-    , _tune_list(new std::shared_ptr<tune_node>[len])
+manual_tune::manual_tune(std::uint32_t max_len)
+    : _inpitch(new pitch_node[max_len])
+    , _outpitch(new pitch_node[max_len])
+    , _tune_list(new std::shared_ptr<tune_node>[max_len])
     , _select()
-    , _max_len(0)
+    , _max_len(max_len)
     , _len(0)
     , _min_time(0.01)
     , _conf_thresh(0.7)
@@ -26,6 +26,11 @@ void manual_tune::set_inpitch(float time_begin, float time_end, const pitch_node
     std::uint32_t begin = _time2idx(time_begin);
     std::uint32_t end = _time2idx(time_end);
     
+    if (end >= _max_len)
+    {
+        end = _max_len - 1;
+    }
+    
     if (end > _len)
     {
         _len = end;
@@ -40,6 +45,12 @@ void manual_tune::set_inpitch(float time_begin, float time_end, const pitch_node
 manual_tune::pitch_node manual_tune::get_inpitch(float time)
 {
     std::uint32_t idx = _time2idx(time);
+    
+    if (idx >= _max_len)
+    {
+        return pitch_node();
+    }
+    
     return _inpitch[idx];
 }
 
@@ -48,6 +59,11 @@ std::list<std::pair<manual_tune::pitch_node, float> > manual_tune::get_inpitch(f
 {
     std::uint32_t begin = _time2idx(time_begin);
     std::uint32_t end = _time2idx(time_end);
+    
+    if (end >= _max_len)
+    {
+        end = _max_len - 1;
+    }
     
     std::list<std::pair<manual_tune::pitch_node, float> > list;
     pitch_node last;
@@ -69,6 +85,11 @@ void manual_tune::set_outpitch(float time_begin, float time_end, const pitch_nod
     std::uint32_t begin = _time2idx(time_begin);
     std::uint32_t end = _time2idx(time_end);
     
+    if (end >= _max_len)
+    {
+        end = _max_len - 1;
+    }
+    
     if (end > _len)
     {
         _len = end;
@@ -83,6 +104,11 @@ void manual_tune::set_outpitch(float time_begin, float time_end, const pitch_nod
 manual_tune::pitch_node manual_tune::get_outpitch(float time)
 {
     std::uint32_t idx = _time2idx(time);
+    
+    if (idx >= _max_len)
+    {
+        return pitch_node();
+    }
     
     {
         const pitch_node& inpitch = _inpitch[idx];
@@ -117,6 +143,10 @@ std::list<std::pair<manual_tune::pitch_node, float> > manual_tune::get_outpitch(
     std::uint32_t begin = _time2idx(time_begin);
     std::uint32_t end = _time2idx(time_end);
     
+    if (end >= _max_len)
+    {
+        end = _max_len - 1;
+    }
     
     std::list<std::pair<manual_tune::pitch_node, float> > list;
     //pitch_node last;
@@ -193,6 +223,12 @@ void manual_tune::set_tune(std::shared_ptr<tune_node>& tune)
     {
         return;
     }
+    
+    if (_time2idx(tune->time_end) >= _max_len)
+    {
+        return;
+    }
+    
     _write_tune(tune);
     _remove_overlap(tune);
 }
@@ -203,6 +239,12 @@ std::list<std::shared_ptr<manual_tune::tune_node> > manual_tune::get_tune(float 
     std::uint32_t idx_end = _time2idx(time_end);
     std::shared_ptr<tune_node> last;
     std::list<std::shared_ptr<tune_node> > list;
+    
+    if (idx_end >= _max_len)
+    {
+        idx_end = _max_len - 1;
+    }
+    
     while (idx_begin < idx_end)
     {
         std::shared_ptr<tune_node>& node = _tune_list[idx_begin];
@@ -219,12 +261,22 @@ std::list<std::shared_ptr<manual_tune::tune_node> > manual_tune::get_tune(float 
 std::shared_ptr<manual_tune::tune_node> manual_tune::get_tune(float time)
 {
     std::uint32_t idx = _time2idx(time);
+    if (idx >= _max_len)
+    {
+        return std::shared_ptr<manual_tune::tune_node>();
+    }
     return _tune_list[idx];
 }
 
 std::shared_ptr<manual_tune::tune_node> manual_tune::select_tune(float time, float pitch, std::uint32_t& pos)
 {
     std::uint32_t idx = _time2idx(time);
+    
+    if (idx >= _max_len)
+    {
+        return std::shared_ptr<manual_tune::tune_node>();
+    }
+    
     std::shared_ptr<tune_node>& node = _tune_list[idx];
     if (node == nullptr)
     {

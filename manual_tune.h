@@ -53,7 +53,7 @@ public:
     
     
 public:
-    explicit manual_tune(std::uint32_t len = 10 * 60 * 1000);
+    explicit manual_tune(std::uint32_t max_len = 10 * 60 * 1000);
     ~manual_tune();
     
 private:

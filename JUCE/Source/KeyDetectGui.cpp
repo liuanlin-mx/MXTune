@@ -559,7 +559,7 @@ void KeyDetectGui::_update_key()
 BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="KeyDetectGui" componentName=""
-                 parentClasses="public Component" constructorParams="const float *notes_weights, std::int32_t *notes, std::int32_t *key"
+                 parentClasses="public Component" constructorParams="const float *notes_weights, std::int32_t *notes, std::int32_t&amp; key"
                  variableInitialisers="_o_notes(notes), _o_key(key)" snapPixels="8"
                  snapActive="1" snapShown="1" overlayOpacity="0.330" fixedSize="1"
                  initialWidth="640" initialHeight="240">

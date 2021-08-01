@@ -14,7 +14,7 @@
       <Project Name="JuceLibraryCode" ConfigName="Debug"/>
       <Project Name="JuceLibraryCode" ConfigName="Debug"/>
     </WorkspaceConfiguration>
-    <WorkspaceConfiguration Name="vst_plugin(windows_64bit)" Selected="no">
+    <WorkspaceConfiguration Name="vst_plugin(windows_64bit)" Selected="yes">
       <Environment/>
       <Project Name="JuceLibraryCode" ConfigName="Debug"/>
       <Project Name="mx_tune" ConfigName="vst_plugin(windows_64bit)"/>
@@ -26,7 +26,7 @@
       <Project Name="mx_tune" ConfigName="vst_plugin(windows_32bit)"/>
       <Project Name="JuceLibraryCode" ConfigName="Debug"/>
     </WorkspaceConfiguration>
-    <WorkspaceConfiguration Name="cmake" Selected="yes">
+    <WorkspaceConfiguration Name="cmake" Selected="no">
       <Environment/>
       <Project Name="mx_tune" ConfigName="cmake"/>
     </WorkspaceConfiguration>

@@ -56,7 +56,7 @@
     <File Name="pitch_detector_aubio.cpp"/>
     <File Name="pitch_detector_talent.h"/>
     <File Name="pitch_detector_talent.cpp"/>
-    <File Name="mx_tune_lv2.cpp" ExcludeProjConfig="cmake;vst_plugin(windows_32bit);"/>
+    <File Name="mx_tune_lv2.cpp" ExcludeProjConfig="vst_plugin(windows_64bit);vst_plugin(windows_32bit);cmake;"/>
     <File Name="mx_tune.ttl"/>
     <File Name="mx_tune.cpp"/>
     <File Name="mx_tune.h"/>

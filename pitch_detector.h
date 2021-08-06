@@ -4,6 +4,13 @@
 
 class pitch_detector
 {
+protected:
+    enum
+    {
+        MIN_PITCH = -30,
+        MAX_PITCH = 26,
+    };
+    
 public:
     pitch_detector() {}
     virtual ~pitch_detector() {};

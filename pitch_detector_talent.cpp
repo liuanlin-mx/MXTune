@@ -15,7 +15,7 @@ pitch_detector_talent::pitch_detector_talent(float sample_rate)
     , _sample_rate(sample_rate)
     , _buf_size(ring_buffer::get_size_from_rate(sample_rate))
     , _corr_size(_buf_size / 2 + 1)
-    , _max_period(1. / 80.)
+    , _max_period(1. / 70.)
     , _min_period(1. / 800.)
     , _max_idx((std::int32_t)(sample_rate * _max_period))
     , _min_idx((std::int32_t)(sample_rate * _min_period))
@@ -220,7 +220,7 @@ float pitch_detector_talent::_get_pitch(ring_buffer& buffer, float& conf)
     // Convert to semitones
     tf = (float)-12 * log10((float)_aref * period) * L2SC;
     
-    if (db < _gate)
+    if (db < _gate || tf < MIN_PITCH || tf > MAX_PITCH)
     {
         conf = 0;
     }

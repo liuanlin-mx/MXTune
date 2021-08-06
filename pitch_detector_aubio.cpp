@@ -44,7 +44,15 @@ bool pitch_detector_aubio::get_pitch(float in, float& pitch, float& conf)
         float freq = fvec_get_sample(_out, 0);
         if (conf > _vthresh)
         {
-            _pitch = (float)12. * log10(freq / (float)_aref) * L2SC;
+            float pitch_ = (float)12. * log10(freq / (float)_aref) * L2SC;
+            if (pitch_ < MIN_PITCH || pitch_ > MAX_PITCH)
+            {
+                conf = 0.;
+            }
+            else
+            {
+                _pitch = pitch_;
+            }
         }
         pitch = _pitch;
         return true;

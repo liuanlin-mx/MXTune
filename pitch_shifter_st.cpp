@@ -29,7 +29,11 @@ pitch_shifter_st::~pitch_shifter_st()
 
 void pitch_shifter_st::update_shifter_variables(float inpitch, float outpitch)
 {
-    _st.setPitchSemiTones((double)(outpitch - inpitch));
+    float pitch_diff = (outpitch - inpitch);
+    if (pitch_diff > -12 && pitch_diff < 12)
+    {
+        _st.setPitchSemiTones(pitch_diff);
+    }
 }
 
 

@@ -708,7 +708,7 @@ void PluginGui::paint (Graphics& g)
 
     // draw outpitch line
     {
-        std::list<std::pair<manual_tune::pitch_node, float> > pitch_list = _proc.get_manual_tune().get_outpitch(_time_left, _time_right);
+        std::list<std::pair<manual_tune::pitch_node, float> > pitch_list = _proc.get_mt_tune()->get_outpitch(_time_left, _time_right);
         Path pitch_path;
         bool flag = true;
         for (auto i: pitch_list)

@@ -160,6 +160,30 @@ void mx_tune::snap_to_inpitch()
     _m_tune.snap_to_inpitch();
 }
 
+
+std::list<std::pair<manual_tune::pitch_node, float> > mx_tune::get_outpitch(float time_begin, float time_end)
+{
+    auto pitch_list = _m_tune.get_outpitch(time_begin, time_end);
+    
+    if (_auto_tune)
+    {
+        for (auto& item : pitch_list)
+        {
+            if (item.first.conf < _conf_shift_thresh)
+            {
+                manual_tune::pitch_node inpitch = _m_tune.get_inpitch(item.second);
+                if (inpitch.conf >= _conf_shift_thresh)
+                {
+                    item.first.pitch = _tune.tune(inpitch.pitch);
+                    item.first.conf = inpitch.conf;
+                }
+            }
+        }
+    }
+    return pitch_list;
+}
+
+
 void mx_tune::run(float* in, float *out, std::int32_t n, float timestamp)
 {
     for (std::int32_t i = 0; i < n; i++)

@@ -275,6 +275,7 @@ void AutotalentAudioProcessor::getStateInformation (MemoryBlock& destData)
         }
         root->setProperty("inpitch", inpitch_arr);
     }
+    /*
     {
         std::list<std::pair<manual_tune::pitch_node, float> > outpitch = _mx_tune->get_manual_tune().get_outpitch(time_begin, time_end);
         for (auto i: outpitch)
@@ -288,6 +289,7 @@ void AutotalentAudioProcessor::getStateInformation (MemoryBlock& destData)
         }
         root->setProperty("outpitch", outpitch_arr);
     }
+    */
     
     {
         std::list<std::shared_ptr<manual_tune::tune_node> > tune = _mx_tune->get_manual_tune().get_tune(time_begin, time_end);
@@ -376,7 +378,7 @@ void AutotalentAudioProcessor::setStateInformation (const void* data, int sizeIn
         }
     }
     
-    
+    /*
     {
         var outpitch = root["outpitch"];
         if (!outpitch.isArray())
@@ -412,7 +414,7 @@ void AutotalentAudioProcessor::setStateInformation (const void* data, int sizeIn
             }
         }
     }
-    
+    */
     
     {
         var tune = root["tune"];

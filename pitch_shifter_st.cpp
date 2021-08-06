@@ -5,7 +5,7 @@
 #include "pitch_shifter_st.h"
 
 
-pitch_shifter_st::pitch_shifter_st(unsigned int sample_rate)
+pitch_shifter_st::pitch_shifter_st(std::uint32_t sample_rate)
     : _aref(440)
     , _sample_rate(sample_rate)
     , _st()

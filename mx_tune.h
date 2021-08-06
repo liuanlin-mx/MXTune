@@ -21,6 +21,7 @@ public:
     {
         SHIFTER_TYPE_TALENT = 0,
         SHIFTER_TYPE_SOUND_TOUCH = 1,
+        //SHIFTER_TYPE_RUBBERBAND = 2,
     };
     
     

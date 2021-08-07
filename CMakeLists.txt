@@ -75,7 +75,8 @@ add_definitions(-Wno-non-virtual-dtor)
 add_definitions(-Wno-unused-parameter)
 
 # Linker options
-set(LINK_OPTIONS -mwindows)
+set(LINK_OPTIONS -s)
+set(LINK_OPTIONS ${LINK_OPTIONS} -mwindows)
 set(LINK_OPTIONS ${LINK_OPTIONS} -fPIC)
 set(LINK_OPTIONS ${LINK_OPTIONS} -static)
 
@@ -93,30 +94,33 @@ link_directories(
 
 # Define the CXX sources
 set ( CXX_SRCS
-    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_gui_extra.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/JUCE/Source/PluginProcessor.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/JUCE/Source/PluginGui.cpp
     ${CMAKE_CURRENT_LIST_DIR}/ring_buffer.cpp
     ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_cryptography.cpp
     ${CMAKE_CURRENT_LIST_DIR}/auto_tune.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/pitch_detector_aubio.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/README.md
+    ${CMAKE_CURRENT_LIST_DIR}/JUCE/Source/KeyDetectGui.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_plugin_client_AAX.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_graphics.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_basics.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_plugin_client_RTAS_1.cpp
     ${CMAKE_CURRENT_LIST_DIR}/pitch_shifter_st.cpp
     ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_formats.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/JUCE/Source/PluginGui.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_plugin_client_AAX.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_basics.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/pitch_detector_aubio.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_plugin_client_RTAS_1.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/JUCE/Source/PluginProcessor.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_opengl.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/mx_tune.cpp
     ${CMAKE_CURRENT_LIST_DIR}/pitch_shifter_talent.cpp
     ${CMAKE_CURRENT_LIST_DIR}/pitch_detector_talent.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_opengl.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/mx_tune.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_gui_extra.cpp
     ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_gui_basics.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_graphics.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/JUCE/Source/KeyDetectGui.cpp
     ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_events.cpp
     ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_data_structures.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_core.cpp
     ${CMAKE_CURRENT_LIST_DIR}/manual_tune.cpp
     ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_utils.cpp
     ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_plugin_client_RTAS_utils.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_plugin_client_RTAS_2.cpp
     ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_plugin_client_VST3.cpp
     ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_devices.cpp
     ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_plugin_client_VST2.cpp
@@ -127,8 +131,6 @@ set ( CXX_SRCS
     ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_plugin_client_RTAS_4.cpp
     ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_plugin_client_Standalone.cpp
     ${CMAKE_CURRENT_LIST_DIR}/JUCE/Source/PluginParameter.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_core.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_plugin_client_RTAS_2.cpp
 )
 
 set_source_files_properties(

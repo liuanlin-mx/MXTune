@@ -100,7 +100,7 @@
         <IncludePath Value="JUCE/JuceLibraryCode/modules"/>
         <IncludePath Value="VST3_SDK"/>
       </Compiler>
-      <Linker Options="-mwindows;-fPIC;-static" Required="yes">
+      <Linker Options="-s;-mwindows;-fPIC;-static" Required="yes">
         <LibraryPath Value="."/>
         <LibraryPath Value="Debug"/>
         <Library Value="gdi32"/>
@@ -233,7 +233,7 @@
         <IncludePath Value="JUCE/JuceLibraryCode/modules"/>
         <IncludePath Value="VST3_SDK"/>
       </Compiler>
-      <Linker Options="-mwindows;-fPIC;-static" Required="yes">
+      <Linker Options="-s;-mwindows;-fPIC;-static" Required="yes">
         <LibraryPath Value="."/>
         <LibraryPath Value="Debug"/>
         <Library Value="gdi32"/>
@@ -273,6 +273,8 @@
         <Command Enabled="yes">cp $(IntermediateDirectory)/$(ProjectName).dll $(IntermediateDirectory)/$(ProjectName).vst3</Command>
         <Command Enabled="yes">cp $(IntermediateDirectory)/$(ProjectName).dll "D:/DAW/VstPlugins (x86)/MXTune.dll"</Command>
         <Command Enabled="yes">cp $(IntermediateDirectory)/$(ProjectName).dll "C:/Program Files (x86)/Common Files/VST3/MXTune.vst3"</Command>
+        <Command Enabled="yes">cp $(IntermediateDirectory)/$(ProjectName).dll $(WorkspacePath)/windows-vst/x86/$(ProjectName).vst3</Command>
+        <Command Enabled="yes">cp $(IntermediateDirectory)/$(ProjectName).dll $(WorkspacePath)/windows-vst/x86/$(ProjectName).dll</Command>
       </PostBuild>
       <CustomBuild Enabled="no">
         <RebuildCommand/>
@@ -303,7 +305,7 @@
         <IncludePath Value="JUCE/JuceLibraryCode/modules"/>
         <IncludePath Value="VST3_SDK"/>
       </Compiler>
-      <Linker Options="-mwindows;-fPIC;-static" Required="yes">
+      <Linker Options="-s;-mwindows;-fPIC;-static" Required="yes">
         <LibraryPath Value="."/>
         <LibraryPath Value="Debug"/>
         <Library Value="gdi32"/>
@@ -343,6 +345,8 @@
         <Command Enabled="yes">cp $(IntermediateDirectory)/$(ProjectName).dll $(IntermediateDirectory)/$(ProjectName).vst3</Command>
         <Command Enabled="yes">cp $(IntermediateDirectory)/$(ProjectName).dll "D:/DAW/VstPlugins/MXTune.dll"</Command>
         <Command Enabled="yes">cp $(IntermediateDirectory)/$(ProjectName).dll "C:/Program Files/Common Files/VST3/MXTune.vst3"</Command>
+        <Command Enabled="yes">cp $(IntermediateDirectory)/$(ProjectName).dll $(WorkspacePath)/windows-vst/x64/$(ProjectName).vst3</Command>
+        <Command Enabled="yes">cp $(IntermediateDirectory)/$(ProjectName).dll $(WorkspacePath)/windows-vst/x64/$(ProjectName).dll</Command>
       </PostBuild>
       <CustomBuild Enabled="no">
         <RebuildCommand/>

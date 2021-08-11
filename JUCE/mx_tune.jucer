@@ -26,41 +26,34 @@
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_audio_basics" path="../../../JUCE_5_4_7/modules"/>
-        <MODULEPATH id="juce_audio_devices" path="../../../JUCE_5_4_7/modules"/>
-        <MODULEPATH id="juce_audio_formats" path="../../../JUCE_5_4_7/modules"/>
         <MODULEPATH id="juce_audio_plugin_client" path="../../../JUCE_5_4_7/modules"/>
-        <MODULEPATH id="juce_audio_processors" path="../../../JUCE_5_4_7/modules"/>
-        <MODULEPATH id="juce_audio_utils" path="../../../JUCE_5_4_7/modules"/>
         <MODULEPATH id="juce_core" path="../../../JUCE_5_4_7/modules"/>
-        <MODULEPATH id="juce_cryptography" path="../../../JUCE_5_4_7/modules"/>
-        <MODULEPATH id="juce_data_structures" path="../../../JUCE_5_4_7/modules"/>
         <MODULEPATH id="juce_events" path="../../../JUCE_5_4_7/modules"/>
-        <MODULEPATH id="juce_graphics" path="../../../JUCE_5_4_7/modules"/>
         <MODULEPATH id="juce_gui_basics" path="../../../JUCE_5_4_7/modules"/>
-        <MODULEPATH id="juce_gui_extra" path="../../../JUCE_5_4_7/modules"/>
-        <MODULEPATH id="juce_opengl" path="../../../JUCE_5_4_7/modules"/>
+        <MODULEPATH id="juce_audio_processors" path="../../../build/JUCE-5.4.7/modules"/>
+        <MODULEPATH id="juce_data_structures" path="../../../build/JUCE-5.4.7/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="../../../build/JUCE-5.4.7/modules"/>
+        <MODULEPATH id="juce_graphics" path="../../../build/JUCE-5.4.7/modules"/>
       </MODULEPATHS>
     </VS2019>
   </EXPORTFORMATS>
   <MODULES>
     <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="1" useGlobalPath="1"/>
-    <MODULE id="juce_audio_devices" showAllCode="1" useLocalCopy="1" useGlobalPath="1"/>
-    <MODULE id="juce_audio_formats" showAllCode="1" useLocalCopy="1" useGlobalPath="1"/>
     <MODULE id="juce_audio_plugin_client" showAllCode="1" useLocalCopy="1"
             useGlobalPath="1"/>
     <MODULE id="juce_audio_processors" showAllCode="1" useLocalCopy="1" useGlobalPath="1"/>
-    <MODULE id="juce_audio_utils" showAllCode="1" useLocalCopy="1" useGlobalPath="1"/>
     <MODULE id="juce_core" showAllCode="1" useLocalCopy="1" useGlobalPath="1"/>
-    <MODULE id="juce_cryptography" showAllCode="1" useLocalCopy="1" useGlobalPath="1"/>
     <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="1" useGlobalPath="1"/>
     <MODULE id="juce_events" showAllCode="1" useLocalCopy="1" useGlobalPath="1"/>
     <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="1" useGlobalPath="1"/>
     <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="1" useGlobalPath="1"/>
     <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="1" useGlobalPath="1"/>
-    <MODULE id="juce_opengl" showAllCode="1" useLocalCopy="1" useGlobalPath="1"/>
   </MODULES>
   <LIVE_SETTINGS>
     <WINDOWS buildEnabled="0" warningsEnabled="0" continuousRebuildEnabled="0"/>
+    <LINUX/>
   </LIVE_SETTINGS>
-  <JUCEOPTIONS JUCE_VST3_CAN_REPLACE_VST2="0" JUCE_STRICT_REFCOUNTEDPOINTER="1"/>
+  <JUCEOPTIONS JUCE_VST3_CAN_REPLACE_VST2="0" JUCE_STRICT_REFCOUNTEDPOINTER="1"
+               JUCE_WEB_BROWSER="0" JUCE_ENABLE_LIVE_CONSTANT_EDITOR="0" JUCE_USE_CURL="0"
+               JUCE_WASAPI="0"/>
 </JUCERPROJECT>

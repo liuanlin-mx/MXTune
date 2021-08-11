@@ -76,9 +76,7 @@ add_definitions(-Wno-unused-parameter)
 
 # Linker options
 set(LINK_OPTIONS -s)
-set(LINK_OPTIONS ${LINK_OPTIONS} -mwindows)
 set(LINK_OPTIONS ${LINK_OPTIONS} -fPIC)
-set(LINK_OPTIONS ${LINK_OPTIONS} -static)
 
 
 if(WIN32)
@@ -88,49 +86,41 @@ endif(WIN32)
 # Library path
 link_directories(
     .
-    .
-    Debug
 )
 
 # Define the CXX sources
 set ( CXX_SRCS
+    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_plugin_client_RTAS_1.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_plugin_client_RTAS_2.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_plugin_client_RTAS_3.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_plugin_client_RTAS_4.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_plugin_client_RTAS_utils.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_plugin_client_Unity.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_plugin_client_VST3.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_processors.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_events.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_graphics.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_core.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_gui_basics.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_gui_extra.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/mx_tune.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_plugin_client_utils.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/pitch_detector_aubio.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/auto_tune.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/pitch_detector_talent.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_data_structures.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/pitch_shifter_talent.cpp
     ${CMAKE_CURRENT_LIST_DIR}/JUCE/Source/PluginProcessor.cpp
     ${CMAKE_CURRENT_LIST_DIR}/JUCE/Source/PluginGui.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/ring_buffer.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_cryptography.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/auto_tune.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/pitch_detector_aubio.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/README.md
-    ${CMAKE_CURRENT_LIST_DIR}/JUCE/Source/KeyDetectGui.cpp
     ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_plugin_client_AAX.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_graphics.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_basics.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_plugin_client_RTAS_1.cpp
     ${CMAKE_CURRENT_LIST_DIR}/pitch_shifter_st.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_formats.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/pitch_shifter_talent.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/pitch_detector_talent.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_opengl.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/mx_tune.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_gui_extra.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_gui_basics.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_events.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_data_structures.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_core.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/manual_tune.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_utils.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_plugin_client_RTAS_utils.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_plugin_client_RTAS_2.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_plugin_client_VST3.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_devices.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_plugin_client_VST2.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_plugin_client_utils.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_plugin_client_RTAS_3.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_plugin_client_Unity.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_processors.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_plugin_client_RTAS_4.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_plugin_client_Standalone.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/JUCE/Source/KeyDetectGui.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_basics.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/ring_buffer.cpp
     ${CMAKE_CURRENT_LIST_DIR}/JUCE/Source/PluginParameter.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_plugin_client_Standalone.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/manual_tune.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_plugin_client_VST2.cpp
 )
 
 set_source_files_properties(
@@ -147,37 +137,48 @@ endif(WIN32)
 
 #{{{{ User Code 2
 # Place your code here
+IF (WIN32)
+    set(LINK_OPTIONS ${LINK_OPTIONS} -static)
+ELSEIF (UNIX)
+    set(CMAKE_C_FLAGS "-I/usr/include/freetype2 -I/usr/include/libpng16")
+    set(CMAKE_CXX_FLAGS "-I/usr/include/freetype2 -I/usr/include/libpng16")
+    set(LINK_OPTIONS ${LINK_OPTIONS} "-lGL -lpthread -ldl  -s -lX11 -lXext -lfreetype -Wl,--no-undefined -Wl,-Bstatic -lSoundTouch -laubio -lfftw3f -Wl,-Bdynamic -fPIC")
+ENDIF ()
 #}}}}
 
 add_library(mx_tune SHARED ${RC_SRCS} ${CXX_SRCS} ${C_SRCS})
 target_link_libraries(mx_tune ${LINK_OPTIONS})
 
-target_link_libraries(mx_tune
-    gdi32
-    user32
-    kernel32
-    comctl32
-    winmm
-    uuid
-    wsock32
-    wininet
-    version
-    ole32
-    ws2_32
-    oleaut32
-    imm32
-    comdlg32
-    shlwapi
-    rpcrt4
-    opengl32
-    aubio
-    fftw3f
-    SoundTouch
-)
-
 
 
 #{{{{ User Code 3
 # Place your code here
+IF (WIN32)
+    target_link_libraries(mx_tune
+        gdi32
+        user32
+        kernel32
+        comctl32
+        winmm
+        uuid
+        wsock32
+        wininet
+        version
+        ole32
+        ws2_32
+        oleaut32
+        imm32
+        comdlg32
+        shlwapi
+        rpcrt4
+        opengl32
+        aubio
+        fftw3f
+        SoundTouch
+    )
+
+ELSEIF (APPLE)
+ELSEIF (UNIX)
+ENDIF ()
 #}}}}
 

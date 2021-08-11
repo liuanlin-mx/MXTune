@@ -75,3 +75,51 @@ mkdir build-cmake
 cd build-cmake
 cmake .. -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc -G "Unix Makefiles"
 make -j4
+
+
+## macOS
+Prerequisites:
+CMake
+Git
+Xcode
+Xcode command-line tools
+Homebrew.
+
+Install Xcode from Mac App Store
+Install Xcode command-line tools: xcode-select --install
+
+Install Homebrew:
+ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
+Update Homebrew: brew update
+Install Git: brew install git
+Install CMake: brew install cmake
+Install wxWidgets: brew install wxmac --dev --use-llvm
+
+
+## linux
+
+sudo apt install libfftw3-dev
+
+### build SoundTouch
+```
+./bootstrap 
+./configure --enable-static --disable-shared
+make CXXFLAGS="-DSOUNDTOUCH_PREVENT_CLICK_AT_RATE_CROSSOVER=1 -fPIC" LDFLAGS="-fPIC"
+sudo make install
+```
+
+### build aubio
+Download waf (https://waf.io/)
+```
+./waf configure --enable-fftw3f --disable-tests --disable-examples --disable-wavread --disable-wavwrite
+sudo ./waf install -j4
+``
+
+### build MXTune
+
+mkdir build-cmake
+cd build-cmake
+cmake .. -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc -G "Unix Makefiles"
+make -j4
+

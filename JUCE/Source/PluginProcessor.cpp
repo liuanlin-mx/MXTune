@@ -336,7 +336,7 @@ void AutotalentAudioProcessor::setStateInformation (const void* data, int sizeIn
     }
     
     if (!root.hasProperty("inpitch")
-        || !root.hasProperty("outpitch")
+        /*|| !root.hasProperty("outpitch")*/
         || !root.hasProperty("tune"))
     {
         return;

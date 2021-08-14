@@ -260,8 +260,9 @@ void AutotalentAudioProcessor::getStateInformation (MemoryBlock& destData)
     float time_begin = 0;
     float time_end = _mx_tune->get_manual_tune().get_time_len();
     Array<var> inpitch_arr;
-    Array<var> outpitch_arr;
+    //Array<var> outpitch_arr;
     Array<var> tune_arr;
+    Array<var> paramters;
     
     {
         std::list<std::pair<manual_tune::pitch_node, float> > inpitch = _mx_tune->get_manual_tune().get_inpitch(time_begin, time_end);
@@ -307,6 +308,17 @@ void AutotalentAudioProcessor::getStateInformation (MemoryBlock& destData)
         }
         root->setProperty("tune", tune_arr);
     }
+    
+    
+    
+    {
+        for (std::uint32_t i = 0; i < sizeof(_parameters) / sizeof(_parameters[0]); i++)
+        {
+            paramters.add(get_parameter(i));
+        }
+        root->setProperty("paramters", paramters);
+    }
+    
     String s = JSON::toString(root.get());
     destData.setSize(s.length());
     destData.copyFrom(s.getCharPointer(), 0, destData.getSize());
@@ -424,30 +436,42 @@ void AutotalentAudioProcessor::setStateInformation (const void* data, int sizeIn
         }
         
         std::int32_t size = tune.size();
-        if (size > 0)
+        for (std::int32_t i = 0; i < size; i++)
         {
-            for (std::int32_t i = 0; i < size; i++)
+            if (tune[i].hasProperty("time_start")
+                && tune[i].hasProperty("time_end")
+                && tune[i].hasProperty("pitch_start")
+                && tune[i].hasProperty("pitch_end")
+                && tune[i].hasProperty("attack")
+                && tune[i].hasProperty("release")
+                && tune[i].hasProperty("amount"))
             {
-                if (tune[i].hasProperty("time_start")
-                    && tune[i].hasProperty("time_end")
-                    && tune[i].hasProperty("pitch_start")
-                    && tune[i].hasProperty("pitch_end")
-                    && tune[i].hasProperty("attack")
-                    && tune[i].hasProperty("release")
-                    && tune[i].hasProperty("amount"))
-                {
-                    std::shared_ptr<manual_tune::tune_node> node(new manual_tune::tune_node);
-                    node->time_start = tune[i]["time_start"];
-                    node->time_end = tune[i]["time_end"];
-                    node->pitch_start = tune[i]["pitch_start"];
-                    node->pitch_end = tune[i]["pitch_end"];
-                    node->attack = tune[i]["attack"];
-                    node->release = tune[i]["release"];
-                    node->amount = tune[i]["amount"];
-                    
-                    _mx_tune->get_manual_tune().set_tune(node);
-                }
+                std::shared_ptr<manual_tune::tune_node> node(new manual_tune::tune_node);
+                node->time_start = tune[i]["time_start"];
+                node->time_end = tune[i]["time_end"];
+                node->pitch_start = tune[i]["pitch_start"];
+                node->pitch_end = tune[i]["pitch_end"];
+                node->attack = tune[i]["attack"];
+                node->release = tune[i]["release"];
+                node->amount = tune[i]["amount"];
+                
+                _mx_tune->get_manual_tune().set_tune(node);
             }
+        }
+    }
+    
+    if (root.hasProperty("paramters"))
+    {
+        var paramters = root["paramters"];
+        if (!paramters.isArray())
+        {
+            return;
+        }
+        
+        std::int32_t size = paramters.size();
+        for (std::int32_t i = 0; i < size; i++)
+        {
+            set_parameter(i, paramters[i]);
         }
     }
 

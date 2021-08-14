@@ -35,6 +35,11 @@ modify: JUCE/modules/juce_audio_plugin_client/VST/juce_VST_Wrapper.cpp:2442
 */
 ```
 
+modify: JUCE/modules/juce_audio_plugin_client/VST3/juce_VST3_Wrapper.cpp:3174
+```
+extern "C" __declspec (dllexport) IPluginFactory* GetPluginFactory()
+```
+
 run Projucer.exe
 File->Open MXTune/JUCE/mx_tune.jucer
 File->Global Paths   modify "Path to JUCE" and "JUCE Modules"
@@ -47,13 +52,18 @@ copy vstsdk2.4/pluginterfaces to VST_SDK/VST3_SDK/
 copy VST_SDK/VST3_SDK to MXTune/
 
 modify:
-```
 VST3_SDK\base\source\fstring.cpp:226
+```
 #define vsnprintf _vsnprintf
 ->
 //#define vsnprintf _vsnprintf
 ```
 
+VST3_SDK\pluginterfaces\base\ipluginbase.h:423
+```
+extern "C" __declspec (dllexport) Steinberg::IPluginFactory*  GetPluginFactory ();
+
+```
 ### build SoundTouch
 
 ```

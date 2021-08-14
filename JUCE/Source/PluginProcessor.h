@@ -143,8 +143,8 @@ private:
         {"Default Attack", 0.02, false, 1., 0., 0.5, NULL},
         {"Default Release", 0.02, false, 1., 0., 0.5, NULL},
         {"Default Amount", 0.7, false, 1., 0., 1., NULL},
-        {"Auto Tune Amount", 0.7, false, 1., 0., 1., NULL},
-        {"Auto Tune Smooth", 0.5, false, 1., 0., 1., NULL},
+        {"Auto Tune Amount", 0.8, false, 1., 0., 1., NULL},
+        {"Auto Tune Smooth", 0.7, false, 1., 0., 1., NULL},
         
         {"Enable AutoTune", 0, true, 1., 0., 1., NULL},
         {"Enable Track", 0, false, 1., 0., 1., NULL},

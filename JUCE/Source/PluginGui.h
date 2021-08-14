@@ -105,8 +105,8 @@ private:
 
     float _pitch_max = 36.;
     float _pitch_min = -36.;
-    float _pitch_up = 0 - 9 + 6;
-    float _pitch_down = 0 - 9 - 6;
+    float _pitch_up = 0 - 9 + 12;
+    float _pitch_down = 0 - 9 - 12;
 
     float _time_min_len = 0.5;
     float _time_max_len = 10 * 60;

@@ -4,7 +4,7 @@
               pluginFormats="buildVST,buildVST3" pluginCharacteristicsValue="pluginEditorRequiresKeys"
               pluginManufacturer="liuanlin-mx" pluginVSTNumMidiInputs="1" pluginVSTNumMidiOutputs="1"
               pluginName="MXTune" pluginDesc="pitch correction" pluginVST3Category="Fx,Pitch Shift,Stereo"
-              pluginVSTCategory="kPlugCategEffect" version="1.1.1" cppLanguageStandard="11">
+              pluginVSTCategory="kPlugCategEffect" version="1.1.2" cppLanguageStandard="11">
   <MAINGROUP id="ok7jMT" name="MXTune">
     <GROUP id="{F13C5646-EBC5-7FEE-A7A0-D2D433F1E308}" name="Source">
       <FILE id="J25HH7" name="KeyDetectGui.cpp" compile="1" resource="0"

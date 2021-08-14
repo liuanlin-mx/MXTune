@@ -662,19 +662,27 @@ void manual_tune::_linear_fit_from_inpitch(float time_begin, float time_end, flo
     std::int32_t begin = _time2idx(time_begin);
     std::int32_t end = _time2idx(time_end);
     std::int32_t n = end - begin;
+    pitch_node last_inpitch;
     
     for (std::int32_t i = begin; i < end; i++)
     {
-        if (_inpitch[i].conf < _conf_thresh)
+        const pitch_node& inpitch = _inpitch[i];
+        if (inpitch.is_same(last_inpitch))
+        {
+            continue;
+        }
+        last_inpitch = inpitch;
+        
+        if (inpitch.conf < _conf_thresh)
         {
             continue;
         }
         
         float time = _idx2time(i);
         x_sum += time;
-        y_sum += _inpitch[i].pitch;
+        y_sum += inpitch.pitch;
         x2_sum += time * time;
-        xy_sum += time * _inpitch[i].pitch;
+        xy_sum += time * inpitch.pitch;
     }
     
     a = (n * xy_sum - x_sum * y_sum) / (n * x2_sum - x_sum * x_sum);

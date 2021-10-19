@@ -196,7 +196,12 @@ void AutotalentAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuf
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
 
-
+    if (_is_bypassed)
+    {
+        setLatencySamples(_mx_tune->get_latency());
+        _is_bypassed = false;
+    }
+    
     AudioPlayHead *play_head = getPlayHead();
     if (play_head)
     {
@@ -230,6 +235,17 @@ void AutotalentAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuf
         }
     }
     
+}
+
+
+void AutotalentAudioProcessor::processBlockBypassed (AudioBuffer<float>& buffer, MidiBuffer& midiMessages)
+{
+    if (!_is_bypassed)
+    {
+        _is_bypassed = true;
+        setLatencySamples(0);
+    }
+    AudioProcessor::processBlockBypassed(buffer, midiMessages);
 }
 
 //==============================================================================

@@ -78,6 +78,7 @@ public:
    #endif
 
     void processBlock (AudioBuffer<float>&, MidiBuffer&) override;
+    void processBlockBypassed (AudioBuffer<float>& buffer, MidiBuffer& midiMessages) override;
 
     //==============================================================================
     AudioProcessorEditor* createEditor() override;
@@ -123,6 +124,7 @@ private:
     std::shared_ptr<mx_tune> _mx_tune = 0;
     double _cur_time = 0;
     bool _is_playing = false;
+    bool _is_bypassed = false;
     
     std::int32_t _notes[12] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
     //float _def_attack = 0.050;

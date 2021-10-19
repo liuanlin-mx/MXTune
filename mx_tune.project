@@ -319,7 +319,7 @@
         <SearchPaths/>
       </Completion>
     </Configuration>
-    <Configuration Name="vst_plugin(windows_64bit)" CompilerType="" DebuggerType="GNU gdb debugger" Type="Dynamic Library" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+    <Configuration Name="vst_plugin(windows_64bit)" CompilerType="MinGW 64bit ( MSYS2 64bit )" DebuggerType="GNU gdb debugger" Type="Dynamic Library" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
       <Compiler Options="-Os;-O2;-std=c++14;-fpermissive;-fPIC" C_Options="-Os;-O2;-fpermissive;-fPIC" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
         <IncludePath Value="."/>
         <IncludePath Value="JUCE/JuceLibraryCode"/>

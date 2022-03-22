@@ -206,7 +206,7 @@
         <IncludePath Value="JUCE/JuceLibraryCode/modules"/>
         <IncludePath Value="VST3_SDK"/>
       </Compiler>
-      <Linker Options="-s;$(shell pkg-config --libs x11 xext freetype2);-Wl,--no-undefined;-Wl,-Bstatic;-lSoundTouch;-laubio;-lfftw3f;-Wl,-Bdynamic;-fPIC" Required="yes">
+      <Linker Options="-s;$(shell pkg-config --libs x11 xext freetype2);-Wl,--no-undefined;-Wl,-Bsymbolic;-Wl,-Bstatic;-lSoundTouch;-laubio;-lfftw3f;-Wl,-Bdynamic;-fPIC" Required="yes">
         <Library Value="GL"/>
         <Library Value="pthread"/>
         <Library Value="dl"/>

@@ -374,6 +374,7 @@ PluginGui::PluginGui (AutotalentAudioProcessor& p)
     comboBoxSftAlg->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
     comboBoxSftAlg->addItem (TRANS("autotalent"), 1);
     comboBoxSftAlg->addItem (TRANS("SoundTouch"), 2);
+    comboBoxSftAlg->addItem (TRANS("rubberband"), 3);
     comboBoxSftAlg->addListener (this);
 
     comboBoxSftAlg->setBounds (88, 560, 40, 24);
@@ -2073,8 +2074,8 @@ BEGIN_JUCER_METADATA
             textWhenNoItems="(no choices)"/>
   <COMBOBOX name="new combo box" id="e80a04b02ed7c598" memberName="comboBoxSftAlg"
             virtualName="" explicitFocusOrder="0" pos="88 560 40 24" editable="0"
-            layout="33" items="autotalent&#10;SoundTouch" textWhenNonSelected="talent"
-            textWhenNoItems="(no choices)"/>
+            layout="33" items="autotalent&#10;SoundTouch&#10;rubberband"
+            textWhenNonSelected="talent" textWhenNoItems="(no choices)"/>
   <LABEL name="Sft Alg" id="8377d5581a9249ca" memberName="label10" virtualName=""
          explicitFocusOrder="0" pos="16 560 56 24" edTextCol="ff000000"
          edBkgCol="0" labelText="Sft Alg:" editableSingleClick="0" editableDoubleClick="0"

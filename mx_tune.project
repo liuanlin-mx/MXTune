@@ -43,8 +43,8 @@
   </VirtualDirectory>
   <VirtualDirectory Name="mx_tune">
     <File Name="README.md"/>
-    <File Name="pitch_shifter_rb.h" ExcludeProjConfig="vst_linux_64bit;vst_plugin(windows_32bit);vst_plugin(windows_64bit);cmake;"/>
-    <File Name="pitch_shifter_rb.cpp" ExcludeProjConfig="vst_linux_64bit;vst_plugin(windows_32bit);vst_plugin(windows_64bit);cmake;"/>
+    <File Name="pitch_shifter_rb.h" ExcludeProjConfig="cmake;vst_plugin(windows_64bit);vst_plugin(windows_32bit);"/>
+    <File Name="pitch_shifter_rb.cpp" ExcludeProjConfig="cmake;vst_plugin(windows_64bit);vst_plugin(windows_32bit);"/>
     <File Name="CMakeLists.txt"/>
     <File Name="pitch_shifter_st.h"/>
     <File Name="pitch_shifter_st.cpp"/>
@@ -206,7 +206,7 @@
         <IncludePath Value="JUCE/JuceLibraryCode/modules"/>
         <IncludePath Value="VST3_SDK"/>
       </Compiler>
-      <Linker Options="-s;$(shell pkg-config --libs x11 xext freetype2);-Wl,--no-undefined;-Wl,-Bsymbolic;-Wl,-Bstatic;-lSoundTouch;-laubio;-lfftw3f;-Wl,-Bdynamic;-fPIC" Required="yes">
+      <Linker Options="-s;$(shell pkg-config --libs x11 xext freetype2);-Wl,--no-undefined;-Wl,-Bsymbolic;-Wl,-Bstatic;-lrubberband;-lSoundTouch;-laubio;-lfftw3f;-lsamplerate;-Wl,-Bdynamic;-fPIC" Required="yes">
         <Library Value="GL"/>
         <Library Value="pthread"/>
         <Library Value="dl"/>

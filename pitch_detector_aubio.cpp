@@ -11,7 +11,7 @@ pitch_detector_aubio::pitch_detector_aubio(float sample_rate, const char *method
     , _aref(440)
     , _vthresh(0.9)
     , _pitch(0)
-    , _win_s(2048)
+    , _win_s(1024)
     , _hop_s(_win_s / 4)
     , _input(new_fvec(_hop_s))
     , _ilen(0)

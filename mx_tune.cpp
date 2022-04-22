@@ -4,6 +4,7 @@
 #include "pitch_shifter_talent.h"
 #include "pitch_shifter_st.h"
 #include "pitch_shifter_rb.h"
+#include "pitch_shifter_smb.h"
 
 mx_tune::mx_tune(unsigned int sample_rate)
     : _tune()
@@ -89,6 +90,12 @@ void mx_tune::set_shifter(std::uint32_t shifter_type)
     else if (shifter_type == SHIFTER_TYPE_RUBBERBAND)
     {
         _shifter.reset(new pitch_shifter_rb(_sample_rate));
+        _shifter->set_aref(_aref);
+        _shifter_type = shifter_type;
+    }
+    else if (shifter_type == SHIFTER_TYPE_SMB)
+    {
+        _shifter.reset(new pitch_shifter_smb(_sample_rate));
         _shifter->set_aref(_aref);
         _shifter_type = shifter_type;
     }

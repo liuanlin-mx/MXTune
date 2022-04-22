@@ -42,6 +42,9 @@
     </VirtualDirectory>
   </VirtualDirectory>
   <VirtualDirectory Name="mx_tune">
+    <File Name="pitch_shifter_smb.cpp"/>
+    <File Name="pitch_shifter_smb.h"/>
+    <File Name="smbPitchShift.cpp"/>
     <File Name="README.md"/>
     <File Name="pitch_shifter_rb.h" ExcludeProjConfig="cmake;vst_plugin(windows_64bit);vst_plugin(windows_32bit);"/>
     <File Name="pitch_shifter_rb.cpp" ExcludeProjConfig="cmake;vst_plugin(windows_64bit);vst_plugin(windows_32bit);"/>

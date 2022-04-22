@@ -167,7 +167,7 @@ private:
         {"G", 1., false, 1., 0., 1., NULL},
         {"Ab", 1., false, 1., 0., 1., NULL},
         {"detection algorithm ", 1., false, 10., 0., 1., NULL},
-        {"shifter algorithm ", 1., false, 10., 0., 2., NULL},
+        {"shifter algorithm ", 1., false, 10., 0., 3., NULL},
         {"conf thresh", 0.9, false, 1., 0., 1., NULL},
         {"snap min length", 0.1, false, 1., 0., 1., NULL},
         {"snap max interval", 0.02, false, 1., 0., 1., NULL},

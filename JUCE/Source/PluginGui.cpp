@@ -90,84 +90,84 @@ PluginGui::PluginGui (AutotalentAudioProcessor& p)
     toggleButtonNoteA->addListener (this);
     toggleButtonNoteA->setToggleState (true, dontSendNotification);
 
-    toggleButtonNoteA->setBounds (32, 216, 40, 24);
+    toggleButtonNoteA->setBounds (24, 216, 48, 24);
 
     toggleButtonNoteBb.reset (new ToggleButton ("Bb"));
     addAndMakeVisible (toggleButtonNoteBb.get());
     toggleButtonNoteBb->addListener (this);
     toggleButtonNoteBb->setToggleState (true, dontSendNotification);
 
-    toggleButtonNoteBb->setBounds (32, 248, 40, 24);
+    toggleButtonNoteBb->setBounds (24, 248, 48, 24);
 
     toggleButtonNoteB.reset (new ToggleButton ("B"));
     addAndMakeVisible (toggleButtonNoteB.get());
     toggleButtonNoteB->addListener (this);
     toggleButtonNoteB->setToggleState (true, dontSendNotification);
 
-    toggleButtonNoteB->setBounds (32, 280, 40, 24);
+    toggleButtonNoteB->setBounds (24, 280, 48, 24);
 
     toggleButtonNoteC.reset (new ToggleButton ("C"));
     addAndMakeVisible (toggleButtonNoteC.get());
     toggleButtonNoteC->addListener (this);
     toggleButtonNoteC->setToggleState (true, dontSendNotification);
 
-    toggleButtonNoteC->setBounds (32, 312, 40, 24);
+    toggleButtonNoteC->setBounds (24, 312, 48, 24);
 
     toggleButtonNoteDb.reset (new ToggleButton ("Db"));
     addAndMakeVisible (toggleButtonNoteDb.get());
     toggleButtonNoteDb->addListener (this);
     toggleButtonNoteDb->setToggleState (true, dontSendNotification);
 
-    toggleButtonNoteDb->setBounds (32, 344, 40, 24);
+    toggleButtonNoteDb->setBounds (24, 344, 48, 24);
 
     toggleButtonNoteD.reset (new ToggleButton ("D"));
     addAndMakeVisible (toggleButtonNoteD.get());
     toggleButtonNoteD->addListener (this);
     toggleButtonNoteD->setToggleState (true, dontSendNotification);
 
-    toggleButtonNoteD->setBounds (32, 376, 40, 24);
+    toggleButtonNoteD->setBounds (24, 376, 48, 24);
 
     toggleButtonNoteEb.reset (new ToggleButton ("Eb"));
     addAndMakeVisible (toggleButtonNoteEb.get());
     toggleButtonNoteEb->addListener (this);
     toggleButtonNoteEb->setToggleState (true, dontSendNotification);
 
-    toggleButtonNoteEb->setBounds (88, 216, 40, 24);
+    toggleButtonNoteEb->setBounds (80, 216, 48, 24);
 
     toggleButtonNoteE.reset (new ToggleButton ("E"));
     addAndMakeVisible (toggleButtonNoteE.get());
     toggleButtonNoteE->addListener (this);
     toggleButtonNoteE->setToggleState (true, dontSendNotification);
 
-    toggleButtonNoteE->setBounds (88, 248, 40, 24);
+    toggleButtonNoteE->setBounds (80, 248, 48, 24);
 
     toggleButtonNoteF.reset (new ToggleButton ("F"));
     addAndMakeVisible (toggleButtonNoteF.get());
     toggleButtonNoteF->addListener (this);
     toggleButtonNoteF->setToggleState (true, dontSendNotification);
 
-    toggleButtonNoteF->setBounds (88, 280, 40, 24);
+    toggleButtonNoteF->setBounds (80, 280, 48, 24);
 
     toggleButtonNoteGb.reset (new ToggleButton ("Gb"));
     addAndMakeVisible (toggleButtonNoteGb.get());
     toggleButtonNoteGb->addListener (this);
     toggleButtonNoteGb->setToggleState (true, dontSendNotification);
 
-    toggleButtonNoteGb->setBounds (88, 312, 40, 24);
+    toggleButtonNoteGb->setBounds (80, 312, 48, 24);
 
     toggleButtonNoteAb.reset (new ToggleButton ("Ab"));
     addAndMakeVisible (toggleButtonNoteAb.get());
     toggleButtonNoteAb->addListener (this);
     toggleButtonNoteAb->setToggleState (true, dontSendNotification);
 
-    toggleButtonNoteAb->setBounds (88, 376, 40, 24);
+    toggleButtonNoteAb->setBounds (80, 376, 48, 24);
 
     toggleButtonNoteG.reset (new ToggleButton ("G"));
     addAndMakeVisible (toggleButtonNoteG.get());
     toggleButtonNoteG->addListener (this);
     toggleButtonNoteG->setToggleState (true, dontSendNotification);
 
-    toggleButtonNoteG->setBounds (88, 344, 40, 24);
+    toggleButtonNoteG->setBounds (80, 344, 48, 24);
 
     textButtonSnapKey.reset (new TextButton ("new button"));
     addAndMakeVisible (textButtonSnapKey.get());
@@ -1959,40 +1959,40 @@ BEGIN_JUCER_METADATA
                 virtualName="" explicitFocusOrder="0" pos="16 24 96 24" buttonText="AutoTune"
                 connectedEdges="0" needsCallback="1" radioGroupId="0" state="0"/>
   <TOGGLEBUTTON name="A" id="379b4bb7d2fbcace" memberName="toggleButtonNoteA"
-                virtualName="" explicitFocusOrder="0" pos="32 216 40 24" buttonText="A"
+                virtualName="" explicitFocusOrder="0" pos="24 216 48 24" buttonText="A"
                 connectedEdges="0" needsCallback="1" radioGroupId="0" state="1"/>
   <TOGGLEBUTTON name="Bb" id="c5a5631674e84c6d" memberName="toggleButtonNoteBb"
-                virtualName="" explicitFocusOrder="0" pos="32 248 40 24" buttonText="Bb"
+                virtualName="" explicitFocusOrder="0" pos="24 248 48 24" buttonText="Bb"
                 connectedEdges="0" needsCallback="1" radioGroupId="0" state="1"/>
   <TOGGLEBUTTON name="B" id="118f5e02b9feb93a" memberName="toggleButtonNoteB"
-                virtualName="" explicitFocusOrder="0" pos="32 280 40 24" buttonText="B"
+                virtualName="" explicitFocusOrder="0" pos="24 280 48 24" buttonText="B"
                 connectedEdges="0" needsCallback="1" radioGroupId="0" state="1"/>
   <TOGGLEBUTTON name="C" id="64fa9722fea3f930" memberName="toggleButtonNoteC"
-                virtualName="" explicitFocusOrder="0" pos="32 312 40 24" buttonText="C"
+                virtualName="" explicitFocusOrder="0" pos="24 312 48 24" buttonText="C"
                 connectedEdges="0" needsCallback="1" radioGroupId="0" state="1"/>
   <TOGGLEBUTTON name="Db" id="fe20e3be7521d3e5" memberName="toggleButtonNoteDb"
-                virtualName="" explicitFocusOrder="0" pos="32 344 40 24" buttonText="Db"
+                virtualName="" explicitFocusOrder="0" pos="24 344 48 24" buttonText="Db"
                 connectedEdges="0" needsCallback="1" radioGroupId="0" state="1"/>
   <TOGGLEBUTTON name="D" id="6c379b8e283b6172" memberName="toggleButtonNoteD"
-                virtualName="" explicitFocusOrder="0" pos="32 376 40 24" buttonText="D"
+                virtualName="" explicitFocusOrder="0" pos="24 376 48 24" buttonText="D"
                 connectedEdges="0" needsCallback="1" radioGroupId="0" state="1"/>
   <TOGGLEBUTTON name="Eb" id="4f9effd6fff17c8c" memberName="toggleButtonNoteEb"
-                virtualName="" explicitFocusOrder="0" pos="88 216 40 24" buttonText="Eb"
+                virtualName="" explicitFocusOrder="0" pos="80 216 48 24" buttonText="Eb"
                 connectedEdges="0" needsCallback="1" radioGroupId="0" state="1"/>
   <TOGGLEBUTTON name="E" id="b85394a33c50f2b4" memberName="toggleButtonNoteE"
-                virtualName="" explicitFocusOrder="0" pos="88 248 40 24" buttonText="E"
+                virtualName="" explicitFocusOrder="0" pos="80 248 48 24" buttonText="E"
                 connectedEdges="0" needsCallback="1" radioGroupId="0" state="1"/>
   <TOGGLEBUTTON name="F" id="99e08323176a0a04" memberName="toggleButtonNoteF"
-                virtualName="" explicitFocusOrder="0" pos="88 280 40 24" buttonText="F"
+                virtualName="" explicitFocusOrder="0" pos="80 280 48 24" buttonText="F"
                 connectedEdges="0" needsCallback="1" radioGroupId="0" state="1"/>
   <TOGGLEBUTTON name="Gb" id="4de424495467f77f" memberName="toggleButtonNoteGb"
-                virtualName="" explicitFocusOrder="0" pos="88 312 40 24" buttonText="Gb"
+                virtualName="" explicitFocusOrder="0" pos="80 312 48 24" buttonText="Gb"
                 connectedEdges="0" needsCallback="1" radioGroupId="0" state="1"/>
   <TOGGLEBUTTON name="Ab" id="b13f751ddb7ba042" memberName="toggleButtonNoteAb"
-                virtualName="" explicitFocusOrder="0" pos="88 376 40 24" buttonText="Ab"
+                virtualName="" explicitFocusOrder="0" pos="80 376 48 24" buttonText="Ab"
                 connectedEdges="0" needsCallback="1" radioGroupId="0" state="1"/>
   <TOGGLEBUTTON name="G" id="6d2077e61f10a098" memberName="toggleButtonNoteG"
-                virtualName="" explicitFocusOrder="0" pos="88 344 40 24" buttonText="G"
+                virtualName="" explicitFocusOrder="0" pos="80 344 48 24" buttonText="G"
                 connectedEdges="0" needsCallback="1" radioGroupId="0" state="1"/>
   <TEXTBUTTON name="new button" id="6322078c6ba4dfdb" memberName="textButtonSnapKey"
               virtualName="" explicitFocusOrder="0" pos="624 24 80 24" bgColOff="a45c94"

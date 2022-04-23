@@ -228,6 +228,7 @@
       <PreBuild/>
       <PostBuild>
         <Command Enabled="yes">cp $(IntermediateDirectory)/$(ProjectName).so $(IntermediateDirectory)/$(ProjectName).vst3</Command>
+        <Command Enabled="yes">cp $(IntermediateDirectory)/$(ProjectName).so ~/.vst/</Command>
       </PostBuild>
       <CustomBuild Enabled="no">
         <RebuildCommand/>

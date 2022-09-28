@@ -740,7 +740,7 @@ void PluginGui::paint (Graphics& g)
         }
 
         g.setColour (juce::Colours::green);
-        g.strokePath (pitch_path, PathStrokeType (2.0f));
+        g.strokePath (pitch_path, PathStrokeType (1.5f));
     }
 
     //[/UserPaint]
@@ -2124,4 +2124,3 @@ END_JUCER_METADATA
 
 //[EndFile] You can add extra defines here...
 //[/EndFile]
-

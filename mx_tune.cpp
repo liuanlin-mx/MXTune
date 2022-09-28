@@ -20,6 +20,9 @@ mx_tune::mx_tune(unsigned int sample_rate)
     , _conf(0.)
     , _conf_detect_thresh(0.7)
     , _conf_shift_thresh(0.9)
+    , _det_min_freq(70)
+    , _det_max_freq(800)
+    , _det_gate(-60)
     , _track(false)
     , _auto_tune(false)
 {
@@ -50,6 +53,8 @@ void mx_tune::set_detector(std::uint32_t detector_type)
         _detector.reset(new pitch_detector_talent(_sample_rate));
         _detector->set_vthresh(_conf_detect_thresh);
         _detector->set_aref(_aref);
+        _detector->set_freq_range(_det_min_freq, _det_max_freq);
+        _detector->set_gate(_det_gate);
         _detector_type = detector_type;
     }
     else if (detector_type == DETECTOR_TYPE_YIN_FAST)
@@ -57,6 +62,8 @@ void mx_tune::set_detector(std::uint32_t detector_type)
         _detector.reset(new pitch_detector_aubio(_sample_rate, "yinfast"));
         _detector->set_vthresh(_conf_detect_thresh);
         _detector->set_aref(_aref);
+        _detector->set_freq_range(_det_min_freq, _det_max_freq);
+        _detector->set_gate(_det_gate);
         _detector_type = detector_type;
     }
     else if (detector_type == DETECTOR_TYPE_YIN)
@@ -64,6 +71,8 @@ void mx_tune::set_detector(std::uint32_t detector_type)
         _detector.reset(new pitch_detector_aubio(_sample_rate, "yin"));
         _detector->set_vthresh(_conf_detect_thresh);
         _detector->set_aref(_aref);
+        _detector->set_freq_range(_det_min_freq, _det_max_freq);
+        _detector->set_gate(_det_gate);
         _detector_type = detector_type;
     }
 }
@@ -152,6 +161,32 @@ void mx_tune::set_at_scwarp(int scwarp)
 {
     _tune.set_scwarp(scwarp);
 }
+
+void mx_tune::set_conf_shift_thresh(float thresh)
+{
+    _conf_shift_thresh = thresh;
+    _m_tune.set_vthresh(_conf_shift_thresh);
+}
+
+void mx_tune::set_conf_detect_thresh(float thresh)
+{
+    _conf_detect_thresh = thresh;
+    _detector->set_vthresh(_conf_detect_thresh);
+}
+
+void mx_tune::set_detect_freq_range(float min_freq, float max_freq)
+{
+    _det_min_freq = min_freq;
+    _det_max_freq = max_freq;
+    _detector->set_freq_range(_det_min_freq, _det_max_freq);
+}
+
+void mx_tune::set_detect_gate(float db)
+{
+    _det_gate = db;
+    _detector->set_gate(_det_gate);
+}
+
 
 void mx_tune::clear_note()
 {

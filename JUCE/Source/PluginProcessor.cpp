@@ -11,6 +11,7 @@
 #include "PluginProcessor.h"
 #include "PluginGui.h"
 #include <list>
+#include "net_log.h"
 
 //==============================================================================
 AutotalentAudioProcessor::AutotalentAudioProcessor()
@@ -146,6 +147,8 @@ void AutotalentAudioProcessor::prepareToPlay (double sampleRate, int samplesPerB
             _mx_tune->set_shifter(_sft_alg);
             _mx_tune->set_conf_shift_thresh(_conf_thresh);
             _mx_tune->set_conf_detect_thresh((_conf_thresh > 0.2)? (_conf_thresh - 0.2): 0.1);
+            _mx_tune->set_detect_gate(-_det_gate);
+            _mx_tune->set_detect_freq_range(_det_min_freq, _det_max_freq);
             setLatencySamples(_mx_tune->get_latency());
         }
     }
@@ -562,6 +565,33 @@ void AutotalentAudioProcessor::parameterValueChanged (int parameterIndex, float 
         {
             _mx_tune->set_conf_shift_thresh(_conf_thresh);
             _mx_tune->set_conf_detect_thresh((_conf_thresh > 0.2)? (_conf_thresh - 0.2): 0.1);
+        }
+    }
+    else if (parameterIndex == PARAMETER_ID_DET_GATE)
+    {
+        _det_gate = newValue * _parameters[parameterIndex].scale;
+        net_log_info("_det_gate:%f\n", _det_gate);
+        if (_mx_tune)
+        {
+            _mx_tune->set_detect_gate(-_det_gate);
+        }
+    }
+    else if (parameterIndex == PARAMETER_ID_DET_MIN_FREQ)
+    {
+        _det_min_freq = newValue * _parameters[parameterIndex].scale;
+        net_log_info("_det_min_freq:%f\n", _det_min_freq);
+        if (_mx_tune)
+        {
+            _mx_tune->set_detect_freq_range(_det_min_freq, _det_max_freq);
+        }
+    }
+    else if (parameterIndex == PARAMETER_ID_DET_MAX_FREQ)
+    {
+        _det_max_freq = newValue * _parameters[parameterIndex].scale;
+        net_log_info("_det_max_freq:%f\n", _det_max_freq);
+        if (_mx_tune)
+        {
+            _mx_tune->set_detect_freq_range(_det_min_freq, _det_max_freq);
         }
     }
     

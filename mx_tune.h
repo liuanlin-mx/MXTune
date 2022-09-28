@@ -50,8 +50,10 @@ public:
     
     float get_conf() { return _conf; }
     float get_conf_shift_thresh() { return _conf_shift_thresh; }
-    void set_conf_shift_thresh(float thresh) { _conf_shift_thresh = thresh; }
-    void set_conf_detect_thresh(float thresh) { _conf_detect_thresh = thresh; }
+    void set_conf_shift_thresh(float thresh);
+    void set_conf_detect_thresh(float thresh);
+    void set_detect_freq_range(float min_freq, float max_freq);
+    void set_detect_gate(float db);
     
     void enable_auto_tune(bool b) { _auto_tune = b; }
     manual_tune& get_manual_tune() { return _m_tune; }
@@ -83,6 +85,9 @@ private:
     float _conf;
     float _conf_detect_thresh;
     float _conf_shift_thresh;
+    float _det_min_freq;
+    float _det_max_freq;
+    float _det_gate;
     
     bool _track;
     bool _auto_tune;

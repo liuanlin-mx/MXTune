@@ -105,6 +105,18 @@ pitch_detector_talent::~pitch_detector_talent()
     fftwf_free(_acwinv);
 }
 
+void pitch_detector_talent::set_freq_range(float min_freq, float max_freq)
+{
+    _max_period = 1. / min_freq;
+    _min_period = 1. / max_freq;
+    _max_idx = (std::int32_t)(_sample_rate * _max_period);
+    _min_idx = (std::int32_t)(_sample_rate * _min_period);
+    
+    if (_max_idx > _corr_size)
+    {
+        _max_idx = _corr_size;
+    }
+}
 
 bool pitch_detector_talent::get_pitch(float in, float& pitch, float& conf)
 {

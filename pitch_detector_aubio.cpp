@@ -34,6 +34,19 @@ pitch_detector_aubio::~pitch_detector_aubio()
 }
 
 
+void pitch_detector_aubio::set_gate(float db)
+{
+    aubio_pitch_set_silence(_pitch_detector, db);
+}
+
+void pitch_detector_aubio::set_freq_range(float min_freq, float max_freq)
+{
+    _svf_filter_lp.resetState();
+    _svf_filter_lp.updateCoefficients(max_freq, 0.5, SvfLinearTrapOptimised2::LOW_PASS_FILTER, _sample_rate);
+    _svf_filter_hp.resetState();
+    _svf_filter_hp.updateCoefficients(min_freq, 0.5, SvfLinearTrapOptimised2::HIGH_PASS_FILTER, _sample_rate);
+}
+    
 bool pitch_detector_aubio::get_pitch(float in, float& pitch, float& conf)
 {
     in = _svf_filter_lp.tick(_svf_filter_hp.tick(in));

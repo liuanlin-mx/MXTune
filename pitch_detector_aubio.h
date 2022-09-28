@@ -19,8 +19,9 @@ private:
     
 public:
     virtual void set_vthresh(float vthresh) override { _vthresh = vthresh; }
-    virtual void set_gate(float db) override {}
+    virtual void set_gate(float db);
     virtual void set_aref(float aref) override { _aref = aref; }
+    virtual void set_freq_range(float min_freq, float max_freq);
     virtual bool get_pitch(float in, float& pitch, float& conf) override;
     virtual float get_time() override { return (float)_hop_s * 2 / _sample_rate; }
     

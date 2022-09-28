@@ -21,6 +21,8 @@ pitch_detector_aubio::pitch_detector_aubio(float sample_rate, const char *method
     aubio_pitch_set_unit(_pitch_detector, "Hz");
     aubio_pitch_set_silence(_pitch_detector, -200);
     //aubio_pitch_set_tolerance(_pitch_detector, 0.8);
+    _svf_filter_lp.updateCoefficients(800, 0.5, SvfLinearTrapOptimised2::LOW_PASS_FILTER, _sample_rate);
+    _svf_filter_hp.updateCoefficients(70, 0.5, SvfLinearTrapOptimised2::HIGH_PASS_FILTER, _sample_rate);
 }
 
 
@@ -34,6 +36,7 @@ pitch_detector_aubio::~pitch_detector_aubio()
 
 bool pitch_detector_aubio::get_pitch(float in, float& pitch, float& conf)
 {
+    in = _svf_filter_lp.tick(_svf_filter_hp.tick(in));
     fvec_set_sample(_input, in, _ilen);
     if (++_ilen >= _hop_s)
     {

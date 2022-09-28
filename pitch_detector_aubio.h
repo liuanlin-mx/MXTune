@@ -3,6 +3,8 @@
 #include <fftw3.h>
 #include <aubio/aubio.h>
 #include <cstdint>
+#include <assert.h>
+#include "SvfLinearTrapOptimised2.hpp"
 #include "pitch_detector.h"
 
 class pitch_detector_aubio: public pitch_detector
@@ -37,6 +39,8 @@ private:
     fvec_t *_out; // output candidates
     
     aubio_pitch_t *_pitch_detector;
+    SvfLinearTrapOptimised2 _svf_filter_lp;
+    SvfLinearTrapOptimised2 _svf_filter_hp;
 };
 
 #endif

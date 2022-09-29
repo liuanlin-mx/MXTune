@@ -94,14 +94,14 @@ KeyDetectGui::KeyDetectGui (const float *notes_weights, std::int32_t *notes, std
     toggleButtonNoteF->addListener (this);
     toggleButtonNoteF->setToggleState (true, dontSendNotification);
 
-    toggleButtonNoteF->setBounds (272, 112, 40, 24);
+    toggleButtonNoteF->setBounds (272, 112, 48, 24);
 
     toggleButtonNoteGb.reset (new ToggleButton ("Gb"));
     addAndMakeVisible (toggleButtonNoteGb.get());
     toggleButtonNoteGb->addListener (this);
     toggleButtonNoteGb->setToggleState (true, dontSendNotification);
 
-    toggleButtonNoteGb->setBounds (320, 80, 40, 24);
+    toggleButtonNoteGb->setBounds (320, 80, 48, 24);
 
     toggleButtonNoteAb.reset (new ToggleButton ("Ab"));
     addAndMakeVisible (toggleButtonNoteAb.get());
@@ -589,10 +589,10 @@ BEGIN_JUCER_METADATA
                 virtualName="" explicitFocusOrder="0" pos="224 112 40 24" buttonText="E"
                 connectedEdges="0" needsCallback="1" radioGroupId="0" state="1"/>
   <TOGGLEBUTTON name="F" id="99e08323176a0a04" memberName="toggleButtonNoteF"
-                virtualName="" explicitFocusOrder="0" pos="272 112 40 24" buttonText="F"
+                virtualName="" explicitFocusOrder="0" pos="272 112 48 24" buttonText="F"
                 connectedEdges="0" needsCallback="1" radioGroupId="0" state="1"/>
   <TOGGLEBUTTON name="Gb" id="4de424495467f77f" memberName="toggleButtonNoteGb"
-                virtualName="" explicitFocusOrder="0" pos="320 80 40 24" buttonText="Gb"
+                virtualName="" explicitFocusOrder="0" pos="320 80 48 24" buttonText="Gb"
                 connectedEdges="0" needsCallback="1" radioGroupId="0" state="1"/>
   <TOGGLEBUTTON name="Ab" id="b13f751ddb7ba042" memberName="toggleButtonNoteAb"
                 virtualName="" explicitFocusOrder="0" pos="416 80 40 24" buttonText="Ab"

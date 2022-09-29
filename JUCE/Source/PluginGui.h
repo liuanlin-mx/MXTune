@@ -185,17 +185,12 @@ private:
     std::unique_ptr<Label> label8;
     std::unique_ptr<Slider> sliderATAmount;
     std::unique_ptr<TextButton> textButtonCANote;
-    std::unique_ptr<Label> label9;
-    std::unique_ptr<ComboBox> comboBoxDetAlg;
-    std::unique_ptr<ComboBox> comboBoxSftAlg;
-    std::unique_ptr<Label> label10;
     std::unique_ptr<TextButton> textButtonDetectKey;
-    std::unique_ptr<Label> label2;
-    std::unique_ptr<Slider> sliderVThresh;
     std::unique_ptr<Label> label3;
     std::unique_ptr<Slider> sliderMinLen;
     std::unique_ptr<Label> label11;
     std::unique_ptr<Slider> sliderMaxInterval;
+    std::unique_ptr<TextButton> textButtonSetting;
 
 
     //==============================================================================

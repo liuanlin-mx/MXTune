@@ -51,6 +51,7 @@ public:
         PARAMETER_ID_VTHRESH,
         PARAMETER_ID_SNAP_MIN_LENGHT,
         PARAMETER_ID_SNAP_MAX_INTERVAL,
+        PARAMETER_ID_AFREQ,
         PARAMETER_ID_DET_GATE,
         PARAMETER_ID_DET_MIN_FREQ,
         PARAMETER_ID_DET_MAX_FREQ,
@@ -141,6 +142,7 @@ private:
     std::uint32_t _det_alg = 0;
     std::uint32_t _sft_alg = 0;
     float _conf_thresh = 0.9;
+    float _afreq = 440;
     float _det_gate = -60;
     float _det_min_freq = 70;
     float _det_max_freq = 800;
@@ -177,9 +179,10 @@ private:
         {"conf thresh", 0.9, false, 1., 0., 1., NULL},
         {"snap min length", 0.1, false, 1., 0., 1., NULL},
         {"snap max interval", 0.02, false, 1., 0., 1., NULL},
-        {"detector gate", 60, false, 100., 10., 100., NULL},
-        {"detector min freq", 70, false, 2000., 20., 2000., NULL},
-        {"detector max freq", 800., false, 2000., 20., 2000., NULL},
+        {"afreq", 440, false, 1000., 430., 450., NULL},
+        {"detector gate", 60, false, 200., 10., 100., NULL},
+        {"detector min freq", 70, false, 3000., 20., 2000., NULL},
+        {"detector max freq", 800., false, 3000., 20., 2000., NULL},
         /* name def is_boolean scale min max parameter */
     };
     

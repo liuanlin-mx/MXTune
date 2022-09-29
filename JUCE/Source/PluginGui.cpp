@@ -19,6 +19,7 @@
 
 //[Headers] You can add your own extra header files here...
 #include "KeyDetectGui.h"
+#include "SettingGui.h"
 //[/Headers]
 
 #include "PluginGui.h"
@@ -343,54 +344,6 @@ PluginGui::PluginGui (AutotalentAudioProcessor& p)
 
     textButtonCANote->setBounds (624, 64, 80, 24);
 
-    label9.reset (new Label ("Det alg",
-                             TRANS("Det Alg:")));
-    addAndMakeVisible (label9.get());
-    label9->setFont (Font (15.00f, Font::plain).withTypefaceStyle ("Regular"));
-    label9->setJustificationType (Justification::centredLeft);
-    label9->setEditable (false, false, false);
-    label9->setColour (TextEditor::textColourId, Colours::black);
-    label9->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
-
-    label9->setBounds (16, 528, 56, 24);
-
-    comboBoxDetAlg.reset (new ComboBox ("new combo box"));
-    addAndMakeVisible (comboBoxDetAlg.get());
-    comboBoxDetAlg->setEditableText (false);
-    comboBoxDetAlg->setJustificationType (Justification::centredLeft);
-    comboBoxDetAlg->setTextWhenNothingSelected (TRANS("talent"));
-    comboBoxDetAlg->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
-    comboBoxDetAlg->addItem (TRANS("autotalent"), 1);
-    comboBoxDetAlg->addItem (TRANS("aubio(yinfast)"), 2);
-    comboBoxDetAlg->addListener (this);
-
-    comboBoxDetAlg->setBounds (88, 528, 40, 24);
-
-    comboBoxSftAlg.reset (new ComboBox ("new combo box"));
-    addAndMakeVisible (comboBoxSftAlg.get());
-    comboBoxSftAlg->setEditableText (false);
-    comboBoxSftAlg->setJustificationType (Justification::centredLeft);
-    comboBoxSftAlg->setTextWhenNothingSelected (TRANS("talent"));
-    comboBoxSftAlg->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
-    comboBoxSftAlg->addItem (TRANS("autotalent"), 1);
-    comboBoxSftAlg->addItem (TRANS("SoundTouch"), 2);
-    comboBoxSftAlg->addItem (TRANS("rubberband"), 3);
-    comboBoxSftAlg->addItem (TRANS("smbPitchShift"), 4);
-    comboBoxSftAlg->addListener (this);
-
-    comboBoxSftAlg->setBounds (88, 560, 40, 24);
-
-    label10.reset (new Label ("Sft Alg",
-                              TRANS("Sft Alg:")));
-    addAndMakeVisible (label10.get());
-    label10->setFont (Font (15.00f, Font::plain).withTypefaceStyle ("Regular"));
-    label10->setJustificationType (Justification::centredLeft);
-    label10->setEditable (false, false, false);
-    label10->setColour (TextEditor::textColourId, Colours::black);
-    label10->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
-
-    label10->setBounds (16, 560, 56, 24);
-
     textButtonDetectKey.reset (new TextButton ("new button"));
     addAndMakeVisible (textButtonDetectKey.get());
     textButtonDetectKey->setButtonText (TRANS("Detect"));
@@ -398,26 +351,6 @@ PluginGui::PluginGui (AutotalentAudioProcessor& p)
     textButtonDetectKey->setColour (TextButton::buttonColourId, Colour (0x00a45c94));
 
     textButtonDetectKey->setBounds (32, 184, 88, 24);
-
-    label2.reset (new Label ("VThresh",
-                             TRANS("VThresh:")));
-    addAndMakeVisible (label2.get());
-    label2->setFont (Font (15.00f, Font::plain).withTypefaceStyle ("Regular"));
-    label2->setJustificationType (Justification::centredLeft);
-    label2->setEditable (false, false, false);
-    label2->setColour (TextEditor::textColourId, Colours::black);
-    label2->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
-
-    label2->setBounds (16, 432, 56, 24);
-
-    sliderVThresh.reset (new Slider ("new slider"));
-    addAndMakeVisible (sliderVThresh.get());
-    sliderVThresh->setRange (0.1, 1, 0.01);
-    sliderVThresh->setSliderStyle (Slider::LinearBar);
-    sliderVThresh->setTextBoxStyle (Slider::TextBoxAbove, false, 80, 20);
-    sliderVThresh->addListener (this);
-
-    sliderVThresh->setBounds (88, 432, 40, 24);
 
     label3.reset (new Label ("Length",
                              TRANS("Length:")));
@@ -428,7 +361,7 @@ PluginGui::PluginGui (AutotalentAudioProcessor& p)
     label3->setColour (TextEditor::textColourId, Colours::black);
     label3->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
-    label3->setBounds (16, 464, 56, 24);
+    label3->setBounds (16, 432, 56, 24);
 
     sliderMinLen.reset (new Slider ("new slider"));
     addAndMakeVisible (sliderMinLen.get());
@@ -437,7 +370,7 @@ PluginGui::PluginGui (AutotalentAudioProcessor& p)
     sliderMinLen->setTextBoxStyle (Slider::TextBoxAbove, false, 80, 20);
     sliderMinLen->addListener (this);
 
-    sliderMinLen->setBounds (88, 464, 40, 24);
+    sliderMinLen->setBounds (88, 432, 40, 24);
 
     label11.reset (new Label ("Interval",
                               TRANS("Interval:")));
@@ -448,7 +381,7 @@ PluginGui::PluginGui (AutotalentAudioProcessor& p)
     label11->setColour (TextEditor::textColourId, Colours::black);
     label11->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
-    label11->setBounds (16, 496, 56, 24);
+    label11->setBounds (16, 464, 56, 24);
 
     sliderMaxInterval.reset (new Slider ("new slider"));
     addAndMakeVisible (sliderMaxInterval.get());
@@ -457,7 +390,15 @@ PluginGui::PluginGui (AutotalentAudioProcessor& p)
     sliderMaxInterval->setTextBoxStyle (Slider::TextBoxAbove, false, 80, 20);
     sliderMaxInterval->addListener (this);
 
-    sliderMaxInterval->setBounds (88, 496, 40, 24);
+    sliderMaxInterval->setBounds (88, 464, 40, 24);
+
+    textButtonSetting.reset (new TextButton ("new button"));
+    addAndMakeVisible (textButtonSetting.get());
+    textButtonSetting->setButtonText (TRANS("Setting"));
+    textButtonSetting->addListener (this);
+    textButtonSetting->setColour (TextButton::buttonColourId, Colour (0x00a45c94));
+
+    textButtonSetting->setBounds (24, 512, 104, 40);
 
 
     //[UserPreSize]
@@ -514,17 +455,12 @@ PluginGui::~PluginGui()
     label8 = nullptr;
     sliderATAmount = nullptr;
     textButtonCANote = nullptr;
-    label9 = nullptr;
-    comboBoxDetAlg = nullptr;
-    comboBoxSftAlg = nullptr;
-    label10 = nullptr;
     textButtonDetectKey = nullptr;
-    label2 = nullptr;
-    sliderVThresh = nullptr;
     label3 = nullptr;
     sliderMinLen = nullptr;
     label11 = nullptr;
     sliderMaxInterval = nullptr;
+    textButtonSetting = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -810,12 +746,6 @@ void PluginGui::sliderValueChanged (Slider* sliderThatWasMoved)
         //[UserSliderCode_sliderATAmount] -- add your slider handling code here..
         _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_AT_AMOUNT, sliderThatWasMoved->getValue());
         //[/UserSliderCode_sliderATAmount]
-    }
-    else if (sliderThatWasMoved == sliderVThresh.get())
-    {
-        //[UserSliderCode_sliderVThresh] -- add your slider handling code here..
-        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_VTHRESH, sliderThatWasMoved->getValue());
-        //[/UserSliderCode_sliderVThresh]
     }
     else if (sliderThatWasMoved == sliderMinLen.get())
     {
@@ -1113,6 +1043,13 @@ void PluginGui::buttonClicked (Button* buttonThatWasClicked)
         }
         //[/UserButtonCode_textButtonDetectKey]
     }
+    else if (buttonThatWasClicked == textButtonSetting.get())
+    {
+        //[UserButtonCode_textButtonSetting] -- add your button handler code here..
+        SettingGui component(_proc);
+        std::int32_t r = juce::DialogWindow::showModalDialog("Setiing", &component, 0, juce::Colours::whitesmoke, false, false, false);
+        //[/UserButtonCode_textButtonSetting]
+    }
 
     //[UserbuttonClicked_Post]
     //[/UserbuttonClicked_Post]
@@ -1138,20 +1075,6 @@ void PluginGui::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
         _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY_TYPE, _key_type);
         _update_notes();
         //[/UserComboBoxCode_comboBoxKeyType]
-    }
-    else if (comboBoxThatHasChanged == comboBoxDetAlg.get())
-    {
-        //[UserComboBoxCode_comboBoxDetAlg] -- add your combo box handling code here..
-        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_DET_ALG, comboBoxThatHasChanged->getSelectedId() - 1);
-        //_proc.get_mt_tune()->set_detector(comboBoxThatHasChanged->getSelectedId() - 1);
-        //[/UserComboBoxCode_comboBoxDetAlg]
-    }
-    else if (comboBoxThatHasChanged == comboBoxSftAlg.get())
-    {
-        //[UserComboBoxCode_comboBoxSftAlg] -- add your combo box handling code here..
-        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_SFT_ALG, comboBoxThatHasChanged->getSelectedId() - 1);
-        //_proc.get_mt_tune()->set_shifter(comboBoxThatHasChanged->getSelectedId() - 1);
-        //[/UserComboBoxCode_comboBoxSftAlg]
     }
 
     //[UsercomboBoxChanged_Post]
@@ -1590,10 +1513,6 @@ void PluginGui::_update_gui_parameter()
 
     }
 
-    comboBoxDetAlg->setSelectedId(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_DET_ALG) + 1, dontSendNotification);
-    comboBoxSftAlg->setSelectedId(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_SFT_ALG) + 1, dontSendNotification);
-
-    sliderVThresh->setValue(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_VTHRESH), dontSendNotification);
     sliderMinLen->setValue(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_SNAP_MIN_LENGHT), dontSendNotification);
     sliderMaxInterval->setValue(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_SNAP_MAX_INTERVAL), dontSendNotification);
 }
@@ -2064,57 +1983,32 @@ BEGIN_JUCER_METADATA
   <TEXTBUTTON name="new button" id="27f7687f35fd023c" memberName="textButtonCANote"
               virtualName="" explicitFocusOrder="0" pos="624 64 80 24" bgColOff="a45c94"
               buttonText="CAutoNote" connectedEdges="0" needsCallback="1" radioGroupId="0"/>
-  <LABEL name="Det alg" id="654498e4880c91f0" memberName="label9" virtualName=""
-         explicitFocusOrder="0" pos="16 528 56 24" edTextCol="ff000000"
-         edBkgCol="0" labelText="Det Alg:" editableSingleClick="0" editableDoubleClick="0"
-         focusDiscardsChanges="0" fontname="Default font" fontsize="15.0"
-         kerning="0.0" bold="0" italic="0" justification="33"/>
-  <COMBOBOX name="new combo box" id="af53d7a6d954cf19" memberName="comboBoxDetAlg"
-            virtualName="" explicitFocusOrder="0" pos="88 528 40 24" editable="0"
-            layout="33" items="autotalent&#10;aubio(yinfast)" textWhenNonSelected="talent"
-            textWhenNoItems="(no choices)"/>
-  <COMBOBOX name="new combo box" id="e80a04b02ed7c598" memberName="comboBoxSftAlg"
-            virtualName="" explicitFocusOrder="0" pos="88 560 40 24" editable="0"
-            layout="33" items="autotalent&#10;SoundTouch&#10;rubberband&#10;smbPitchShift"
-            textWhenNonSelected="talent" textWhenNoItems="(no choices)"/>
-  <LABEL name="Sft Alg" id="8377d5581a9249ca" memberName="label10" virtualName=""
-         explicitFocusOrder="0" pos="16 560 56 24" edTextCol="ff000000"
-         edBkgCol="0" labelText="Sft Alg:" editableSingleClick="0" editableDoubleClick="0"
-         focusDiscardsChanges="0" fontname="Default font" fontsize="15.0"
-         kerning="0.0" bold="0" italic="0" justification="33"/>
   <TEXTBUTTON name="new button" id="f86e3d01596458b4" memberName="textButtonDetectKey"
               virtualName="" explicitFocusOrder="0" pos="32 184 88 24" bgColOff="a45c94"
               buttonText="Detect" connectedEdges="0" needsCallback="1" radioGroupId="0"/>
-  <LABEL name="VThresh" id="a2d5069765991727" memberName="label2" virtualName=""
-         explicitFocusOrder="0" pos="16 432 56 24" edTextCol="ff000000"
-         edBkgCol="0" labelText="VThresh:" editableSingleClick="0" editableDoubleClick="0"
-         focusDiscardsChanges="0" fontname="Default font" fontsize="15.0"
-         kerning="0.0" bold="0" italic="0" justification="33"/>
-  <SLIDER name="new slider" id="76d9b803899a8e99" memberName="sliderVThresh"
-          virtualName="" explicitFocusOrder="0" pos="88 432 40 24" min="0.1"
-          max="1.0" int="0.01" style="LinearBar" textBoxPos="TextBoxAbove"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1.0"
-          needsCallback="1"/>
   <LABEL name="Length" id="dc4dd3223ddffbdd" memberName="label3" virtualName=""
-         explicitFocusOrder="0" pos="16 464 56 24" edTextCol="ff000000"
+         explicitFocusOrder="0" pos="16 432 56 24" edTextCol="ff000000"
          edBkgCol="0" labelText="Length:" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="15.0"
          kerning="0.0" bold="0" italic="0" justification="33"/>
   <SLIDER name="new slider" id="1f530dc457b303af" memberName="sliderMinLen"
-          virtualName="" explicitFocusOrder="0" pos="88 464 40 24" min="0.0"
+          virtualName="" explicitFocusOrder="0" pos="88 432 40 24" min="0.0"
           max="1.0" int="0.01" style="LinearBar" textBoxPos="TextBoxAbove"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1.0"
           needsCallback="1"/>
   <LABEL name="Interval" id="621be6075a1201a" memberName="label11" virtualName=""
-         explicitFocusOrder="0" pos="16 496 56 24" edTextCol="ff000000"
+         explicitFocusOrder="0" pos="16 464 56 24" edTextCol="ff000000"
          edBkgCol="0" labelText="Interval:" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="15.0"
          kerning="0.0" bold="0" italic="0" justification="33"/>
   <SLIDER name="new slider" id="b808f0a215270bf5" memberName="sliderMaxInterval"
-          virtualName="" explicitFocusOrder="0" pos="88 496 40 24" min="0.0"
+          virtualName="" explicitFocusOrder="0" pos="88 464 40 24" min="0.0"
           max="1.0" int="0.01" style="LinearBar" textBoxPos="TextBoxAbove"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1.0"
           needsCallback="1"/>
+  <TEXTBUTTON name="new button" id="900521ff5a75116a" memberName="textButtonSetting"
+              virtualName="" explicitFocusOrder="0" pos="24 512 104 40" bgColOff="a45c94"
+              buttonText="Setting" connectedEdges="0" needsCallback="1" radioGroupId="0"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA
@@ -2124,3 +2018,4 @@ END_JUCER_METADATA
 
 //[EndFile] You can add extra defines here...
 //[/EndFile]
+

@@ -147,6 +147,7 @@ void AutotalentAudioProcessor::prepareToPlay (double sampleRate, int samplesPerB
             _mx_tune->set_shifter(_sft_alg);
             _mx_tune->set_conf_shift_thresh(_conf_thresh);
             _mx_tune->set_conf_detect_thresh((_conf_thresh > 0.2)? (_conf_thresh - 0.2): 0.1);
+            _mx_tune->set_aref(_afreq);
             _mx_tune->set_detect_gate(-_det_gate);
             _mx_tune->set_detect_freq_range(_det_min_freq, _det_max_freq);
             setLatencySamples(_mx_tune->get_latency());
@@ -567,6 +568,15 @@ void AutotalentAudioProcessor::parameterValueChanged (int parameterIndex, float 
             _mx_tune->set_conf_detect_thresh((_conf_thresh > 0.2)? (_conf_thresh - 0.2): 0.1);
         }
     }
+    else if (parameterIndex == PARAMETER_ID_AFREQ)
+    {
+        _afreq = newValue * _parameters[parameterIndex].scale;
+        net_log_info("_afreq:%f\n", _afreq);
+        if (_mx_tune)
+        {
+            _mx_tune->set_aref(_afreq);
+        }
+    }
     else if (parameterIndex == PARAMETER_ID_DET_GATE)
     {
         _det_gate = newValue * _parameters[parameterIndex].scale;
@@ -622,6 +632,14 @@ void AutotalentAudioProcessor::set_parameter(std::uint32_t id, float v)
 {
     if (id < PARAMETER_ID_NUM)
     {
+        if (v < _parameters[id].min)
+        {
+            v = _parameters[id].min;
+        }
+        if (v > _parameters[id].max)
+        {
+            v = _parameters[id].max;
+        }
         v = v / _parameters[id].scale;
         if (v > 1.0)
         {

@@ -791,7 +791,7 @@ void PluginGui::buttonClicked (Button* buttonThatWasClicked)
         comboBoxKey->setSelectedId(_key + 1, dontSendNotification);
         comboBoxKeyType->setSelectedId(_key_type + 1, dontSendNotification);
         _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY, _key);
-        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY, _key_type);
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY_TYPE, _key_type);
         //[/UserButtonCode_toggleButtonNoteA]
     }
     else if (buttonThatWasClicked == toggleButtonNoteBb.get())
@@ -804,7 +804,7 @@ void PluginGui::buttonClicked (Button* buttonThatWasClicked)
         comboBoxKey->setSelectedId(_key + 1, dontSendNotification);
         comboBoxKeyType->setSelectedId(_key_type + 1, dontSendNotification);
         _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY, _key);
-        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY, _key_type);
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY_TYPE, _key_type);
         //[/UserButtonCode_toggleButtonNoteBb]
     }
     else if (buttonThatWasClicked == toggleButtonNoteB.get())
@@ -817,7 +817,7 @@ void PluginGui::buttonClicked (Button* buttonThatWasClicked)
         comboBoxKey->setSelectedId(_key + 1, dontSendNotification);
         comboBoxKeyType->setSelectedId(_key_type + 1, dontSendNotification);
         _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY, _key);
-        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY, _key_type);
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY_TYPE, _key_type);
         //[/UserButtonCode_toggleButtonNoteB]
     }
     else if (buttonThatWasClicked == toggleButtonNoteC.get())
@@ -830,7 +830,7 @@ void PluginGui::buttonClicked (Button* buttonThatWasClicked)
         comboBoxKey->setSelectedId(_key + 1, dontSendNotification);
         comboBoxKeyType->setSelectedId(_key_type + 1, dontSendNotification);
         _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY, _key);
-        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY, _key_type);
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY_TYPE, _key_type);
         //[/UserButtonCode_toggleButtonNoteC]
     }
     else if (buttonThatWasClicked == toggleButtonNoteDb.get())
@@ -843,7 +843,7 @@ void PluginGui::buttonClicked (Button* buttonThatWasClicked)
         comboBoxKey->setSelectedId(_key + 1, dontSendNotification);
         comboBoxKeyType->setSelectedId(_key_type + 1, dontSendNotification);
         _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY, _key);
-        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY, _key_type);
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY_TYPE, _key_type);
         //[/UserButtonCode_toggleButtonNoteDb]
     }
     else if (buttonThatWasClicked == toggleButtonNoteD.get())
@@ -856,7 +856,7 @@ void PluginGui::buttonClicked (Button* buttonThatWasClicked)
         comboBoxKey->setSelectedId(_key + 1, dontSendNotification);
         comboBoxKeyType->setSelectedId(_key_type + 1, dontSendNotification);
         _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY, _key);
-        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY, _key_type);
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY_TYPE, _key_type);
         //[/UserButtonCode_toggleButtonNoteD]
     }
     else if (buttonThatWasClicked == toggleButtonNoteEb.get())
@@ -869,7 +869,7 @@ void PluginGui::buttonClicked (Button* buttonThatWasClicked)
         comboBoxKey->setSelectedId(_key + 1, dontSendNotification);
         comboBoxKeyType->setSelectedId(_key_type + 1, dontSendNotification);
         _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY, _key);
-        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY, _key_type);
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY_TYPE, _key_type);
         //[/UserButtonCode_toggleButtonNoteEb]
     }
     else if (buttonThatWasClicked == toggleButtonNoteE.get())
@@ -882,7 +882,7 @@ void PluginGui::buttonClicked (Button* buttonThatWasClicked)
         comboBoxKey->setSelectedId(_key + 1, dontSendNotification);
         comboBoxKeyType->setSelectedId(_key_type + 1, dontSendNotification);
         _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY, _key);
-        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY, _key_type);
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY_TYPE, _key_type);
         //[/UserButtonCode_toggleButtonNoteE]
     }
     else if (buttonThatWasClicked == toggleButtonNoteF.get())
@@ -895,7 +895,7 @@ void PluginGui::buttonClicked (Button* buttonThatWasClicked)
         comboBoxKey->setSelectedId(_key + 1, dontSendNotification);
         comboBoxKeyType->setSelectedId(_key_type + 1, dontSendNotification);
         _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY, _key);
-        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY, _key_type);
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY_TYPE, _key_type);
         //[/UserButtonCode_toggleButtonNoteF]
     }
     else if (buttonThatWasClicked == toggleButtonNoteGb.get())
@@ -908,7 +908,7 @@ void PluginGui::buttonClicked (Button* buttonThatWasClicked)
         comboBoxKey->setSelectedId(_key + 1, dontSendNotification);
         comboBoxKeyType->setSelectedId(_key_type + 1, dontSendNotification);
         _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY, _key);
-        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY, _key_type);
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY_TYPE, _key_type);
         //[/UserButtonCode_toggleButtonNoteGb]
     }
     else if (buttonThatWasClicked == toggleButtonNoteAb.get())
@@ -921,7 +921,7 @@ void PluginGui::buttonClicked (Button* buttonThatWasClicked)
         comboBoxKey->setSelectedId(_key + 1, dontSendNotification);
         comboBoxKeyType->setSelectedId(_key_type + 1, dontSendNotification);
         _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY, _key);
-        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY, _key_type);
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY_TYPE, _key_type);
         //[/UserButtonCode_toggleButtonNoteAb]
     }
     else if (buttonThatWasClicked == toggleButtonNoteG.get())
@@ -934,7 +934,7 @@ void PluginGui::buttonClicked (Button* buttonThatWasClicked)
         comboBoxKey->setSelectedId(_key + 1, dontSendNotification);
         comboBoxKeyType->setSelectedId(_key_type + 1, dontSendNotification);
         _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY, _key);
-        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY, _key_type);
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY_TYPE, _key_type);
         //[/UserButtonCode_toggleButtonNoteG]
     }
     else if (buttonThatWasClicked == textButtonSnapKey.get())
@@ -1010,7 +1010,7 @@ void PluginGui::buttonClicked (Button* buttonThatWasClicked)
                 comboBoxKeyType->setSelectedId(_key_type + 1, dontSendNotification);
 
                 _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY, _key);
-                _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY, _key_type);
+                _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_KEY_TYPE, _key_type);
 
 
                 toggleButtonNoteA->setToggleState((_notes[0] > 0), dontSendNotification);

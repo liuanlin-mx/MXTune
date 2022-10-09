@@ -230,6 +230,7 @@ SettingGui::SettingGui (AutotalentAudioProcessor& p)
 
     sliderVThresh->setValue(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_VTHRESH), dontSendNotification);
 
+    textEditorMisc->setText(_proc.get_misc_param(), false);
     //[/Constructor]
 }
 
@@ -357,7 +358,9 @@ void SettingGui::buttonClicked (Button* buttonThatWasClicked)
         _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_DET_GATE, -sliderGate->getValue());
 
         _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_VTHRESH, sliderVThresh->getValue());
-
+        
+        _proc.set_misc_param(textEditorMisc->getText().toStdString());
+        _proc.setLatencySamples(_proc.get_mt_tune()->get_latency());
         //[/UserButtonCode_textButtonApply]
     }
 

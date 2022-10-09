@@ -20,6 +20,7 @@ public:
     virtual void set_gate(float db) = 0;
     virtual void set_aref(float aref) = 0;
     virtual void set_freq_range(float min_freq, float max_freq) = 0;
+    virtual bool set_misc_param(const char *key, const char *value) { return false; }
     virtual bool get_pitch(float in, float& pitch, float& conf) = 0;
     virtual float get_time() = 0;
 };

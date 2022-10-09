@@ -1,11 +1,32 @@
 #ifndef __AUTOTALENT2_H__
 #define __AUTOTALENT2_H__
-
+#include <vector>
 #include "ring_buffer.h"
 #include "pitch_detector.h"
 #include "pitch_shifter.h"
 #include "auto_tune.h"
 #include "manual_tune.h"
+
+class text_readline
+{
+public:
+    text_readline();
+    ~text_readline();
+    
+public:
+    void load(const char *text, std::uint32_t len);
+    std::string read_line();
+    std::string look_line();
+    
+private:
+    const char *_skip_space(const char *str, const char *end);
+    
+private:
+    const char *_text;
+    std::uint32_t _len;
+    const char *_cur;
+};
+
 
 class mx_tune
 {
@@ -36,6 +57,7 @@ public:
     
     void set_aref(float aref);
     void set_mix(float mix);
+    void set_misc_param(const std::string& misc);
     
     void set_at_note(int notes[12]);
     void set_at_pull(float pull);
@@ -70,6 +92,10 @@ public:
     void run(float *in, float *out, std::int32_t n, float timestamp  = 0.0);
     
 private:
+    std::vector<std::string> _string_split(std::string str, const std::string& key);
+    void _apply_misc_param();
+    
+private:
     auto_tune _tune;
     manual_tune _m_tune;
     
@@ -79,6 +105,7 @@ private:
     std::shared_ptr<pitch_shifter> _shifter;
     
     float _aref;
+    std::string _misc;
     std::uint32_t _sample_rate;
     std::uint32_t _noverlap;
     float _inpitch;

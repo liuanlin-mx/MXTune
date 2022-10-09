@@ -55,6 +55,10 @@ AutotalentAudioProcessor::AutotalentAudioProcessor()
     _sft_alg = get_parameter(PARAMETER_ID_SFT_ALG);
     
     _conf_thresh = get_parameter(PARAMETER_ID_VTHRESH);
+    
+    _misc_param = "st.sequence_ms=16\n"
+                    "st.seekwindow_ms=4\n"
+                    "st.overlap_ms=4\n";
 }
 
 AutotalentAudioProcessor::~AutotalentAudioProcessor()
@@ -150,6 +154,7 @@ void AutotalentAudioProcessor::prepareToPlay (double sampleRate, int samplesPerB
             _mx_tune->set_aref(_afreq);
             _mx_tune->set_detect_gate(-_det_gate);
             _mx_tune->set_detect_freq_range(_det_min_freq, _det_max_freq);
+            _mx_tune->set_misc_param(_misc_param);
             setLatencySamples(_mx_tune->get_latency());
         }
     }
@@ -283,6 +288,7 @@ void AutotalentAudioProcessor::getStateInformation (MemoryBlock& destData)
     //Array<var> outpitch_arr;
     Array<var> tune_arr;
     Array<var> paramters;
+    var misc;
     
     {
         std::list<std::pair<manual_tune::pitch_node, float> > inpitch = _mx_tune->get_manual_tune().get_inpitch(time_begin, time_end);
@@ -317,6 +323,7 @@ void AutotalentAudioProcessor::getStateInformation (MemoryBlock& destData)
         for (auto i: tune)
         {
             ReferenceCountedObjectPtr<DynamicObject> item(new DynamicObject);
+            item->setProperty("is_manual", var(i->is_manual));
             item->setProperty("time_start", var(i->time_start));
             item->setProperty("time_end", var(i->time_end));
             item->setProperty("pitch_start", var(i->pitch_start));
@@ -337,6 +344,11 @@ void AutotalentAudioProcessor::getStateInformation (MemoryBlock& destData)
             paramters.add(get_parameter(i));
         }
         root->setProperty("paramters", paramters);
+    }
+    
+    {
+        misc = String(_misc_param);
+        root->setProperty("misc", misc);
     }
     
     String s = JSON::toString(root.get());
@@ -458,6 +470,13 @@ void AutotalentAudioProcessor::setStateInformation (const void* data, int sizeIn
         std::int32_t size = tune.size();
         for (std::int32_t i = 0; i < size; i++)
         {
+            std::shared_ptr<manual_tune::tune_node> node(new manual_tune::tune_node);
+            
+            if (tune[i].hasProperty("is_manual"))
+            {
+                node->is_manual = tune[i]["is_manual"];
+            }
+            
             if (tune[i].hasProperty("time_start")
                 && tune[i].hasProperty("time_end")
                 && tune[i].hasProperty("pitch_start")
@@ -466,7 +485,6 @@ void AutotalentAudioProcessor::setStateInformation (const void* data, int sizeIn
                 && tune[i].hasProperty("release")
                 && tune[i].hasProperty("amount"))
             {
-                std::shared_ptr<manual_tune::tune_node> node(new manual_tune::tune_node);
                 node->time_start = tune[i]["time_start"];
                 node->time_end = tune[i]["time_end"];
                 node->pitch_start = tune[i]["pitch_start"];
@@ -495,6 +513,16 @@ void AutotalentAudioProcessor::setStateInformation (const void* data, int sizeIn
         }
     }
 
+    if (root.hasProperty("misc"))
+    {
+        var misc = root["misc"];
+        if (!misc.isString())
+        {
+            return;
+        }
+        _misc_param = misc.toString().toStdString();
+        _mx_tune->set_misc_param(_misc_param);
+    }
 }
 
 
@@ -648,6 +676,16 @@ void AutotalentAudioProcessor::set_parameter(std::uint32_t id, float v)
         _parameters[id].parameter->beginChangeGesture();
         _parameters[id].parameter->setValueNotifyingHost(v);
         _parameters[id].parameter->endChangeGesture();
+    }
+}
+
+
+void AutotalentAudioProcessor::set_misc_param(const std::string& misc_param)
+{
+    _misc_param = misc_param;
+    if (_mx_tune)
+    {
+        _mx_tune->set_misc_param(_misc_param);
     }
 }
 

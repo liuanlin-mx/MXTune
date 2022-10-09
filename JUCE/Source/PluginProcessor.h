@@ -121,7 +121,8 @@ public:
     float get_parameter(std::uint32_t id);
     void set_parameter(std::uint32_t id, float v);
     std::uint32_t get_parameters_update_id() { return _parameter_update_id; }
-
+    std::string get_misc_param() { return _misc_param; }
+    void set_misc_param(const std::string& misc_param);
     
 private:
     std::mutex _mtx;
@@ -186,6 +187,7 @@ private:
         /* name def is_boolean scale min max parameter */
     };
     
+    std::string _misc_param;
     volatile std::uint32_t _parameter_update_id = 0;
     bool _gesture_is_starting = false;
     

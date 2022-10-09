@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <malloc.h>
 #include <math.h>
-
+#include "net_log.h"
 #include "pitch_shifter_st.h"
 
 
@@ -33,6 +33,7 @@ void pitch_shifter_st::update_shifter_variables(float inpitch, float outpitch)
     float pitch_diff = (outpitch - inpitch);
     if (pitch_diff > -12 && pitch_diff < 12)
     {
+        _pitch = pitch_diff;
         _st.setPitchSemiTones(pitch_diff);
     }
     else
@@ -41,6 +42,38 @@ void pitch_shifter_st::update_shifter_variables(float inpitch, float outpitch)
     }
 }
 
+bool pitch_shifter_st::set_misc_param(const char *key, const char *value)
+{
+    net_log_info("key:%s value:%s\n", key, value);
+    if (std::string(key) == "st.sequence_ms")
+    {
+        std::int32_t v = atoi(value);
+        if (v > 0 && v < 500)
+        {
+            _st.setSetting(SETTING_SEQUENCE_MS, v);
+            return true;
+        }
+    }
+    else if (std::string(key) == "st.seekwindow_ms")
+    {
+        std::int32_t v = atoi(value);
+        if (v > 0 && v < 500)
+        {
+            _st.setSetting(SETTING_SEEKWINDOW_MS, v);
+            return true;
+        }
+    }
+    else if (std::string(key) == "st.overlap_ms")
+    {
+        std::int32_t v = atoi(value);
+        if (v > 0 && v < 500)
+        {
+            _st.setSetting(SETTING_OVERLAP_MS, v);
+            return true;
+        }
+    }
+    return false;
+}
 
 float pitch_shifter_st::shifter(float in)
 {

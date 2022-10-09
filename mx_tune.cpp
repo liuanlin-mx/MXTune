@@ -6,6 +6,86 @@
 #include "pitch_shifter_rb.h"
 #include "pitch_shifter_smb.h"
 
+text_readline::text_readline()
+    : _text(NULL)
+    , _len(0)
+    , _cur(NULL)
+{
+}
+
+text_readline::~text_readline()
+{
+}
+
+
+
+void text_readline::load(const char *text, std::uint32_t len)
+{
+    _text = text;
+    _len = len;
+    _cur = _text;
+}
+
+
+std::string text_readline::read_line()
+{
+    const char *end = _text + _len;
+    _cur = _skip_space(_cur, end);
+    const char *str = _cur;
+    
+    while (_cur < end)
+    {
+        if (*_cur == '\r' || *_cur == '\n')
+        {
+            while (*_cur == '\r' || *_cur == '\n')
+            {
+                _cur++;
+            }
+            break;
+        }
+        _cur++;
+    }
+    return std::string(str, _cur - str);
+}
+
+
+
+std::string text_readline::look_line()
+{
+    const char *end = _text + _len;
+    const char *cur = _skip_space(_cur, end);
+    const char *str = cur;
+    
+    while (cur < end)
+    {
+        if (*cur == '\r' || *cur == '\n')
+        {
+            while (*cur == '\r' || *cur == '\n')
+            {
+                cur++;
+            }
+            break;
+        }
+        cur++;
+    }
+    return std::string(str, cur - str);
+}
+
+
+const char *text_readline::_skip_space(const char *str, const char *end)
+{
+    while (str < end)
+    {
+        if (!std::isspace(*str))
+        {
+            break;
+        }
+        str++;
+    }
+    return str;
+}
+
+
 mx_tune::mx_tune(unsigned int sample_rate)
     : _tune()
     , _m_tune()
@@ -55,6 +135,7 @@ void mx_tune::set_detector(std::uint32_t detector_type)
         _detector->set_aref(_aref);
         _detector->set_freq_range(_det_min_freq, _det_max_freq);
         _detector->set_gate(_det_gate);
+        _apply_misc_param();
         _detector_type = detector_type;
     }
     else if (detector_type == DETECTOR_TYPE_YIN_FAST)
@@ -64,6 +145,7 @@ void mx_tune::set_detector(std::uint32_t detector_type)
         _detector->set_aref(_aref);
         _detector->set_freq_range(_det_min_freq, _det_max_freq);
         _detector->set_gate(_det_gate);
+        _apply_misc_param();
         _detector_type = detector_type;
     }
     else if (detector_type == DETECTOR_TYPE_YIN)
@@ -73,6 +155,7 @@ void mx_tune::set_detector(std::uint32_t detector_type)
         _detector->set_aref(_aref);
         _detector->set_freq_range(_det_min_freq, _det_max_freq);
         _detector->set_gate(_det_gate);
+        _apply_misc_param();
         _detector_type = detector_type;
     }
 }
@@ -88,24 +171,28 @@ void mx_tune::set_shifter(std::uint32_t shifter_type)
     {
         _shifter.reset(new pitch_shifter_talent(_sample_rate));
         _shifter->set_aref(_aref);
+        _apply_misc_param();
         _shifter_type = shifter_type;
     }
     else if (shifter_type == SHIFTER_TYPE_SOUND_TOUCH)
     {
         _shifter.reset(new pitch_shifter_st(_sample_rate));
         _shifter->set_aref(_aref);
+        _apply_misc_param();
         _shifter_type = shifter_type;
     }
     else if (shifter_type == SHIFTER_TYPE_RUBBERBAND)
     {
         _shifter.reset(new pitch_shifter_rb(_sample_rate));
         _shifter->set_aref(_aref);
+        _apply_misc_param();
         _shifter_type = shifter_type;
     }
     else if (shifter_type == SHIFTER_TYPE_SMB)
     {
         _shifter.reset(new pitch_shifter_smb(_sample_rate));
         _shifter->set_aref(_aref);
+        _apply_misc_param();
         _shifter_type = shifter_type;
     }
 }
@@ -120,6 +207,12 @@ void mx_tune::set_aref(float aref)
 void mx_tune::set_mix(float mix)
 {
     _shifter->set_mix(mix);
+}
+
+void mx_tune::set_misc_param(const std::string& misc)
+{
+    _misc = misc;
+    _apply_misc_param();
 }
 
 void mx_tune::set_at_note(int notes[12])
@@ -277,5 +370,53 @@ void mx_tune::run(float* in, float *out, std::int32_t n, float timestamp)
         }
         
         out[i] = _shifter->shifter(in[i]);
+    }
+}
+
+std::vector<std::string> mx_tune::_string_split(std::string str, const std::string& key)
+{
+    std::vector<std::string> out;
+    std::string::size_type begin = 0;
+    std::string::size_type end = 0;
+    while ((end = str.find(key, begin)) != str.npos)
+    {
+        out.push_back(str.substr(begin, end));
+        begin = end + key.size();
+    }
+    if (begin < str.size())
+    {
+        out.push_back(str.substr(begin, end));
+    }
+    
+    return out;
+}
+
+void mx_tune::_apply_misc_param()
+{
+    text_readline readline;
+    readline.load(_misc.c_str(), _misc.length());
+    
+    while (1)
+    {
+        std::string line = readline.read_line();
+        if (line.length() == 0)
+        {
+            break;
+        }
+        
+        std::vector<std::string> v_str = _string_split(line, "=");
+        if (v_str.size() < 2)
+        {
+            continue;
+        }
+        
+        if (_detector->set_misc_param(v_str[0].c_str(), v_str[1].c_str()))
+        {
+            continue;
+        }
+        if (_shifter->set_misc_param(v_str[0].c_str(), v_str[1].c_str()))
+        {
+            continue;
+        }
     }
 }

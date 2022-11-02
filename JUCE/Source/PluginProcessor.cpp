@@ -11,7 +11,27 @@
 #include "PluginProcessor.h"
 #include "PluginGui.h"
 #include <list>
-#include "net_log.h"
+#include "kvbuf.h"
+
+#define KV_KEY_INPITCH 0
+#define KV_KEY_INPITCH_PITCH 0
+#define KV_KEY_INPITCH_CONF 1
+#define KV_KEY_INPITCH_TIME 2
+
+#define KV_KEY_TUNE 1
+#define KV_KEY_TUNE_IS_MANUAL 0
+#define KV_KEY_TUNE_TIME_START 1
+#define KV_KEY_TUNE_TIME_END 2
+#define KV_KEY_TUNE_PITCH_START 3
+#define KV_KEY_TUNE_PITCH_END 4
+#define KV_KEY_TUNE_ATTACK 5
+#define KV_KEY_TUNE_RELEASE 6
+#define KV_KEY_TUNE_AMOUNT 7
+
+#define KV_KEY_PARAMTERS 2
+#define KV_KEY_MISC 3
+
+
 
 //==============================================================================
 AutotalentAudioProcessor::AutotalentAudioProcessor()
@@ -280,27 +300,29 @@ void AutotalentAudioProcessor::getStateInformation (MemoryBlock& destData)
         return;
     }
     
-    ReferenceCountedObjectPtr<DynamicObject> root(new DynamicObject);
+    kvbuf_hooks hooks = {malloc, free};
+    kvbuf *kv_root = kvbuf_create_object(&hooks);
     
     float time_begin = 0;
     float time_end = _mx_tune->get_manual_tune().get_time_len();
-    Array<var> inpitch_arr;
-    //Array<var> outpitch_arr;
-    Array<var> tune_arr;
-    Array<var> paramters;
-    var misc;
     
     {
         std::list<std::pair<manual_tune::pitch_node, float> > inpitch = _mx_tune->get_manual_tune().get_inpitch(time_begin, time_end);
+        kvbuf *pitch_array = kvbuf_create_array(&hooks);
+        kvbuf *conf_array = kvbuf_create_array(&hooks);
+        kvbuf *time_array = kvbuf_create_array(&hooks);
+        kvbuf *item = kvbuf_create_object(&hooks);
         for (auto i: inpitch)
         {
-            ReferenceCountedObjectPtr<DynamicObject> item(new DynamicObject);
-            item->setProperty("pitch", var(i.first.pitch));
-            item->setProperty("conf", var(i.first.conf));
-            item->setProperty("time", var(i.second));
-            inpitch_arr.add(item.get());
+            kvbuf_add_item_to_array(pitch_array, kvbuf_create_float32(&hooks, i.first.pitch));
+            kvbuf_add_item_to_array(conf_array, kvbuf_create_float32(&hooks, i.first.conf));
+            kvbuf_add_item_to_array(time_array, kvbuf_create_float32(&hooks, i.second));
         }
-        root->setProperty("inpitch", inpitch_arr);
+        kvbuf_add_item_to_object(item, KV_KEY_INPITCH_PITCH, pitch_array);
+        kvbuf_add_item_to_object(item, KV_KEY_INPITCH_CONF, conf_array);
+        kvbuf_add_item_to_object(item, KV_KEY_INPITCH_TIME, time_array);
+        
+        kvbuf_add_item_to_object(kv_root, KV_KEY_INPITCH, item);
     }
     /*
     {
@@ -319,41 +341,51 @@ void AutotalentAudioProcessor::getStateInformation (MemoryBlock& destData)
     */
     
     {
+        kvbuf *array = kvbuf_create_array(&hooks);
         std::list<std::shared_ptr<manual_tune::tune_node> > tune = _mx_tune->get_manual_tune().get_tune(time_begin, time_end);
         for (auto i: tune)
         {
-            ReferenceCountedObjectPtr<DynamicObject> item(new DynamicObject);
-            item->setProperty("is_manual", var(i->is_manual));
-            item->setProperty("time_start", var(i->time_start));
-            item->setProperty("time_end", var(i->time_end));
-            item->setProperty("pitch_start", var(i->pitch_start));
-            item->setProperty("pitch_end", var(i->pitch_end));
-            item->setProperty("attack", var(i->attack));
-            item->setProperty("release", var(i->release));
-            item->setProperty("amount", var(i->amount));
-            tune_arr.add(item.get());
+            kvbuf *item = kvbuf_create_object(&hooks);
+            kvbuf_add_item_to_object(item, KV_KEY_TUNE_IS_MANUAL, kvbuf_create_int8(&hooks, i->is_manual));
+            kvbuf_add_item_to_object(item, KV_KEY_TUNE_TIME_START, kvbuf_create_float32(&hooks, i->time_start));
+            kvbuf_add_item_to_object(item, KV_KEY_TUNE_TIME_END, kvbuf_create_float32(&hooks, i->time_end));
+            kvbuf_add_item_to_object(item, KV_KEY_TUNE_PITCH_START, kvbuf_create_float32(&hooks, i->pitch_start));
+            kvbuf_add_item_to_object(item, KV_KEY_TUNE_PITCH_END, kvbuf_create_float32(&hooks, i->pitch_end));
+            kvbuf_add_item_to_object(item, KV_KEY_TUNE_ATTACK, kvbuf_create_float32(&hooks, i->attack));
+            kvbuf_add_item_to_object(item, KV_KEY_TUNE_RELEASE, kvbuf_create_float32(&hooks, i->release));
+            kvbuf_add_item_to_object(item, KV_KEY_TUNE_AMOUNT, kvbuf_create_float32(&hooks, i->amount));
+            kvbuf_add_item_to_array(array, item);
         }
-        root->setProperty("tune", tune_arr);
+        kvbuf_add_item_to_object(kv_root, KV_KEY_TUNE, array);
     }
     
-    
-    
     {
+        kvbuf *array = kvbuf_create_array(&hooks);
         for (std::uint32_t i = 0; i < sizeof(_parameters) / sizeof(_parameters[0]); i++)
         {
-            paramters.add(get_parameter(i));
+            kvbuf_add_item_to_array(array, kvbuf_create_float32(&hooks, get_parameter(i)));
         }
-        root->setProperty("paramters", paramters);
+        kvbuf_add_item_to_object(kv_root, KV_KEY_PARAMTERS, array);
     }
     
     {
-        misc = String(_misc_param);
-        root->setProperty("misc", misc);
+        kvbuf *array = kvbuf_create_array(&hooks);
+        for (std::int32_t i = 0; i < _misc_param.length(); i++)
+        {
+            kvbuf_add_item_to_array(array, kvbuf_create_int8(&hooks, _misc_param.c_str()[i]));
+        }
+        kvbuf_add_item_to_object(kv_root, KV_KEY_MISC, array);
     }
     
-    String s = JSON::toString(root.get());
-    destData.setSize(s.length());
-    destData.copyFrom(s.getCharPointer(), 0, destData.getSize());
+    {
+        unsigned char *buf = (unsigned char *)malloc(1024 * 1024);
+        std::uint32_t len = kvbuf_build(&hooks, kv_root, buf + 5, 1024 * 1024 - 5);
+        kvbuf_delete(&hooks, kv_root);
+        memcpy(buf, "kvbuf", 5);
+        destData.setSize(len + 5);
+        destData.copyFrom(buf, 0, len + 5);
+        free(buf);
+    }
 }
 
 void AutotalentAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
@@ -368,160 +400,270 @@ void AutotalentAudioProcessor::setStateInformation (const void* data, int sizeIn
     const char *first = static_cast<const char *>(data);
     const char *last = first + sizeInBytes - 1;
 
-    if (*first != '{' || *last != '}')
+
+    if (*first == '{' && *last == '}')
     {
-        return;
-    }
-    
-    var root = JSON::fromString(String(first, sizeInBytes));
-    if (root.isVoid())
-    {
-        return;
-    }
-    
-    if (!root.hasProperty("inpitch")
-        /*|| !root.hasProperty("outpitch")*/
-        || !root.hasProperty("tune"))
-    {
-        return;
-    }
-    
-    {
-        var inpitch = root["inpitch"];
-        if (!inpitch.isArray())
+        var root = JSON::fromString(String(first, sizeInBytes));
+        if (root.isVoid())
         {
             return;
         }
         
-        std::int32_t size = inpitch.size();
-        if (size > 0
-            && inpitch[0].hasProperty("pitch")
-            && inpitch[0].hasProperty("conf")
-            && inpitch[0].hasProperty("time"))
+        if (!root.hasProperty("inpitch")
+            /*|| !root.hasProperty("outpitch")*/
+            || !root.hasProperty("tune"))
         {
-            manual_tune::pitch_node last_pitch;
-            last_pitch.pitch = inpitch[0]["pitch"];
-            last_pitch.conf = inpitch[0]["conf"];
-            float last_time = inpitch[0]["time"];
-            for (std::int32_t i = 1; i < size; i++)
+            return;
+        }
+        
+        {
+            var inpitch = root["inpitch"];
+            if (!inpitch.isArray())
             {
-                if (inpitch[i].hasProperty("pitch")
-                    && inpitch[i].hasProperty("conf")
-                    && inpitch[i].hasProperty("time"))
+                return;
+            }
+            
+            std::int32_t size = inpitch.size();
+            if (size > 0
+                && inpitch[0].hasProperty("pitch")
+                && inpitch[0].hasProperty("conf")
+                && inpitch[0].hasProperty("time"))
+            {
+                manual_tune::pitch_node last_pitch;
+                last_pitch.pitch = inpitch[0]["pitch"];
+                last_pitch.conf = inpitch[0]["conf"];
+                float last_time = inpitch[0]["time"];
+                for (std::int32_t i = 1; i < size; i++)
                 {
-                    manual_tune::pitch_node pitch;
-                    pitch.pitch = inpitch[i]["pitch"];
-                    pitch.conf = inpitch[i]["conf"];
-                    float time = inpitch[i]["time"];
-                    
-                    _mx_tune->get_manual_tune().set_inpitch(last_time, time, last_pitch);
-                    last_pitch = pitch;
-                    last_time = time;
+                    if (inpitch[i].hasProperty("pitch")
+                        && inpitch[i].hasProperty("conf")
+                        && inpitch[i].hasProperty("time"))
+                    {
+                        manual_tune::pitch_node pitch;
+                        pitch.pitch = inpitch[i]["pitch"];
+                        pitch.conf = inpitch[i]["conf"];
+                        float time = inpitch[i]["time"];
+                        
+                        _mx_tune->get_manual_tune().set_inpitch(last_time, time, last_pitch);
+                        last_pitch = pitch;
+                        last_time = time;
+                    }
                 }
             }
         }
-    }
-    
-    /*
-    {
-        var outpitch = root["outpitch"];
-        if (!outpitch.isArray())
-        {
-            return;
-        }
         
-        std::int32_t size = outpitch.size();
-        if (size > 0
-            && outpitch[0].hasProperty("pitch")
-            && outpitch[0].hasProperty("conf")
-            && outpitch[0].hasProperty("time"))
+        /*
         {
-            manual_tune::pitch_node last_pitch;
-            last_pitch.pitch = outpitch[0]["pitch"];
-            last_pitch.conf = outpitch[0]["conf"];
-            float last_time = outpitch[0]["time"];
-            for (std::int32_t i = 1; i < size; i++)
+            var outpitch = root["outpitch"];
+            if (!outpitch.isArray())
             {
-                if (outpitch[i].hasProperty("pitch")
-                    && outpitch[i].hasProperty("conf")
-                    && outpitch[i].hasProperty("time"))
+                return;
+            }
+            
+            std::int32_t size = outpitch.size();
+            if (size > 0
+                && outpitch[0].hasProperty("pitch")
+                && outpitch[0].hasProperty("conf")
+                && outpitch[0].hasProperty("time"))
+            {
+                manual_tune::pitch_node last_pitch;
+                last_pitch.pitch = outpitch[0]["pitch"];
+                last_pitch.conf = outpitch[0]["conf"];
+                float last_time = outpitch[0]["time"];
+                for (std::int32_t i = 1; i < size; i++)
                 {
-                    manual_tune::pitch_node pitch;
-                    pitch.pitch = outpitch[i]["pitch"];
-                    pitch.conf = outpitch[i]["conf"];
-                    float time = outpitch[i]["time"];
-                    
-                    _mx_tune->get_manual_tune().set_outpitch(last_time, time, last_pitch);
-                    last_pitch = pitch;
-                    last_time = time;
+                    if (outpitch[i].hasProperty("pitch")
+                        && outpitch[i].hasProperty("conf")
+                        && outpitch[i].hasProperty("time"))
+                    {
+                        manual_tune::pitch_node pitch;
+                        pitch.pitch = outpitch[i]["pitch"];
+                        pitch.conf = outpitch[i]["conf"];
+                        float time = outpitch[i]["time"];
+                        
+                        _mx_tune->get_manual_tune().set_outpitch(last_time, time, last_pitch);
+                        last_pitch = pitch;
+                        last_time = time;
+                    }
                 }
             }
         }
-    }
-    */
-    
-    {
-        var tune = root["tune"];
-        if (!tune.isArray())
-        {
-            return;
-        }
+        */
         
-        std::int32_t size = tune.size();
-        for (std::int32_t i = 0; i < size; i++)
         {
-            std::shared_ptr<manual_tune::tune_node> node(new manual_tune::tune_node);
-            
-            if (tune[i].hasProperty("is_manual"))
+            var tune = root["tune"];
+            if (!tune.isArray())
             {
-                node->is_manual = tune[i]["is_manual"];
+                return;
             }
             
-            if (tune[i].hasProperty("time_start")
-                && tune[i].hasProperty("time_end")
-                && tune[i].hasProperty("pitch_start")
-                && tune[i].hasProperty("pitch_end")
-                && tune[i].hasProperty("attack")
-                && tune[i].hasProperty("release")
-                && tune[i].hasProperty("amount"))
+            std::int32_t size = tune.size();
+            for (std::int32_t i = 0; i < size; i++)
             {
-                node->time_start = tune[i]["time_start"];
-                node->time_end = tune[i]["time_end"];
-                node->pitch_start = tune[i]["pitch_start"];
-                node->pitch_end = tune[i]["pitch_end"];
-                node->attack = tune[i]["attack"];
-                node->release = tune[i]["release"];
-                node->amount = tune[i]["amount"];
+                std::shared_ptr<manual_tune::tune_node> node(new manual_tune::tune_node);
                 
+                if (tune[i].hasProperty("is_manual"))
+                {
+                    node->is_manual = tune[i]["is_manual"];
+                }
+                
+                if (tune[i].hasProperty("time_start")
+                    && tune[i].hasProperty("time_end")
+                    && tune[i].hasProperty("pitch_start")
+                    && tune[i].hasProperty("pitch_end")
+                    && tune[i].hasProperty("attack")
+                    && tune[i].hasProperty("release")
+                    && tune[i].hasProperty("amount"))
+                {
+                    node->time_start = tune[i]["time_start"];
+                    node->time_end = tune[i]["time_end"];
+                    node->pitch_start = tune[i]["pitch_start"];
+                    node->pitch_end = tune[i]["pitch_end"];
+                    node->attack = tune[i]["attack"];
+                    node->release = tune[i]["release"];
+                    node->amount = tune[i]["amount"];
+                    
+                    _mx_tune->get_manual_tune().set_tune(node);
+                }
+            }
+        }
+        
+        if (root.hasProperty("paramters"))
+        {
+            var paramters = root["paramters"];
+            if (!paramters.isArray())
+            {
+                return;
+            }
+            
+            std::int32_t size = paramters.size();
+            for (std::int32_t i = 0; i < size; i++)
+            {
+                set_parameter(i, paramters[i]);
+            }
+        }
+
+        if (root.hasProperty("misc"))
+        {
+            var misc = root["misc"];
+            if (!misc.isString())
+            {
+                return;
+            }
+            _misc_param = misc.toString().toStdString();
+            _mx_tune->set_misc_param(_misc_param);
+        }
+    }
+    else if (sizeInBytes > 5 && memcmp(first, "kvbuf", 5) == 0)
+    {
+        kvbuf_hooks hooks = {malloc, free};
+        kvbuf *kv_root = kvbuf_parse(&hooks, (const std::uint8_t *)first + 5, (const std::uint8_t *)first + sizeInBytes);
+        if (kv_root == NULL)
+        {
+            return;
+        }
+        
+        kvbuf *inpitch = kvbuf_get_object_item(kv_root, KV_KEY_INPITCH);
+        kvbuf *tune = kvbuf_get_object_item(kv_root, KV_KEY_TUNE);
+        if (!inpitch || !tune)
+        {
+            kvbuf_free(&hooks, kv_root);
+            return;
+        }
+        
+        {
+            kvbuf *pitch_array = kvbuf_get_object_item(inpitch, KV_KEY_INPITCH_PITCH);
+            kvbuf *conf_array = kvbuf_get_object_item(inpitch, KV_KEY_INPITCH_CONF);
+            kvbuf *time_array = kvbuf_get_object_item(inpitch, KV_KEY_INPITCH_TIME);
+            
+            if (!pitch_array || !conf_array || !time_array)
+            {
+                kvbuf_free(&hooks, kv_root);
+                return;
+            }
+            
+            
+            manual_tune::pitch_node last_pitch;
+            last_pitch.pitch = kvbuf_get_float32(kvbuf_get_array_item(pitch_array, 0));
+            last_pitch.conf = kvbuf_get_float32(kvbuf_get_array_item(conf_array, 0));
+            float last_time = kvbuf_get_float32(kvbuf_get_array_item(time_array, 0));
+                
+            std::int32_t size = kvbuf_get_array_size(pitch_array);
+            for (std::int32_t i = 1; i < size; i++)
+            {
+                manual_tune::pitch_node pitch;
+                pitch.pitch = kvbuf_get_float32(kvbuf_get_array_item(pitch_array, i));
+                pitch.conf = kvbuf_get_float32(kvbuf_get_array_item(conf_array, i));
+                float time = kvbuf_get_float32(kvbuf_get_array_item(time_array, i));
+                        
+                _mx_tune->get_manual_tune().set_inpitch(last_time, time, last_pitch);
+                last_pitch = pitch;
+                last_time = time;
+            }
+        }
+        
+        {
+            if (!kvbuf_is_array(tune))
+            {
+                kvbuf_free(&hooks, kv_root);
+                return;
+            }
+            
+            std::int32_t size = kvbuf_get_array_size(tune);
+            for (std::int32_t i = 0; i < size; i++)
+            {
+                std::shared_ptr<manual_tune::tune_node> node(new manual_tune::tune_node);
+                
+                kvbuf *item = kvbuf_get_array_item(tune, i);
+                
+                node->is_manual = kvbuf_get_int8(kvbuf_get_object_item(item, KV_KEY_TUNE_IS_MANUAL));
+                node->time_start = kvbuf_get_float32(kvbuf_get_object_item(item, KV_KEY_TUNE_TIME_START));
+                node->time_end = kvbuf_get_float32(kvbuf_get_object_item(item, KV_KEY_TUNE_TIME_END));
+                node->pitch_start = kvbuf_get_float32(kvbuf_get_object_item(item, KV_KEY_TUNE_PITCH_START));
+                node->pitch_end = kvbuf_get_float32(kvbuf_get_object_item(item, KV_KEY_TUNE_PITCH_END));
+                node->attack = kvbuf_get_float32(kvbuf_get_object_item(item, KV_KEY_TUNE_ATTACK));
+                node->release = kvbuf_get_float32(kvbuf_get_object_item(item, KV_KEY_TUNE_RELEASE));
+                node->amount = kvbuf_get_float32(kvbuf_get_object_item(item, KV_KEY_TUNE_AMOUNT));
+                    
                 _mx_tune->get_manual_tune().set_tune(node);
             }
         }
-    }
-    
-    if (root.hasProperty("paramters"))
-    {
-        var paramters = root["paramters"];
-        if (!paramters.isArray())
-        {
-            return;
-        }
-        
-        std::int32_t size = paramters.size();
-        for (std::int32_t i = 0; i < size; i++)
-        {
-            set_parameter(i, paramters[i]);
-        }
-    }
 
-    if (root.hasProperty("misc"))
-    {
-        var misc = root["misc"];
-        if (!misc.isString())
+
+        
+        kvbuf *paramters = kvbuf_get_object_item(kv_root, KV_KEY_PARAMTERS);
+        if (paramters)
         {
-            return;
+            if (!kvbuf_is_array(paramters))
+            {
+                kvbuf_free(&hooks, kv_root);
+                return;
+            }
+            
+            std::int32_t size = kvbuf_get_array_size(paramters);
+            for (std::int32_t i = 0; i < size; i++)
+            {
+                set_parameter(i, kvbuf_get_float32(kvbuf_get_array_item(paramters, i)));
+            }
         }
-        _misc_param = misc.toString().toStdString();
-        _mx_tune->set_misc_param(_misc_param);
+            
+        kvbuf *misc = kvbuf_get_object_item(kv_root, KV_KEY_MISC);
+        if (misc)
+        {
+            if (!kvbuf_is_array(misc))
+            {
+                kvbuf_free(&hooks, kv_root);
+                return;
+            }
+            _misc_param.clear();
+            std::int32_t size = kvbuf_get_array_size(misc);
+            for (std::int32_t i = 0; i < size; i++)
+            {
+                _misc_param.push_back(kvbuf_get_int8(kvbuf_get_array_item(misc, i)));
+            }
+            _mx_tune->set_misc_param(_misc_param);
+        }
+        kvbuf_free(&hooks, kv_root);
     }
 }
 
@@ -599,7 +741,6 @@ void AutotalentAudioProcessor::parameterValueChanged (int parameterIndex, float 
     else if (parameterIndex == PARAMETER_ID_AFREQ)
     {
         _afreq = newValue * _parameters[parameterIndex].scale;
-        net_log_info("_afreq:%f\n", _afreq);
         if (_mx_tune)
         {
             _mx_tune->set_aref(_afreq);
@@ -608,7 +749,6 @@ void AutotalentAudioProcessor::parameterValueChanged (int parameterIndex, float 
     else if (parameterIndex == PARAMETER_ID_DET_GATE)
     {
         _det_gate = newValue * _parameters[parameterIndex].scale;
-        net_log_info("_det_gate:%f\n", _det_gate);
         if (_mx_tune)
         {
             _mx_tune->set_detect_gate(-_det_gate);
@@ -617,7 +757,6 @@ void AutotalentAudioProcessor::parameterValueChanged (int parameterIndex, float 
     else if (parameterIndex == PARAMETER_ID_DET_MIN_FREQ)
     {
         _det_min_freq = newValue * _parameters[parameterIndex].scale;
-        net_log_info("_det_min_freq:%f\n", _det_min_freq);
         if (_mx_tune)
         {
             _mx_tune->set_detect_freq_range(_det_min_freq, _det_max_freq);
@@ -626,7 +765,6 @@ void AutotalentAudioProcessor::parameterValueChanged (int parameterIndex, float 
     else if (parameterIndex == PARAMETER_ID_DET_MAX_FREQ)
     {
         _det_max_freq = newValue * _parameters[parameterIndex].scale;
-        net_log_info("_det_max_freq:%f\n", _det_max_freq);
         if (_mx_tune)
         {
             _mx_tune->set_detect_freq_range(_det_min_freq, _det_max_freq);

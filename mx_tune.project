@@ -31,6 +31,8 @@
       <File Name="JUCE/JuceLibraryCode/AppConfig.h"/>
     </VirtualDirectory>
     <VirtualDirectory Name="Source">
+      <File Name="JUCE/Source/kvbuf.c"/>
+      <File Name="JUCE/Source/kvbuf.h"/>
       <File Name="JUCE/Source/SettingGui.cpp"/>
       <File Name="JUCE/Source/SettingGui.h"/>
       <File Name="JUCE/Source/KeyDetectGui.h"/>

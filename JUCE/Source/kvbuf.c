@@ -698,73 +698,76 @@ static const unsigned char *parse_array(kvbuf_hooks *hooks, kvbuf *item, const u
     
     begin = get_arr_len(begin, end, &arr_len);
     if (begin >= end) {return end + 1;}
-    if (arr_len == 0) {return begin;}
-	
-    item->child = child = kvbuf_new_item(hooks);
-    if (begin >= end) {return end + 1;}
     
-    if (type <= KVBUF_VTYPE_NUMBER)
+    if (arr_len > 0)
     {
-        begin = parse_number_in_array(child, type, begin, end);
-        if (begin >= end) {return end + 1;}
-        --arr_len;
-        for (unsigned int i = 0; i < arr_len; ++i)
-        {
-            kvbuf *new_item;
-            if (!(new_item = kvbuf_new_item(hooks))) {return end + 1;}
-            child->next = new_item; new_item->prev = child; child = new_item;
+        if (arr_len == 0) {return begin;}
         
+        item->child = child = kvbuf_new_item(hooks);
+        if (begin >= end) {return end + 1;}
+        
+        if (type <= KVBUF_VTYPE_NUMBER)
+        {
             begin = parse_number_in_array(child, type, begin, end);
             if (begin >= end) {return end + 1;}
+            --arr_len;
+            for (unsigned int i = 0; i < arr_len; ++i)
+            {
+                kvbuf *new_item;
+                if (!(new_item = kvbuf_new_item(hooks))) {return end + 1;}
+                child->next = new_item; new_item->prev = child; child = new_item;
+            
+                begin = parse_number_in_array(child, type, begin, end);
+                if (begin >= end) {return end + 1;}
+            }
         }
-    }
-    else if (type == KVBUF_VTYPE_OBJECT_BEGIN)
-    {
-        begin = parse_object_in_array(hooks, child, begin, end);
-        if (begin >= end) {return end + 1;}
-        --arr_len;
-        for (unsigned int i = 0; i < arr_len; ++i)
+        else if (type == KVBUF_VTYPE_OBJECT_BEGIN)
         {
-            kvbuf *new_item;
-            if (!(new_item = kvbuf_new_item(hooks))) {return end + 1;}
-            child->next = new_item; new_item->prev = child; child = new_item;
-        
             begin = parse_object_in_array(hooks, child, begin, end);
             if (begin >= end) {return end + 1;}
+            --arr_len;
+            for (unsigned int i = 0; i < arr_len; ++i)
+            {
+                kvbuf *new_item;
+                if (!(new_item = kvbuf_new_item(hooks))) {return end + 1;}
+                child->next = new_item; new_item->prev = child; child = new_item;
+            
+                begin = parse_object_in_array(hooks, child, begin, end);
+                if (begin >= end) {return end + 1;}
+            }
         }
-    }
-    else if (type == KVBUF_VTYPE_NEST_ARRAY)
-    {
-        begin = parse_array_in_array(hooks, child, begin, end);
-        if (begin >= end) {return end + 1;}
-        --arr_len;
-        for (unsigned int i = 0; i < arr_len; ++i)
+        else if (type == KVBUF_VTYPE_NEST_ARRAY)
         {
-            kvbuf *new_item;
-            if (!(new_item = kvbuf_new_item(hooks))) {return end + 1;}
-            child->next = new_item; new_item->prev = child; child = new_item;
-        
             begin = parse_array_in_array(hooks, child, begin, end);
             if (begin >= end) {return end + 1;}
+            --arr_len;
+            for (unsigned int i = 0; i < arr_len; ++i)
+            {
+                kvbuf *new_item;
+                if (!(new_item = kvbuf_new_item(hooks))) {return end + 1;}
+                child->next = new_item; new_item->prev = child; child = new_item;
+            
+                begin = parse_array_in_array(hooks, child, begin, end);
+                if (begin >= end) {return end + 1;}
+            }
         }
-    }
-    else if (type == KVBUF_VTYPE_EXT)
-    {
-        child->type = KV_BUF_UNKNOWN;
-        begin += value_len;
-        if (begin >= end) {return end + 1;}
-        --arr_len;
-        for (unsigned int i = 0; i < arr_len; ++i)
+        else if (type == KVBUF_VTYPE_EXT)
         {
+            child->type = KV_BUF_UNKNOWN;
             begin += value_len;
-            if (begin >= end) { return end + 1; }
+            if (begin >= end) {return end + 1;}
+            --arr_len;
+            for (unsigned int i = 0; i < arr_len; ++i)
+            {
+                begin += value_len;
+                if (begin >= end) { return end + 1; }
+            }
+        }
+        else
+        {
+            return end + 1;
         }
     }
-    else
-    {
-        return end + 1;
-    }
-    
     if ((*begin & (KVBUF_VTYPE_ARRAY | KVBUF_VTYPE_MASK)) == (KVBUF_VTYPE_ARRAY | type)) {return begin + 1;}
     
 	return end + 1;
@@ -886,7 +889,10 @@ static unsigned char *build_array(kvbuf *item, unsigned char *begin, unsigned ch
     key_len = get_key_len(item->key);
     *begin = (((key_len - 1) << 6) & KVBUF_KEY_SIZE_EMASK) | KVBUF_VTYPE_ARRAY;
     
-    *begin |= (item->child->type & KVBUF_VTYPE_MASK);
+    if (item->child)
+    {
+        *begin |= (item->child->type & KVBUF_VTYPE_MASK);
+    }
     
     ++begin;
     
@@ -921,11 +927,16 @@ static unsigned char *build_array(kvbuf *item, unsigned char *begin, unsigned ch
             begin = build_array_in_array(child, begin, end);
             while ((child = child->next) && begin < end) {begin = build_array_in_array(child, begin, end);}
         }
-        
+         
+        if (begin >= end) {return end;}
+        *begin = KVBUF_VTYPE_ARRAY | (item->child->type & KVBUF_VTYPE_MASK);
+    }
+    else
+    {
+        if (begin >= end) {return end;}
+        *begin = KVBUF_VTYPE_ARRAY;
     }
     
-    if (begin >= end) {return end;}
-    *begin = KVBUF_VTYPE_ARRAY | (item->child->type & KVBUF_VTYPE_MASK);
     
     return ++begin;
 }
@@ -1244,10 +1255,10 @@ kvbuf *kvbuf_create_array(kvbuf_hooks *hooks)
 
 void kvbuf_add_item_to_array(kvbuf *array, kvbuf *item)
 {
-	kvbuf *child = array->child;
-	if (!item) {return;}
-	if (!child) {array->child = item; return;}
-    if (child->prev) { child = child->prev; }
+    kvbuf *child = array->child;
+    if (!item) {return;}
+    if (!child) {array->child = item; return;}
+    if (child && child->prev) { child = child->prev; }
     child->next = item; item->prev = child; array->child->prev = item;
 }
 

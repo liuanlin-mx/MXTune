@@ -526,9 +526,9 @@ void PluginGui::paint (Graphics& g)
     {
         bool is_playing = _proc.is_playing();
 
+        _cur_time = _proc.get_cur_time();
         if (is_playing)
         {
-            _cur_time = _proc.get_cur_time();
             float diff = _time_right - _time_left;
             if (_cur_time >= _time_right || _cur_time <= _time_left)
             {
@@ -544,6 +544,30 @@ void PluginGui::paint (Graphics& g)
         {
             g.setColour (juce::Colours::red);
             g.drawLine(x, y1, x, y2, 1);
+        }
+    }
+    
+    {
+        g.setOpacity(0.6);
+        
+        double bpm = _proc.get_bpm();
+        std::int32_t time_sig_denominator = _proc.get_time_sig_denominator();
+        double ppq_pos = _proc.get_ppq_position();
+        double note_time_len = 60. / bpm;
+        float ppq_time = _cur_time - ppq_pos * note_time_len;
+        
+        float y1 = _pitch_to_y(_pitch_up);
+        float y2 = _pitch_to_y(_pitch_down);
+        double step_time = note_time_len;
+        
+        for (float t = ppq_time; t < _time_right; t += step_time)
+        {
+            float x = _time_to_x(t);
+            if (x > _draw_x && x < _draw_x + _draw_w)
+            {
+                g.setColour(juce::Colours::white);
+                g.drawLine(x, y1, x, y2, 0.1);
+            }
         }
     }
 
@@ -2018,4 +2042,3 @@ END_JUCER_METADATA
 
 //[EndFile] You can add extra defines here...
 //[/EndFile]
-

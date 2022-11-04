@@ -115,6 +115,9 @@ public:
     const std::shared_ptr<mx_tune>& get_mt_tune() { return _mx_tune; }
     manual_tune& get_manual_tune() { return _mx_tune->get_manual_tune(); }
     double get_cur_time() { return _cur_time; }
+    double get_bpm() { return _bpm; }
+    double get_ppq_position() { return _ppq_position; }
+    std::int32_t get_time_sig_denominator() { return _time_sig_denominator; }
     bool is_playing() { return _is_playing; }
     
     
@@ -128,6 +131,9 @@ private:
     std::mutex _mtx;
     std::shared_ptr<mx_tune> _mx_tune = 0;
     double _cur_time = 0;
+    double _bpm = 0;
+    double _ppq_position = 0;
+    std::int32_t _time_sig_denominator = 0;
     bool _is_playing = false;
     bool _is_bypassed = false;
     

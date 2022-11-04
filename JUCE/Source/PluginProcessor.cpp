@@ -238,6 +238,9 @@ void AutotalentAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuf
         if (play_head->getCurrentPosition(result))
         {
             _cur_time = result.timeInSeconds;
+            _bpm = result.bpm;
+            _ppq_position = result.ppqPosition;
+            _time_sig_denominator = result.timeSigDenominator;
             _is_playing = result.isPlaying;
         }
     }

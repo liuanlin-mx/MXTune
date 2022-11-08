@@ -1110,43 +1110,47 @@ void PluginGui::mouseDown (const MouseEvent& e)
     //[UserCode_mouseDown] -- Add your code here...
     std::int32_t x = e.getMouseDownX();
     std::int32_t y = e.getMouseDownY();
-
-    if (_modify_tune)
+    
+    if (e.mods.isLeftButtonDown())
     {
-        _cur_node->attack = sliderAttack->getValue() / 1000.;
-        _cur_node->release = sliderRelease->getValue() / 1000.;
-        _cur_node->amount = sliderAmount->getValue();
-        _proc.get_manual_tune().unselect_tune();
-        _cur_node.reset();
-        _modify_tune = false;
-    }
-
-    _cur_node = _proc.get_manual_tune().select_tune(_x_to_time(e.getMouseDownX()), _y_to_pitch(e.getMouseDownY()), _select_pos);
-    if (_cur_node)
-    {
-        _modify_tune = true;
-        sliderAttack->setValue(_cur_node->attack * 1000);
-        sliderRelease->setValue(_cur_node->release * 1000);
-        sliderAmount->setValue(_cur_node->amount);
-        if (_select_pos == manual_tune::SELECT_MID || _select_pos == manual_tune::SELECT_LEFT)
+        if (_modify_tune)
         {
-            _select_xd = _cur_node->time_start - _x_to_time(x);
-            _select_yd = _cur_node->pitch_start - _y_to_pitch(y);
+            _cur_node->attack = sliderAttack->getValue() / 1000.;
+            _cur_node->release = sliderRelease->getValue() / 1000.;
+            _cur_node->amount = sliderAmount->getValue();
+            _proc.get_manual_tune().unselect_tune();
+            _cur_node.reset();
+            _modify_tune = false;
         }
-        else if (_select_pos == manual_tune::SELECT_RIGHT)
+
+        _cur_node = _proc.get_manual_tune().select_tune(_x_to_time(e.getMouseDownX()), _y_to_pitch(e.getMouseDownY()), _select_pos);
+        if (_cur_node)
         {
-            _select_xd = _cur_node->time_end - _x_to_time(x);
-            _select_yd = _cur_node->pitch_end - _y_to_pitch(y);
+            _modify_tune = true;
+            sliderAttack->setValue(_cur_node->attack * 1000);
+            sliderRelease->setValue(_cur_node->release * 1000);
+            sliderAmount->setValue(_cur_node->amount);
+            if (_select_pos == manual_tune::SELECT_MID || _select_pos == manual_tune::SELECT_LEFT)
+            {
+                _select_xd = _cur_node->time_start - _x_to_time(x);
+                _select_yd = _cur_node->pitch_start - _y_to_pitch(y);
+            }
+            else if (_select_pos == manual_tune::SELECT_RIGHT)
+            {
+                _select_xd = _cur_node->time_end - _x_to_time(x);
+                _select_yd = _cur_node->pitch_end - _y_to_pitch(y);
+            }
         }
-    }
-    else
-    {
-        sliderAttack->setValue(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_DEF_ATTACK) * 1000);
-        sliderRelease->setValue(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_DEF_RELEASE) * 1000);
-        sliderAmount->setValue(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_DEF_AMOUNT));
+        else
+        {
+            sliderAttack->setValue(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_DEF_ATTACK) * 1000);
+            sliderRelease->setValue(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_DEF_RELEASE) * 1000);
+            sliderAmount->setValue(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_DEF_AMOUNT));
+        }
+
+        repaint();
     }
 
-    repaint();
     //[/UserCode_mouseDown]
 }
 
@@ -1155,117 +1159,153 @@ void PluginGui::mouseDrag (const MouseEvent& e)
     //[UserCode_mouseDrag] -- Add your code here...
     std::int32_t x = e.position.getX();
     std::int32_t y = e.position.getY();
-    if (_modify_tune == false && _new_tune == false && abs(e.getMouseDownX() - x) > 5)
+    if (e.mods.isLeftButtonDown())
     {
-        _new_tune = true;
-
-        _cur_node.reset(new manual_tune::tune_node);
-        _cur_node->is_manual = true;
-        _cur_node->attack = _proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_DEF_ATTACK);
-        _cur_node->release = _proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_DEF_RELEASE);
-        _cur_node->amount = _proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_DEF_AMOUNT);
-        sliderAttack->setValue(_cur_node->attack * 1000.);
-        sliderRelease->setValue(_cur_node->release * 1000.);
-        sliderAmount->setValue(_cur_node->amount);
-
-        float pitch = _y_to_pitch(e.getMouseDownY());
-        float time = _x_to_time(e.getMouseDownX());
-        pitch = _snap_pitch(pitch);
-
-        _cur_node->pitch_start = pitch;
-        _cur_node->pitch_end = _cur_node->pitch_start;
-        _cur_node->time_start = time;
-        _cur_node->time_end = _cur_node->time_start;
-    }
-
-    if (_new_tune)
-    {
-        _cur_node->time_end = _x_to_time(x);
-
-        if (_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_SNAP) > 0.)
+        if (_modify_tune == false && _new_tune == false && abs(e.getMouseDownX() - x) > 5)
         {
+            _new_tune = true;
+
+            _cur_node.reset(new manual_tune::tune_node);
+            _cur_node->is_manual = true;
+            _cur_node->attack = _proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_DEF_ATTACK);
+            _cur_node->release = _proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_DEF_RELEASE);
+            _cur_node->amount = _proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_DEF_AMOUNT);
+            sliderAttack->setValue(_cur_node->attack * 1000.);
+            sliderRelease->setValue(_cur_node->release * 1000.);
+            sliderAmount->setValue(_cur_node->amount);
+
+            float pitch = _y_to_pitch(e.getMouseDownY());
+            float time = _x_to_time(e.getMouseDownX());
+            pitch = _snap_pitch(pitch);
+
+            _cur_node->pitch_start = pitch;
+
+
             _cur_node->pitch_end = _cur_node->pitch_start;
-        }
-        else
-        {
-            _cur_node->pitch_end = _y_to_pitch(y);
+            _cur_node->time_start = time;
+            _cur_node->time_end = _cur_node->time_start;
         }
 
+        if (_new_tune)
+
+        {
+            _cur_node->time_end = _x_to_time(x);
+
+            if (_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_SNAP) > 0.)
+
+            {
+                _cur_node->pitch_end = _cur_node->pitch_start;
+            }
+            else
+            {
+                _cur_node->pitch_end = _y_to_pitch(y);
+            }
+
+        }
+        else if (_modify_tune)
+        {
+
+            _cur_node->is_manual = true;
+            if (_select_pos == manual_tune::SELECT_MID)
+            {
+                float time_start = _x_to_time(x) + _select_xd;
+                float time_end = time_start + _cur_node->time_end - _cur_node->time_start;
+                _cur_node->time_start = time_start;
+                _cur_node->time_end = time_end;
+
+                float pitch_start = _y_to_pitch(y) + _select_yd;
+                pitch_start = _snap_pitch(pitch_start);
+
+                if (abs(pitch_start - _cur_node->pitch_start) > 0.001)
+                {
+                    float pitch_end = pitch_start + _cur_node->pitch_end - _cur_node->pitch_start;
+                    _cur_node->pitch_start = pitch_start;
+                    _cur_node->pitch_end = pitch_end;
+                }
+            }
+            else if (_select_pos == manual_tune::SELECT_LEFT)
+            {
+                float time_start = _x_to_time(x) + _select_xd;
+                _cur_node->time_start = time_start;
+
+                float pitch_start = _y_to_pitch(y) + _select_yd;
+                pitch_start = _snap_pitch(pitch_start);
+
+                if (abs(pitch_start - _cur_node->pitch_start) > 0.001)
+                {
+                    _cur_node->pitch_start = pitch_start;
+                }
+            }
+            else if (_select_pos == manual_tune::SELECT_RIGHT)
+            {
+                float time_end = _x_to_time(x) + _select_xd;
+                _cur_node->time_end = time_end;
+
+                float pitch_end = _y_to_pitch(y) + _select_yd;
+                pitch_end = _snap_pitch(pitch_end);
+
+                //if (abs(pitch_end - _cur_node->pitch_end) > 0.001)
+                {
+                    _cur_node->pitch_end = pitch_end;
+                }
+            }
+        }
+
+        repaint();
     }
-    else if (_modify_tune)
-    {
 
-        _cur_node->is_manual = true;
-        if (_select_pos == manual_tune::SELECT_MID)
-        {
-            float time_start = _x_to_time(x) + _select_xd;
-            float time_end = time_start + _cur_node->time_end - _cur_node->time_start;
-            _cur_node->time_start = time_start;
-            _cur_node->time_end = time_end;
-
-            float pitch_start = _y_to_pitch(y) + _select_yd;
-            pitch_start = _snap_pitch(pitch_start);
-
-            if (abs(pitch_start - _cur_node->pitch_start) > 0.001)
-            {
-                float pitch_end = pitch_start + _cur_node->pitch_end - _cur_node->pitch_start;
-                _cur_node->pitch_start = pitch_start;
-                _cur_node->pitch_end = pitch_end;
-            }
-        }
-        else if (_select_pos == manual_tune::SELECT_LEFT)
-        {
-            float time_start = _x_to_time(x) + _select_xd;
-            _cur_node->time_start = time_start;
-
-            float pitch_start = _y_to_pitch(y) + _select_yd;
-            pitch_start = _snap_pitch(pitch_start);
-
-            if (abs(pitch_start - _cur_node->pitch_start) > 0.001)
-            {
-                _cur_node->pitch_start = pitch_start;
-            }
-        }
-        else if (_select_pos == manual_tune::SELECT_RIGHT)
-        {
-            float time_end = _x_to_time(x) + _select_xd;
-            _cur_node->time_end = time_end;
-
-            float pitch_end = _y_to_pitch(y) + _select_yd;
-            pitch_end = _snap_pitch(pitch_end);
-
-            //if (abs(pitch_end - _cur_node->pitch_end) > 0.001)
-            {
-                _cur_node->pitch_end = pitch_end;
-            }
-        }
-    }
-
-    repaint();
     //[/UserCode_mouseDrag]
 }
 
 void PluginGui::mouseUp (const MouseEvent& e)
 {
     //[UserCode_mouseUp] -- Add your code here...
-    if (_modify_tune == false && _new_tune == false)
+    
+    if (e.mods.isLeftButtonDown())
     {
-        _cur_time = _x_to_time(e.position.getX());
-    }
-
-    if (_new_tune)
-    {
-        _new_tune = false;
-        _modify_tune = false;
-        _proc.get_manual_tune().set_tune(_cur_node);
-        _cur_node = _proc.get_manual_tune().select_tune(_cur_node->time_start, _cur_node->pitch_start, _select_pos);
-        _select_pos = manual_tune::SELECT_NONE;
-        if (_cur_node)
+        if (_modify_tune == false && _new_tune == false)
         {
-            _modify_tune = true;
+            _cur_time = _x_to_time(e.position.getX());
         }
+
+        if (_new_tune)
+        {
+            _new_tune = false;
+            _modify_tune = false;
+            _proc.get_manual_tune().set_tune(_cur_node);
+            _cur_node = _proc.get_manual_tune().select_tune(_cur_node->time_start, _cur_node->pitch_start, _select_pos);
+            _select_pos = manual_tune::SELECT_NONE;
+            if (_cur_node)
+            {
+                _modify_tune = true;
+            }
+        }
+        repaint();
     }
-    repaint();
+    else if (e.mods.isRightButtonDown())
+    {
+        if (_modify_tune)
+        {
+            _cur_node.reset();
+            _proc.get_manual_tune().del_selected();
+            _modify_tune = false;
+        }
+        else if (_new_tune)
+        {
+            _cur_node.reset();
+            _new_tune = false;
+        }
+        else
+        {
+            _cur_node = _proc.get_manual_tune().select_tune(_x_to_time(e.getMouseDownX()), _y_to_pitch(e.getMouseDownY()), _select_pos);
+            if (_cur_node)
+            {
+                _cur_node.reset();
+                _proc.get_manual_tune().del_selected();
+            }
+        }
+        repaint();
+    }
     //[/UserCode_mouseUp]
 }
 

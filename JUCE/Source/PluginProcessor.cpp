@@ -555,6 +555,7 @@ void AutotalentAudioProcessor::setStateInformation (const void* data, int sizeIn
             }
             _misc_param = misc.toString().toStdString();
             _mx_tune->set_misc_param(_misc_param);
+            setLatencySamples(_mx_tune->get_latency());
         }
     }
     else if (sizeInBytes > 5 && memcmp(first, "kvbuf", 5) == 0)
@@ -665,6 +666,7 @@ void AutotalentAudioProcessor::setStateInformation (const void* data, int sizeIn
                 _misc_param.push_back(kvbuf_get_int8(kvbuf_get_array_item(misc, i)));
             }
             _mx_tune->set_misc_param(_misc_param);
+            setLatencySamples(_mx_tune->get_latency());
         }
         kvbuf_free(&hooks, kv_root);
     }

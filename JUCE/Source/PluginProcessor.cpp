@@ -526,7 +526,7 @@ void AutotalentAudioProcessor::setStateInformation (const void* data, int sizeIn
                     node->release = tune[i]["release"];
                     node->amount = tune[i]["amount"];
                     
-                    _mx_tune->get_manual_tune().set_tune(node);
+                    _mx_tune->get_manual_tune().add_tune(node);
                 }
             }
         }
@@ -629,7 +629,7 @@ void AutotalentAudioProcessor::setStateInformation (const void* data, int sizeIn
                 node->release = kvbuf_get_float32(kvbuf_get_object_item(item, KV_KEY_TUNE_RELEASE));
                 node->amount = kvbuf_get_float32(kvbuf_get_object_item(item, KV_KEY_TUNE_AMOUNT));
                     
-                _mx_tune->get_manual_tune().set_tune(node);
+                _mx_tune->get_manual_tune().add_tune(node);
             }
         }
 

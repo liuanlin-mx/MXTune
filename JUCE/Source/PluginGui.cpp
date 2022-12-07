@@ -1187,12 +1187,10 @@ void PluginGui::mouseDrag (const MouseEvent& e)
         }
 
         if (_new_tune)
-
         {
             _cur_node->time_end = _x_to_time(x);
 
             if (_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_SNAP) > 0.)
-
             {
                 _cur_node->pitch_end = _cur_node->pitch_start;
             }
@@ -1200,11 +1198,9 @@ void PluginGui::mouseDrag (const MouseEvent& e)
             {
                 _cur_node->pitch_end = _y_to_pitch(y);
             }
-
         }
         else if (_modify_tune)
         {
-
             _cur_node->is_manual = true;
             if (_select_pos == manual_tune::SELECT_MID)
             {
@@ -1244,7 +1240,7 @@ void PluginGui::mouseDrag (const MouseEvent& e)
                 float pitch_end = _y_to_pitch(y) + _select_yd;
                 pitch_end = _snap_pitch(pitch_end);
 
-                //if (abs(pitch_end - _cur_node->pitch_end) > 0.001)
+                if (abs(pitch_end - _cur_node->pitch_end) > 0.001)
                 {
                     _cur_node->pitch_end = pitch_end;
                 }
@@ -1272,7 +1268,7 @@ void PluginGui::mouseUp (const MouseEvent& e)
         {
             _new_tune = false;
             _modify_tune = false;
-            _proc.get_manual_tune().set_tune(_cur_node);
+            _proc.get_manual_tune().add_tune(_cur_node);
             _cur_node = _proc.get_manual_tune().select_tune(_cur_node->time_start, _cur_node->pitch_start, _select_pos);
             _select_pos = manual_tune::SELECT_NONE;
             if (_cur_node)

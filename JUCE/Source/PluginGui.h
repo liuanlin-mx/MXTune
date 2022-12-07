@@ -103,13 +103,13 @@ private:
     int _draw_h = 0;
     float _margin = 24;
 
-    float _pitch_max = 36.;
-    float _pitch_min = -36.;
+    const float _pitch_max = 36.;
+    const float _pitch_min = -36.;
     float _pitch_up = 0 - 9 + 12;
     float _pitch_down = 0 - 9 - 12;
 
-    float _time_min_len = 0.5;
-    float _time_max_len = 10 * 60;
+    const float _time_min_len = 0.5;
+    const float _time_max_len = 10 * 60;
     float _time_left = 0.;
     float _time_right = 10.;
 

@@ -217,7 +217,7 @@ void manual_tune::clear_outpitch()
     }
 }
     
-void manual_tune::set_tune(std::shared_ptr<tune_node>& tune)
+void manual_tune::add_tune(std::shared_ptr<tune_node>& tune)
 {
     if (abs(tune->time_end - tune->time_start) < _min_time)
     {

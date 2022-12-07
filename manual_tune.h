@@ -74,7 +74,7 @@ public:
     void clear_inpitch();
     void clear_outpitch();
     
-    void set_tune(std::shared_ptr<tune_node>& tune);
+    void add_tune(std::shared_ptr<tune_node>& tune);
     std::list<std::shared_ptr<tune_node> > get_tune(float time_begin, float time_end);
     std::shared_ptr<tune_node> get_tune(float time);
     

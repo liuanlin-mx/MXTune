@@ -1,0 +1,125 @@
+diff --git a/source/SoundTouch/SoundTouch.cpp b/source/SoundTouch/SoundTouch.cpp
+index 1618884..d1a59f7 100644
+--- a/source/SoundTouch/SoundTouch.cpp
++++ b/source/SoundTouch/SoundTouch.cpp
+@@ -227,24 +227,7 @@ void SoundTouch::calcEffectiveRateAndTempo()
+     if (!TEST_FLOAT_EQUAL(tempo, oldTempo)) pTDStretch->setTempo(tempo);
+ 
+ #ifndef SOUNDTOUCH_PREVENT_CLICK_AT_RATE_CROSSOVER
+-    if (rate <= 1.0f) 
+-    {
+-        if (output != pTDStretch) 
+-        {
+-            FIFOSamplePipe *tempoOut;
+-
+-            assert(output == pRateTransposer);
+-            // move samples in the current output buffer to the output of pTDStretch
+-            tempoOut = pTDStretch->getOutput();
+-            tempoOut->moveSamples(*output);
+-            // move samples in pitch transposer's store buffer to tempo changer's input
+-            // deprecated : pTDStretch->moveSamples(*pRateTransposer->getStore());
+-
+-            output = pTDStretch;
+-        }
+-    }
+-    else
+-#endif
++    if (rate > 1.0f) 
+     {
+         if (output != pRateTransposer) 
+         {
+@@ -260,6 +243,23 @@ void SoundTouch::calcEffectiveRateAndTempo()
+             output = pRateTransposer;
+         }
+     } 
++    else
++#endif
++    {
++        if (output != pTDStretch) 
++        {
++            FIFOSamplePipe *tempoOut;
++
++            assert(output == pRateTransposer);
++            // move samples in the current output buffer to the output of pTDStretch
++            tempoOut = pTDStretch->getOutput();
++            tempoOut->moveSamples(*output);
++            // move samples in pitch transposer's store buffer to tempo changer's input
++            // deprecated : pTDStretch->moveSamples(*pRateTransposer->getStore());
++
++            output = pTDStretch;
++        }
++    }
+ }
+ 
+ 
+@@ -290,21 +290,21 @@ void SoundTouch::putSamples(const SAMPLETYPE *samples, uint nSamples)
+     samplesExpectedOut += (double)nSamples / ((double)rate * (double)tempo);
+ 
+ #ifndef SOUNDTOUCH_PREVENT_CLICK_AT_RATE_CROSSOVER
+-    if (rate <= 1.0f) 
+-    {
+-        // transpose the rate down, output the transposed sound to tempo changer buffer
+-        assert(output == pTDStretch);
+-        pRateTransposer->putSamples(samples, nSamples);
+-        pTDStretch->moveSamples(*pRateTransposer);
+-    } 
+-    else 
+-#endif
++    if (rate > 1.0f) 
+     {
+         // evaluate the tempo changer, then transpose the rate up, 
+         assert(output == pRateTransposer);
+         pTDStretch->putSamples(samples, nSamples);
+         pRateTransposer->moveSamples(*pTDStretch);
+     }
++    else 
++#endif
++    {
++        // transpose the rate down, output the transposed sound to tempo changer buffer
++        assert(output == pTDStretch);
++        pRateTransposer->putSamples(samples, nSamples);
++        pTDStretch->moveSamples(*pRateTransposer);
++    } 
+ }
+ 
+ 
+@@ -429,13 +429,16 @@ int SoundTouch::getSetting(int settingId) const
+             int size = pTDStretch->getInputSampleReq();
+ 
+ #ifndef SOUNDTOUCH_PREVENT_CLICK_AT_RATE_CROSSOVER
+-            if (rate <= 1.0)
++            if (rate > 1.0)
++            {
++                return size;
++            }
++            else
++#endif
+             {
+                 // transposing done before timestretch, which impacts latency
+                 return (int)(size * rate + 0.5);
+             }
+-#endif
+-            return size;
+         }
+ 
+         case SETTING_NOMINAL_OUTPUT_SEQUENCE :
+@@ -456,15 +459,15 @@ int SoundTouch::getSetting(int settingId) const
+             int latency_tr = pRateTransposer->getLatency();
+ 
+ #ifndef SOUNDTOUCH_PREVENT_CLICK_AT_RATE_CROSSOVER
+-            if (rate <= 1.0)
++            if (rate > 1.0)
+             {
+-                // transposing done before timestretch, which impacts latency
+-                latency = (latency + latency_tr) * rate;
++                latency += (double)latency_tr / rate;
+             }
+             else
+ #endif
+             {
+-                latency += (double)latency_tr / rate;
++                // transposing done before timestretch, which impacts latency
++                latency = (latency + latency_tr) * rate;
+             }
+ 
+             return (int)(latency + 0.5);

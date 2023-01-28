@@ -1110,7 +1110,7 @@ void PluginGui::mouseDown (const MouseEvent& e)
     //[UserCode_mouseDown] -- Add your code here...
     std::int32_t x = e.getMouseDownX();
     std::int32_t y = e.getMouseDownY();
-    
+    _mouse_down_time = _x_to_time(x);
     if (e.mods.isLeftButtonDown())
     {
         if (_modify_tune)
@@ -1161,6 +1161,11 @@ void PluginGui::mouseDrag (const MouseEvent& e)
     std::int32_t y = e.position.getY();
     if (e.mods.isLeftButtonDown())
     {
+        if (_mouse_down_time < _time_left || _mouse_down_time > _time_right)
+        {
+            return;
+        }
+            
         if (_modify_tune == false && _new_tune == false && abs(e.getMouseDownX() - x) > 5)
         {
             _new_tune = true;

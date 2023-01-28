@@ -88,7 +88,7 @@ private:
 
     bool _new_tune = false;
     bool _modify_tune = false;
-
+    float _mouse_down_time = 0;
     std::uint32_t _select_pos = manual_tune::SELECT_NONE;
     float _select_xd = 0;
     float _select_yd = 0;

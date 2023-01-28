@@ -13,6 +13,9 @@ public:
     text_readline();
     ~text_readline();
     
+private:
+    text_readline(const text_readline&);
+    text_readline& operator=(const text_readline&);
 public:
     void load(const char *text, std::uint32_t len);
     std::string read_line();

@@ -126,6 +126,20 @@ Download waf (https://waf.io/)
 sudo ./waf install -j4
 ``
 
+### build libsamplerate
+```
+./configure CFLAGS=-fPIC LDFLAGS=-fPIC
+make -j4
+sudo make install
+```
+
+### build rubberband
+```
+make -f otherbuilds/Makefile.linux
+sudo cp -rf rubberband /usr/local/include/ 
+sudo cp -rf lib/* /usr/local/lib/
+```
+
 ### build MXTune
 
 mkdir build-cmake

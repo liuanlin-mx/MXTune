@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <malloc.h>
 #include <math.h>
-#include "net_log.h"
 #include "pitch_shifter_st.h"
 
 
@@ -44,7 +43,6 @@ void pitch_shifter_st::update_shifter_variables(float inpitch, float outpitch)
 
 bool pitch_shifter_st::set_misc_param(const char *key, const char *value)
 {
-    net_log_info("key:%s value:%s\n", key, value);
     if (std::string(key) == "st.sequence_ms")
     {
         std::int32_t v = atoi(value);

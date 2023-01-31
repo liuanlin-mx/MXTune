@@ -163,7 +163,7 @@ endif(WIN32)
 #{{{{ User Code 2
 # Place your code here
 IF (WIN32)
-    set(LINK_OPTIONS ${LINK_OPTIONS} -static)
+    set(LINK_OPTIONS ${LINK_OPTIONS} "-static -lrubberband -lSoundTouch -laubio -lfftw3f -lfftw3 -lsamplerate")
 ELSEIF (UNIX)
     set(CMAKE_C_FLAGS "-I/usr/include/freetype2 -I/usr/include/libpng16")
     set(CMAKE_CXX_FLAGS "-I/usr/include/freetype2 -I/usr/include/libpng16")

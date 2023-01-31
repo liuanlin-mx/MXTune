@@ -1,10 +1,10 @@
-#include "mx_tune.h"
-#include "pitch_detector_talent.h"
 #include "pitch_detector_aubio.h"
+#include "pitch_detector_talent.h"
 #include "pitch_shifter_talent.h"
 #include "pitch_shifter_st.h"
 #include "pitch_shifter_rb.h"
 #include "pitch_shifter_smb.h"
+#include "mx_tune.h"
 
 text_readline::text_readline()
     : _text(NULL)

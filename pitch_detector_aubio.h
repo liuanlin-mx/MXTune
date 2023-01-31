@@ -1,5 +1,7 @@
 #ifndef __PITCH_DETECTOR_AUBIO_H__
 #define __PITCH_DETECTOR_AUBIO_H__
+#define _USE_MATH_DEFINES
+#include <math.h>
 #include <fftw3.h>
 #include <aubio/aubio.h>
 #include <cstdint>

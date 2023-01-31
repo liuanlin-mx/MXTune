@@ -16,7 +16,7 @@ JUCE is licensed under the GPL v3 or a commercial license. See juce.com for more
 ### msys2
 ```
 pacman -S mingw-w64-x86_64-toolchain
-pacman -S make cmake autoconf automake-wrapper libtool mingw-w64-x86_64-python3 mingw-w64-x86_64-waf mingw-w64-x86_64-fftw
+pacman -S make cmake autoconf automake-wrapper libtool mingw-w64-x86_64-python3 mingw-w64-x86_64-waf mingw-w64-x86_64-fftw mingw-w64-x86_64-rubberband
 
 ```
 

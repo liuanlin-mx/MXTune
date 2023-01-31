@@ -1,5 +1,6 @@
 #ifndef __MANUAL_TUNE_H__
 #define __MANUAL_TUNE_H__
+#include <cstdint>
 #include <memory>
 #include <map>
 #include <list>

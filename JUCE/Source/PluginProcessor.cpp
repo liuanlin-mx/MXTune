@@ -587,22 +587,38 @@ void AutotalentAudioProcessor::setStateInformation (const void* data, int sizeIn
             }
             
             
+            float last_time = 0;
             manual_tune::pitch_node last_pitch;
-            last_pitch.pitch = kvbuf_get_float32(kvbuf_get_array_item(pitch_array, 0));
-            last_pitch.conf = kvbuf_get_float32(kvbuf_get_array_item(conf_array, 0));
-            float last_time = kvbuf_get_float32(kvbuf_get_array_item(time_array, 0));
+            
+            kvbuf *pitch_it = kvbuf_get_array_begin(pitch_array);
+            kvbuf *conf_it = kvbuf_get_array_begin(conf_array);
+            kvbuf *time_it = kvbuf_get_array_begin(time_array);
+            
+            if (pitch_it && conf_it && time_it)
+            {
+                last_pitch.pitch = kvbuf_get_float32(pitch_it);
+                last_pitch.conf = kvbuf_get_float32(conf_it);
+                last_time = kvbuf_get_float32(time_it);
                 
-            std::int32_t size = kvbuf_get_array_size(pitch_array);
-            for (std::int32_t i = 1; i < size; i++)
+                pitch_it = kvbuf_get_array_next(pitch_it);
+                conf_it = kvbuf_get_array_next(conf_it);
+                time_it = kvbuf_get_array_next(time_it);
+            }
+            
+            while (pitch_it && conf_it && time_it)
             {
                 manual_tune::pitch_node pitch;
-                pitch.pitch = kvbuf_get_float32(kvbuf_get_array_item(pitch_array, i));
-                pitch.conf = kvbuf_get_float32(kvbuf_get_array_item(conf_array, i));
-                float time = kvbuf_get_float32(kvbuf_get_array_item(time_array, i));
+                pitch.pitch = kvbuf_get_float32(pitch_it);
+                pitch.conf = kvbuf_get_float32(conf_it);
+                float time = kvbuf_get_float32(time_it);
                         
                 _mx_tune->get_manual_tune().set_inpitch(last_time, time, last_pitch);
                 last_pitch = pitch;
                 last_time = time;
+                
+                pitch_it = kvbuf_get_array_next(pitch_it);
+                conf_it = kvbuf_get_array_next(conf_it);
+                time_it = kvbuf_get_array_next(time_it);
             }
         }
         
@@ -613,12 +629,10 @@ void AutotalentAudioProcessor::setStateInformation (const void* data, int sizeIn
                 return;
             }
             
-            std::int32_t size = kvbuf_get_array_size(tune);
-            for (std::int32_t i = 0; i < size; i++)
+            kvbuf *item = kvbuf_get_array_begin(tune);
+            while (item)
             {
                 std::shared_ptr<manual_tune::tune_node> node(new manual_tune::tune_node);
-                
-                kvbuf *item = kvbuf_get_array_item(tune, i);
                 
                 node->is_manual = kvbuf_get_int8(kvbuf_get_object_item(item, KV_KEY_TUNE_IS_MANUAL));
                 node->time_start = kvbuf_get_float32(kvbuf_get_object_item(item, KV_KEY_TUNE_TIME_START));
@@ -628,13 +642,15 @@ void AutotalentAudioProcessor::setStateInformation (const void* data, int sizeIn
                 node->attack = kvbuf_get_float32(kvbuf_get_object_item(item, KV_KEY_TUNE_ATTACK));
                 node->release = kvbuf_get_float32(kvbuf_get_object_item(item, KV_KEY_TUNE_RELEASE));
                 node->amount = kvbuf_get_float32(kvbuf_get_object_item(item, KV_KEY_TUNE_AMOUNT));
-                    
+                
+                item = kvbuf_get_array_next(item);
+                
                 _mx_tune->get_manual_tune().add_tune(node);
             }
         }
 
 
-        
+
         kvbuf *paramters = kvbuf_get_object_item(kv_root, KV_KEY_PARAMTERS);
         if (paramters)
         {

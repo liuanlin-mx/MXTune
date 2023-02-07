@@ -159,6 +159,9 @@ void kvbuf_add_item_to_object(kvbuf *object, unsigned int key, kvbuf *item);
 
 kvbuf *kvbuf_get_object_item(kvbuf *object, unsigned int key);
 kvbuf *kvbuf_get_array_item(kvbuf *array, int item);
+kvbuf *kvbuf_get_array_begin(kvbuf *array);
+kvbuf *kvbuf_get_array_next(kvbuf *it);
+kvbuf *kvbuf_get_array_end(kvbuf *array);
 
 int kvbuf_get_array_size(kvbuf *array);
 

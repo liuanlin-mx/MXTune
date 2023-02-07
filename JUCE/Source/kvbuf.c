@@ -1287,6 +1287,20 @@ kvbuf *kvbuf_get_array_item(kvbuf *array, int item)
 	return 0;
 }
 
+kvbuf *kvbuf_get_array_begin(kvbuf *array)
+{
+    return array->child;
+}
+
+kvbuf *kvbuf_get_array_next(kvbuf *it)
+{
+    return it->next;
+}
+
+kvbuf *kvbuf_get_array_end(kvbuf *array)
+{
+    return 0;
+}
 
 int kvbuf_get_array_size(kvbuf *array)
 {

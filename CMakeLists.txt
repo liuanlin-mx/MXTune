@@ -167,7 +167,7 @@ IF (WIN32)
 ELSEIF (UNIX)
     set(CMAKE_C_FLAGS "-I/usr/include/freetype2 -I/usr/include/libpng16")
     set(CMAKE_CXX_FLAGS "-I/usr/include/freetype2 -I/usr/include/libpng16")
-    set(LINK_OPTIONS ${LINK_OPTIONS} "-lGL -lpthread -ldl  -s -lX11 -lXext -lfreetype -Wl,--no-undefined -Wl,-Bstatic -lrubberband -lSoundTouch -laubio -lfftw3f -lsamplerate -Wl,-Bdynamic -fPIC")
+    set(LINK_OPTIONS ${LINK_OPTIONS} "-s -lGL -lpthread -ldl -lX11 -lXext -lfreetype -Wl,--no-undefined -Wl,-Bsymbolic -Wl,-Bstatic -lrubberband -lSoundTouch -laubio -lfftw3f -lsamplerate -Wl,-Bdynamic -fPIC")
 ENDIF ()
 #}}}}
 
@@ -204,6 +204,10 @@ IF (WIN32)
 
 ELSEIF (APPLE)
 ELSEIF (UNIX)
+    set_target_properties(mx_tune PROPERTIES
+        NO_SONAME TRUE
+        SKIP_BUILD_RPATH TRUE
+    )
 ENDIF ()
 #}}}}
 

@@ -128,37 +128,7 @@ void mx_tune::set_detector(std::uint32_t detector_type)
     {
         return;
     }
-    
-    if (detector_type == DETECTOR_TYPE_TALENT)
-    {
-        _detector.reset(new pitch_detector_talent(_sample_rate));
-        _detector->set_vthresh(_conf_detect_thresh);
-        _detector->set_aref(_aref);
-        _detector->set_freq_range(_det_min_freq, _det_max_freq);
-        _detector->set_gate(_det_gate);
-        _apply_misc_param();
-        _detector_type = detector_type;
-    }
-    else if (detector_type == DETECTOR_TYPE_YIN_FAST)
-    {
-        _detector.reset(new pitch_detector_aubio(_sample_rate, "yinfast"));
-        _detector->set_vthresh(_conf_detect_thresh);
-        _detector->set_aref(_aref);
-        _detector->set_freq_range(_det_min_freq, _det_max_freq);
-        _detector->set_gate(_det_gate);
-        _apply_misc_param();
-        _detector_type = detector_type;
-    }
-    else if (detector_type == DETECTOR_TYPE_YIN)
-    {
-        _detector.reset(new pitch_detector_aubio(_sample_rate, "yin"));
-        _detector->set_vthresh(_conf_detect_thresh);
-        _detector->set_aref(_aref);
-        _detector->set_freq_range(_det_min_freq, _det_max_freq);
-        _detector->set_gate(_det_gate);
-        _apply_misc_param();
-        _detector_type = detector_type;
-    }
+    _set_detector(detector_type);
 }
 
 void mx_tune::set_shifter(std::uint32_t shifter_type)
@@ -167,34 +137,16 @@ void mx_tune::set_shifter(std::uint32_t shifter_type)
     {
         return;
     }
-    
-    if (shifter_type == SHIFTER_TYPE_TALENT)
+    _set_shifter(shifter_type);
+}
+
+void mx_tune::set_sample_rate(std::uint32_t sample_rate)
+{
+    if (_sample_rate != sample_rate)
     {
-        _shifter.reset(new pitch_shifter_talent(_sample_rate));
-        _shifter->set_aref(_aref);
-        _apply_misc_param();
-        _shifter_type = shifter_type;
-    }
-    else if (shifter_type == SHIFTER_TYPE_SOUND_TOUCH)
-    {
-        _shifter.reset(new pitch_shifter_st(_sample_rate));
-        _shifter->set_aref(_aref);
-        _apply_misc_param();
-        _shifter_type = shifter_type;
-    }
-    else if (shifter_type == SHIFTER_TYPE_RUBBERBAND)
-    {
-        _shifter.reset(new pitch_shifter_rb(_sample_rate));
-        _shifter->set_aref(_aref);
-        _apply_misc_param();
-        _shifter_type = shifter_type;
-    }
-    else if (shifter_type == SHIFTER_TYPE_SMB)
-    {
-        _shifter.reset(new pitch_shifter_smb(_sample_rate));
-        _shifter->set_aref(_aref);
-        _apply_misc_param();
-        _shifter_type = shifter_type;
+        _sample_rate = sample_rate;
+        _set_detector(_detector_type);
+        _set_shifter(_shifter_type);
     }
 }
 
@@ -374,6 +326,74 @@ void mx_tune::run(float* in, float *out, std::int32_t n, float timestamp)
     }
 }
 
+
+void mx_tune::_set_detector(std::uint32_t detector_type)
+{
+    if (detector_type == DETECTOR_TYPE_TALENT)
+    {
+        _detector.reset(new pitch_detector_talent(_sample_rate));
+        _detector->set_vthresh(_conf_detect_thresh);
+        _detector->set_aref(_aref);
+        _detector->set_freq_range(_det_min_freq, _det_max_freq);
+        _detector->set_gate(_det_gate);
+        _apply_misc_param();
+        _detector_type = detector_type;
+    }
+    else if (detector_type == DETECTOR_TYPE_YIN_FAST)
+    {
+        _detector.reset(new pitch_detector_aubio(_sample_rate, "yinfast"));
+        _detector->set_vthresh(_conf_detect_thresh);
+        _detector->set_aref(_aref);
+        _detector->set_freq_range(_det_min_freq, _det_max_freq);
+        _detector->set_gate(_det_gate);
+        _apply_misc_param();
+        _detector_type = detector_type;
+    }
+    else if (detector_type == DETECTOR_TYPE_YIN)
+    {
+        _detector.reset(new pitch_detector_aubio(_sample_rate, "yin"));
+        _detector->set_vthresh(_conf_detect_thresh);
+        _detector->set_aref(_aref);
+        _detector->set_freq_range(_det_min_freq, _det_max_freq);
+        _detector->set_gate(_det_gate);
+        _apply_misc_param();
+        _detector_type = detector_type;
+    }
+}
+
+
+void mx_tune::_set_shifter(std::uint32_t shifter_type)
+{
+    if (shifter_type == SHIFTER_TYPE_TALENT)
+    {
+        _shifter.reset(new pitch_shifter_talent(_sample_rate));
+        _shifter->set_aref(_aref);
+        _apply_misc_param();
+        _shifter_type = shifter_type;
+    }
+    else if (shifter_type == SHIFTER_TYPE_SOUND_TOUCH)
+    {
+        _shifter.reset(new pitch_shifter_st(_sample_rate));
+        _shifter->set_aref(_aref);
+        _apply_misc_param();
+        _shifter_type = shifter_type;
+    }
+    else if (shifter_type == SHIFTER_TYPE_RUBBERBAND)
+    {
+        _shifter.reset(new pitch_shifter_rb(_sample_rate));
+        _shifter->set_aref(_aref);
+        _apply_misc_param();
+        _shifter_type = shifter_type;
+    }
+    else if (shifter_type == SHIFTER_TYPE_SMB)
+    {
+        _shifter.reset(new pitch_shifter_smb(_sample_rate));
+        _shifter->set_aref(_aref);
+        _apply_misc_param();
+        _shifter_type = shifter_type;
+    }
+}
+    
 std::vector<std::string> mx_tune::_string_split(std::string str, const std::string& key)
 {
     std::vector<std::string> out;

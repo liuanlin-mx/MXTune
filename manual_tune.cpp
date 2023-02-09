@@ -559,6 +559,11 @@ void manual_tune::_write_tune(const std::shared_ptr<tune_node>& tune)
     std::uint32_t idx_begin = _time2idx(tune->time_start);
     std::uint32_t idx_end = _time2idx(tune->time_end);
     
+    if (idx_end > _len)
+    {
+        _len = idx_end;
+    }
+    
     while (idx_begin < idx_end)
     {
         _tune_list[idx_begin] = tune;

@@ -58,6 +58,8 @@ public:
     void set_detector(std::uint32_t detector_type);
     void set_shifter(std::uint32_t shifter_type);
     
+    void set_sample_rate(std::uint32_t sample_rate);
+    
     void set_aref(float aref);
     void set_mix(float mix);
     void set_misc_param(const std::string& misc);
@@ -95,6 +97,8 @@ public:
     void run(float *in, float *out, std::int32_t n, float timestamp  = 0.0);
     
 private:
+    void _set_detector(std::uint32_t detector_type);
+    void _set_shifter(std::uint32_t shifter_type);
     std::vector<std::string> _string_split(std::string str, const std::string& key);
     void _apply_misc_param();
     

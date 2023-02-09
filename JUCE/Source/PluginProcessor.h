@@ -128,8 +128,12 @@ public:
     void set_misc_param(const std::string& misc_param);
     
 private:
+    void _create_mxtune(std::uint32_t sample_rate);
+    
+private:
     std::mutex _mtx;
     std::shared_ptr<mx_tune> _mx_tune = 0;
+    std::uint32_t _sample_rate = 44100;
     double _cur_time = 0;
     double _bpm = 0;
     double _ppq_position = 0;

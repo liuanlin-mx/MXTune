@@ -79,6 +79,8 @@ AutotalentAudioProcessor::AutotalentAudioProcessor()
     _misc_param = "st.sequence_ms=16\n"
                     "st.seekwindow_ms=4\n"
                     "st.overlap_ms=4\n";
+                    
+    _create_mxtune(_sample_rate);
 }
 
 AutotalentAudioProcessor::~AutotalentAudioProcessor()
@@ -157,26 +159,11 @@ void AutotalentAudioProcessor::prepareToPlay (double sampleRate, int samplesPerB
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
     
-    if (_mx_tune == nullptr)
+    if (_mx_tune && _sample_rate != (std::uint32_t)sampleRate)
     {
-        _mx_tune.reset(new mx_tune(sampleRate));
-        if (_mx_tune)
-        {
-            _mx_tune->set_at_note(_notes);
-            _mx_tune->set_at_amount(_at_amount);
-            _mx_tune->set_at_smooth(_at_smooth);
-            _mx_tune->enable_auto_tune(_is_enable_at);
-            _mx_tune->enable_track(_is_enable_track);
-            _mx_tune->set_detector(_det_alg);
-            _mx_tune->set_shifter(_sft_alg);
-            _mx_tune->set_conf_shift_thresh(_conf_thresh);
-            _mx_tune->set_conf_detect_thresh((_conf_thresh > 0.2)? (_conf_thresh - 0.2): 0.1);
-            _mx_tune->set_aref(_afreq);
-            _mx_tune->set_detect_gate(-_det_gate);
-            _mx_tune->set_detect_freq_range(_det_min_freq, _det_max_freq);
-            _mx_tune->set_misc_param(_misc_param);
-            setLatencySamples(_mx_tune->get_latency());
-        }
+        _sample_rate = (std::uint32_t)sampleRate;
+        _mx_tune->set_sample_rate(_sample_rate);
+        setLatencySamples(_mx_tune->get_latency());
     }
 }
 
@@ -848,6 +835,27 @@ void AutotalentAudioProcessor::set_misc_param(const std::string& misc_param)
     }
 }
 
+void AutotalentAudioProcessor::_create_mxtune(std::uint32_t sample_rate)
+{
+    _mx_tune.reset(new (std::nothrow) mx_tune(sample_rate));
+    if (_mx_tune)
+    {
+        _mx_tune->set_at_note(_notes);
+        _mx_tune->set_at_amount(_at_amount);
+        _mx_tune->set_at_smooth(_at_smooth);
+        _mx_tune->enable_auto_tune(_is_enable_at);
+        _mx_tune->enable_track(_is_enable_track);
+        _mx_tune->set_detector(_det_alg);
+        _mx_tune->set_shifter(_sft_alg);
+        _mx_tune->set_conf_shift_thresh(_conf_thresh);
+        _mx_tune->set_conf_detect_thresh((_conf_thresh > 0.2)? (_conf_thresh - 0.2): 0.1);
+        _mx_tune->set_aref(_afreq);
+        _mx_tune->set_detect_gate(-_det_gate);
+        _mx_tune->set_detect_freq_range(_det_min_freq, _det_max_freq);
+        _mx_tune->set_misc_param(_misc_param);
+        setLatencySamples(_mx_tune->get_latency());
+    }
+}
 
 //==============================================================================
 // This creates new instances of the plugin..

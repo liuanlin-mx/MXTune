@@ -115,15 +115,16 @@ sudo apt install libfftw3-dev
 ```
 ./bootstrap 
 ./configure --enable-static --disable-shared
-make CXXFLAGS="-DSOUNDTOUCH_PREVENT_CLICK_AT_RATE_CROSSOVER=1 -fPIC" LDFLAGS="-fPIC"
+make CXXFLAGS="-DSOUNDTOUCH_PREVENT_CLICK_AT_RATE_CROSSOVER=1 -fvisibility=hidden -fdata-sections -ffunction-sections -fPIC" LDFLAGS="-fPIC"
 sudo make install
 ```
 
 ### build aubio
 Download waf (https://waf.io/)
 ```
-./waf configure --enable-fftw3f --disable-tests --disable-examples --disable-wavread --disable-wavwrite
-sudo ./waf install -j4
+./waf configure --enable-fftw3f --disable-tests --notests --disable-examples --disable-wavread --disable-wavwrite CFLAGS='-fvisibility=hidden -fdata-sections -ffunction-sections'
+./waf build --disable-tests --notests --disable-examples
+sudo ./waf install --disable-tests --notests --disable-examples
 ``
 
 ### build libsamplerate

@@ -163,7 +163,7 @@ void AutotalentAudioProcessor::prepareToPlay (double sampleRate, int samplesPerB
     {
         _sample_rate = (std::uint32_t)sampleRate;
         _mx_tune->set_sample_rate(_sample_rate);
-        setLatencySamples(_mx_tune->get_latency());
+        _report_latency_samples();
     }
 }
 
@@ -214,8 +214,8 @@ void AutotalentAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuf
 
     if (_is_bypassed)
     {
-        setLatencySamples(_mx_tune->get_latency());
         _is_bypassed = false;
+        _report_latency_samples();
     }
     
     AudioPlayHead *play_head = getPlayHead();
@@ -262,7 +262,7 @@ void AutotalentAudioProcessor::processBlockBypassed (AudioBuffer<float>& buffer,
     if (!_is_bypassed)
     {
         _is_bypassed = true;
-        setLatencySamples(0);
+        _report_latency_samples();
     }
     AudioProcessor::processBlockBypassed(buffer, midiMessages);
 }
@@ -542,7 +542,7 @@ void AutotalentAudioProcessor::setStateInformation (const void* data, int sizeIn
             }
             _misc_param = misc.toString().toStdString();
             _mx_tune->set_misc_param(_misc_param);
-            setLatencySamples(_mx_tune->get_latency());
+            _report_latency_samples();
         }
     }
     else if (sizeInBytes > 5 && memcmp(first, "kvbuf", 5) == 0)
@@ -669,7 +669,7 @@ void AutotalentAudioProcessor::setStateInformation (const void* data, int sizeIn
                 _misc_param.push_back(kvbuf_get_int8(kvbuf_get_array_item(misc, i)));
             }
             _mx_tune->set_misc_param(_misc_param);
-            setLatencySamples(_mx_tune->get_latency());
+            _report_latency_samples();
         }
         kvbuf_free(&hooks, kv_root);
     }
@@ -734,7 +734,7 @@ void AutotalentAudioProcessor::parameterValueChanged (int parameterIndex, float 
         if (_mx_tune)
         {
             _mx_tune->set_shifter(_sft_alg);
-            setLatencySamples(_mx_tune->get_latency());
+            _report_latency_samples();
         }
     }
     else if (parameterIndex == PARAMETER_ID_VTHRESH)
@@ -856,6 +856,20 @@ void AutotalentAudioProcessor::_create_mxtune(std::uint32_t sample_rate)
         setLatencySamples(_mx_tune->get_latency());
     }
 }
+
+
+void AutotalentAudioProcessor::_report_latency_samples()
+{
+    if (_is_bypassed)
+    {
+        setLatencySamples(0);
+    }
+    else
+    {
+        setLatencySamples(_mx_tune->get_latency());
+    }
+}
+
 
 //==============================================================================
 // This creates new instances of the plugin..

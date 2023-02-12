@@ -126,9 +126,11 @@ public:
     std::uint32_t get_parameters_update_id() { return _parameter_update_id; }
     std::string get_misc_param() { return _misc_param; }
     void set_misc_param(const std::string& misc_param);
+    void report_latency_samples() { _report_latency_samples(); }
     
 private:
     void _create_mxtune(std::uint32_t sample_rate);
+    void _report_latency_samples();
     
 private:
     std::mutex _mtx;

@@ -167,7 +167,7 @@ IF (WIN32)
 ELSEIF (UNIX)
     set(CMAKE_C_FLAGS "-fvisibility=hidden -I/usr/include/freetype2 -I/usr/include/libpng16")
     set(CMAKE_CXX_FLAGS "-fvisibility=hidden -I/usr/include/freetype2 -I/usr/include/libpng16")
-    set(LINK_OPTIONS ${LINK_OPTIONS} "-s -lGL -lpthread -ldl -lX11 -lXext -lfreetype -Wl,--no-undefined -Wl,-Bsymbolic -Wl,-Bstatic -lrubberband -lSoundTouch -laubio -lfftw3f -lsamplerate -Wl,-Bdynamic -Wl,--as-needed -Wl,--strip-all -Wl,--exclude-libs,ALL -fPIC")
+    set(LINK_OPTIONS ${LINK_OPTIONS} "-s -lGL -lpthread -ldl -lX11 -lXext -lfreetype -Wl,--no-undefined -Wl,-Bsymbolic -Wl,-Bstatic -lrubberband -lSoundTouch -laubio -lfftw3f -lsamplerate -Wl,-Bdynamic -Wl,--gc-sections -Wl,--as-needed -Wl,--strip-all -Wl,--exclude-libs,ALL -fPIC")
 ENDIF ()
 #}}}}
 

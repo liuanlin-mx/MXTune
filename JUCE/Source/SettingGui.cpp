@@ -360,7 +360,7 @@ void SettingGui::buttonClicked (Button* buttonThatWasClicked)
         _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_VTHRESH, sliderVThresh->getValue());
         
         _proc.set_misc_param(textEditorMisc->getText().toStdString());
-        _proc.setLatencySamples(_proc.get_mt_tune()->get_latency());
+        _proc.report_latency_samples();
         //[/UserButtonCode_textButtonApply]
     }
 

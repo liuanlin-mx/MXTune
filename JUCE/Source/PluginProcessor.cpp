@@ -391,6 +391,8 @@ void AutotalentAudioProcessor::setStateInformation (const void* data, int sizeIn
     const char *last = first + sizeInBytes - 1;
 
 
+    _mx_tune->get_manual_tune().disable_history();
+    
     if (*first == '{' && *last == '}')
     {
         var root = JSON::fromString(String(first, sizeInBytes));
@@ -673,6 +675,8 @@ void AutotalentAudioProcessor::setStateInformation (const void* data, int sizeIn
         }
         kvbuf_free(&hooks, kv_root);
     }
+    
+    _mx_tune->get_manual_tune().enable_history();
 }
 
 

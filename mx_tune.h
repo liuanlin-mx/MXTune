@@ -89,6 +89,11 @@ public:
     void clear_note();
     void clear_pitch();
     
+    void enable_history();
+    void disable_history();
+    void undo();
+    void redo();
+    
     void snap_key(float time_min_len, float time_max_interval, float attack, float release, float amount);
     void snap_to_inpitch();
     

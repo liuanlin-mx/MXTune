@@ -245,6 +245,27 @@ void mx_tune::clear_pitch()
     _m_tune.clear_outpitch();
 }
 
+void mx_tune::enable_history()
+{
+    _m_tune.enable_history();
+}
+
+void mx_tune::disable_history()
+{
+    _m_tune.disable_history();
+}
+
+void mx_tune::undo()
+{
+    _m_tune.undo();
+}
+
+void mx_tune::redo()
+{
+    _m_tune.redo();
+}
+
+    
 void mx_tune::snap_key(float time_min_len, float time_max_interval, float attack, float release, float amount)
 {
     _m_tune.snap_key(_notes, time_min_len, time_max_interval, attack, release, amount);

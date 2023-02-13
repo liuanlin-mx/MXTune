@@ -400,6 +400,22 @@ PluginGui::PluginGui (AutotalentAudioProcessor& p)
 
     textButtonSetting->setBounds (24, 512, 104, 40);
 
+    textButtonUndoNote.reset (new TextButton ("UndoNote"));
+    addAndMakeVisible (textButtonUndoNote.get());
+    textButtonUndoNote->setButtonText (TRANS("Undo"));
+    textButtonUndoNote->addListener (this);
+    textButtonUndoNote->setColour (TextButton::buttonColourId, Colour (0x00a45c94));
+
+    textButtonUndoNote->setBounds (552, 24, 64, 24);
+
+    textButtonRedoNote.reset (new TextButton ("RedoNote"));
+    addAndMakeVisible (textButtonRedoNote.get());
+    textButtonRedoNote->setButtonText (TRANS("Redo"));
+    textButtonRedoNote->addListener (this);
+    textButtonRedoNote->setColour (TextButton::buttonColourId, Colour (0x00a45c94));
+
+    textButtonRedoNote->setBounds (552, 64, 64, 24);
+
 
     //[UserPreSize]
     //[/UserPreSize]
@@ -461,6 +477,8 @@ PluginGui::~PluginGui()
     label11 = nullptr;
     sliderMaxInterval = nullptr;
     textButtonSetting = nullptr;
+    textButtonUndoNote = nullptr;
+    textButtonRedoNote = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -1073,6 +1091,36 @@ void PluginGui::buttonClicked (Button* buttonThatWasClicked)
         SettingGui component(_proc);
         std::int32_t r = juce::DialogWindow::showModalDialog("Setiing", &component, 0, juce::Colours::whitesmoke, false, false, false);
         //[/UserButtonCode_textButtonSetting]
+    }
+    else if (buttonThatWasClicked == textButtonUndoNote.get())
+    {
+        //[UserButtonCode_textButtonUndoNote] -- add your button handler code here..
+        if (_modify_tune)
+        {
+            _cur_node->attack = sliderAttack->getValue() / 1000.;
+            _cur_node->release = sliderRelease->getValue() / 1000.;
+            _cur_node->amount = sliderAmount->getValue();
+            _proc.get_manual_tune().unselect_tune();
+            _cur_node.reset();
+            _modify_tune = false;
+        }
+        _proc.get_mt_tune()->undo();
+        //[/UserButtonCode_textButtonUndoNote]
+    }
+    else if (buttonThatWasClicked == textButtonRedoNote.get())
+    {
+        //[UserButtonCode_textButtonRedoNote] -- add your button handler code here..
+        if (_modify_tune)
+        {
+            _cur_node->attack = sliderAttack->getValue() / 1000.;
+            _cur_node->release = sliderRelease->getValue() / 1000.;
+            _cur_node->amount = sliderAmount->getValue();
+            _proc.get_manual_tune().unselect_tune();
+            _cur_node.reset();
+            _modify_tune = false;
+        }
+        _proc.get_mt_tune()->redo();
+        //[/UserButtonCode_textButtonRedoNote]
     }
 
     //[UserbuttonClicked_Post]
@@ -2074,6 +2122,12 @@ BEGIN_JUCER_METADATA
   <TEXTBUTTON name="new button" id="900521ff5a75116a" memberName="textButtonSetting"
               virtualName="" explicitFocusOrder="0" pos="24 512 104 40" bgColOff="a45c94"
               buttonText="Setting" connectedEdges="0" needsCallback="1" radioGroupId="0"/>
+  <TEXTBUTTON name="UndoNote" id="c06b8b766e66bc35" memberName="textButtonUndoNote"
+              virtualName="" explicitFocusOrder="0" pos="552 24 64 24" bgColOff="a45c94"
+              buttonText="Undo" connectedEdges="0" needsCallback="1" radioGroupId="0"/>
+  <TEXTBUTTON name="RedoNote" id="8e6e4099a433af02" memberName="textButtonRedoNote"
+              virtualName="" explicitFocusOrder="0" pos="552 64 64 24" bgColOff="a45c94"
+              buttonText="Redo" connectedEdges="0" needsCallback="1" radioGroupId="0"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

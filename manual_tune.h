@@ -4,8 +4,10 @@
 #include <memory>
 #include <map>
 #include <list>
+#include <algorithm>
 #include <math.h>
 #include "auto_tune.h"
+#include "undo_redo.h"
 
 class manual_tune
 {
@@ -40,6 +42,18 @@ public:
             attack = 0.;
             release = 0.;
             amount = 1.;
+        }
+        
+        bool operator== (const tune_node& other)
+        {
+            return (is_manual == other.is_manual)
+                    && (std::fabs(time_start - other.time_start) < std::numeric_limits<float>::epsilon())
+                    && (std::fabs(time_end - other.time_end) < std::numeric_limits<float>::epsilon())
+                    && (std::fabs(pitch_start - other.pitch_start) < std::numeric_limits<float>::epsilon())
+                    && (std::fabs(pitch_end - other.pitch_end) < std::numeric_limits<float>::epsilon())
+                    && (std::fabs(attack - other.attack) < std::numeric_limits<float>::epsilon())
+                    && (std::fabs(release - other.release) < std::numeric_limits<float>::epsilon())
+                    && (std::fabs(amount - other.amount) < std::numeric_limits<float>::epsilon());
         }
         
         bool is_manual = false;
@@ -89,6 +103,11 @@ public:
     void snap_key(const std::int32_t notes[12], float time_min_len, float time_max_interval, float attack, float release, float amount);
     void snap_to_inpitch();
     
+    void enable_history();
+    void disable_history();
+    void undo();
+    void redo();
+    
     bool check_key(float notes_weights[12], float time_min_len, float time_max_interval);
     
     void set_vthresh(float thresh) { _conf_thresh = thresh; }
@@ -107,15 +126,23 @@ private:
     
     float _snap_pitch(const std::int32_t notes[12], float pitch);
     
+    std::list<tune_node> _make_history();
+    void _restor_history(const std::list<tune_node>& history);
+    void _save_history();
+    
 private:
     pitch_node *_inpitch;
     pitch_node *_outpitch;
     std::shared_ptr<tune_node> *_tune_list;
     std::shared_ptr<tune_node> _select;
+    tune_node _select_bak;
     std::uint32_t _max_len;
     std::uint32_t _len;
     float _min_time;
     float _conf_thresh;
+    bool _enable_history;
+    
+    undo_redo<std::list<tune_node> > _history;
     
 };
 

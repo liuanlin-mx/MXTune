@@ -11,6 +11,7 @@ manual_tune::manual_tune(std::uint32_t max_len)
     , _len(0)
     , _min_time(0.01)
     , _conf_thresh(0.7)
+    , _enable_history(true)
 {
 }
 
@@ -219,6 +220,8 @@ void manual_tune::clear_outpitch()
     
 void manual_tune::add_tune(std::shared_ptr<tune_node>& tune)
 {
+    _save_history();
+    
     if (abs(tune->time_end - tune->time_start) < _min_time)
     {
         return;
@@ -310,6 +313,7 @@ std::shared_ptr<manual_tune::tune_node> manual_tune::select_tune(float time, flo
             pos = SELECT_MID;
         }
         
+        _select_bak = *node;
         _select = node;
         _erase_tune(node);
         return _select;
@@ -321,6 +325,11 @@ void manual_tune::unselect_tune()
 {
     if (_select)
     {
+        if (!(*_select == _select_bak))
+        {
+            _save_history();
+        }
+        
         if (abs(_select->time_end - _select->time_start) >= _min_time)
         {
             _write_tune(_select);
@@ -332,11 +341,16 @@ void manual_tune::unselect_tune()
 
 void manual_tune::del_selected()
 {
-    _select.reset();
+    if (_select)
+    {
+        _save_history();
+        _select.reset();
+    }
 }
 
 void manual_tune::clear_note()
 {
+    _save_history();
     for (std::uint32_t i = 0; i < _max_len; i++)
     {
         _tune_list[i].reset();
@@ -345,6 +359,7 @@ void manual_tune::clear_note()
 
 void manual_tune::clear_auto_note()
 {
+    _save_history();
     for (std::uint32_t i = 0; i < _max_len; i++)
     {
         if (_tune_list[i] && !_tune_list[i]->is_manual)
@@ -363,6 +378,8 @@ void manual_tune::snap_key(const std::int32_t notes[12], float time_min_len, flo
     std::uint32_t idx_end = 0;
     float pitch = 0.;
     
+    
+    _save_history();
     
     for (std::uint32_t i = 0; i < _max_len; i++)
     {
@@ -447,6 +464,45 @@ void manual_tune::snap_to_inpitch()
     }
 }
 
+
+void manual_tune::enable_history()
+{
+    _enable_history = true;
+}
+
+void manual_tune::disable_history()
+{
+    _enable_history = false;
+}
+
+void manual_tune::undo()
+{
+    if (!_enable_history)
+    {
+        return;
+    }
+    
+    std::list<tune_node> history;
+    if (_history.undo(history, _make_history()))
+    {
+        _restor_history(history);
+    }
+}
+
+void manual_tune::redo()
+{
+    if (!_enable_history)
+    {
+        return;
+    }
+    
+    std::list<tune_node> history;
+    if (_history.redo(history, _make_history()))
+    {
+        _restor_history(history);
+    }
+}
+    
 bool manual_tune::check_key(float notes_weights[12], float time_min_len, float time_max_interval)
 {
     pitch_node last;
@@ -764,5 +820,70 @@ float manual_tune::_snap_pitch(const std::int32_t notes[12], float pitch)
     else
     {
         return right;
+    }
+}
+
+
+
+
+std::list<manual_tune::tune_node> manual_tune::_make_history()
+{
+    std::uint32_t idx_begin = 0;
+    std::uint32_t idx_end = _max_len;
+    std::shared_ptr<tune_node> last;
+    std::list<tune_node> list;
+    
+    while (idx_begin < idx_end)
+    {
+        std::shared_ptr<tune_node>& node = _tune_list[idx_begin];
+        if (node != nullptr && node != last)
+        {
+            list.push_back(*node);
+            last = node;
+        }
+        idx_begin++;
+    }
+    
+    if (_select)
+    {
+        list.push_back(_select_bak);
+    }
+    
+    return list;
+}
+
+
+void manual_tune::_restor_history(const std::list<manual_tune::tune_node>& history)
+{
+    for (std::uint32_t i = 0; i < _max_len; i++)
+    {
+        _tune_list[i].reset();
+    }
+    
+    for (auto item: history)
+    {
+        std::shared_ptr<manual_tune::tune_node> tune(new tune_node(item));
+        
+        if (abs(tune->time_end - tune->time_start) < _min_time)
+        {
+            continue;
+        }
+        
+        if (_time2idx(tune->time_end) >= _max_len)
+        {
+            continue;
+        }
+        
+        _write_tune(tune);
+        _remove_overlap(tune);
+    }
+}
+
+
+void manual_tune::_save_history()
+{
+    if (_enable_history)
+    {
+        _history.put(_make_history());
     }
 }

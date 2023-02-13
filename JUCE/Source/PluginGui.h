@@ -191,6 +191,8 @@ private:
     std::unique_ptr<Label> label11;
     std::unique_ptr<Slider> sliderMaxInterval;
     std::unique_ptr<TextButton> textButtonSetting;
+    std::unique_ptr<TextButton> textButtonUndoNote;
+    std::unique_ptr<TextButton> textButtonRedoNote;
 
 
     //==============================================================================

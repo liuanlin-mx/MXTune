@@ -6,6 +6,7 @@
 #include "pitch_shifter.h"
 #include "auto_tune.h"
 #include "manual_tune.h"
+#include "midi_msg.h"
 
 class text_readline
 {
@@ -49,6 +50,13 @@ public:
         SHIFTER_TYPE_SMB = 3,
     };
     
+    
+public:
+    struct midi_msg_node
+    {
+        midi_msg msg;
+        std::int32_t sample_position;
+    };
     
 public:
     explicit mx_tune(std::uint32_t sample_rate);
@@ -100,6 +108,8 @@ public:
     std::list<std::pair<manual_tune::pitch_node, float> > get_outpitch(float time_begin, float time_end);
     
     void run(float *in, float *out, std::int32_t n, float timestamp  = 0.0);
+    
+    std::list<midi_msg_node> output_midi_from_note(std::int32_t n, float timestamp);
     
 private:
     void _set_detector(std::uint32_t detector_type);

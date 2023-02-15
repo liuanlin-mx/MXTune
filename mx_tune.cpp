@@ -348,6 +348,36 @@ void mx_tune::run(float* in, float *out, std::int32_t n, float timestamp)
 }
 
 
+std::list<mx_tune::midi_msg_node> mx_tune::output_midi_from_note(std::int32_t n, float timestamp)
+{
+    std::list<midi_msg_node> msg_list;
+    float time_begin = timestamp;
+    float time_end = timestamp + (float)n / (float)_sample_rate;
+
+    std::list<std::shared_ptr<manual_tune::tune_node> > tune = _m_tune.get_tune(time_begin, time_end);
+    for (const auto& i: tune)
+    {
+        std::int32_t on_sample_position = (i->time_start - timestamp) * (float)_sample_rate;
+        std::int32_t off_sample_position = (i->time_end - timestamp) * (float)_sample_rate;
+        if (on_sample_position >= 0 && on_sample_position < n)
+        {
+            midi_msg_node node;
+            node.msg.note_on(1, (std::int32_t)i->pitch_start + 69);
+            node.sample_position = on_sample_position;
+            msg_list.push_back(node);
+        }
+        
+        if (off_sample_position >= 0 && off_sample_position < n)
+        {
+            midi_msg_node node;
+            node.msg.note_off(1, (std::int32_t)i->pitch_start + 69);
+            node.sample_position = off_sample_position;
+            msg_list.push_back(node);
+        }
+    }
+    return msg_list;
+}
+    
 void mx_tune::_set_detector(std::uint32_t detector_type)
 {
     if (detector_type == DETECTOR_TYPE_TALENT)

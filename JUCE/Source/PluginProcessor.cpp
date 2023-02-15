@@ -203,6 +203,7 @@ void AutotalentAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuf
     auto totalNumInputChannels  = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
     
+    
     // In case we have more outputs than inputs, this code clears any output
     // channels that didn't contain input data, (because these aren't
     // guaranteed to be empty - they may contain garbage).
@@ -211,6 +212,8 @@ void AutotalentAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuf
     // this code if your algorithm always overwrites all the output channels.
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
+    
+    midiMessages.clear();
 
     if (_is_bypassed)
     {
@@ -246,6 +249,21 @@ void AutotalentAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuf
         if (_mx_tune)
         {
             _mx_tune->run(channel_data, channel_data, num_samples, _cur_time);
+            
+            std::list<mx_tune::midi_msg_node> msg_list = _mx_tune->output_midi_from_note(num_samples, _cur_time);
+            for (auto& midi_msg: msg_list)
+            {
+                if (midi_msg.msg.is_note_on())
+                {
+                    MidiMessage msg = MidiMessage::noteOn(midi_msg.msg.get_channel(), midi_msg.msg.get_note(), (float)80);
+                    midiMessages.addEvent(msg, midi_msg.sample_position);
+                }
+                else if (midi_msg.msg.is_note_off())
+                {
+                    MidiMessage msg = MidiMessage::noteOff(midi_msg.msg.get_channel(), midi_msg.msg.get_note(), (float)80);
+                    midiMessages.addEvent(msg, midi_msg.sample_position);
+                }
+            }
         }
         
         for (int channel = 1; channel < totalNumInputChannels; ++channel)

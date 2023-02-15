@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <JUCERPROJECT id="lWsyKI" name="MXTune" projectType="audioplug" jucerVersion="5.4.7"
-              pluginFormats="buildVST,buildVST3" pluginCharacteristicsValue="pluginEditorRequiresKeys"
+              pluginFormats="buildVST,buildVST3" pluginCharacteristicsValue="pluginEditorRequiresKeys,pluginProducesMidiOut,pluginWantsMidiIn"
               pluginManufacturer="liuanlin-mx" pluginVSTNumMidiInputs="1" pluginVSTNumMidiOutputs="1"
               pluginName="MXTune" pluginDesc="pitch correction" pluginVST3Category="Fx,Pitch Shift,Stereo"
               pluginVSTCategory="kPlugCategEffect" version="1.1.2" cppLanguageStandard="11">

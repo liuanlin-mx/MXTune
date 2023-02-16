@@ -366,12 +366,12 @@ PluginGui::PluginGui (AutotalentAudioProcessor& p)
 
     sliderMinLen.reset (new Slider ("new slider"));
     addAndMakeVisible (sliderMinLen.get());
-    sliderMinLen->setRange (0, 1, 0.01);
+    sliderMinLen->setRange (0, 1000, 10);
     sliderMinLen->setSliderStyle (Slider::LinearBar);
     sliderMinLen->setTextBoxStyle (Slider::TextBoxAbove, false, 80, 20);
     sliderMinLen->addListener (this);
 
-    sliderMinLen->setBounds (88, 432, 40, 24);
+    sliderMinLen->setBounds (80, 432, 48, 24);
 
     label11.reset (new Label ("Interval",
                               TRANS("Interval:")));
@@ -386,12 +386,12 @@ PluginGui::PluginGui (AutotalentAudioProcessor& p)
 
     sliderMaxInterval.reset (new Slider ("new slider"));
     addAndMakeVisible (sliderMaxInterval.get());
-    sliderMaxInterval->setRange (0, 1, 0.01);
+    sliderMaxInterval->setRange (0, 1000, 10);
     sliderMaxInterval->setSliderStyle (Slider::LinearBar);
     sliderMaxInterval->setTextBoxStyle (Slider::TextBoxAbove, false, 80, 20);
     sliderMaxInterval->addListener (this);
 
-    sliderMaxInterval->setBounds (88, 464, 40, 24);
+    sliderMaxInterval->setBounds (80, 464, 48, 24);
 
     textButtonSetting.reset (new TextButton ("new button"));
     addAndMakeVisible (textButtonSetting.get());
@@ -565,20 +565,20 @@ void PluginGui::paint (Graphics& g)
             g.drawLine(x, y1, x, y2, 1);
         }
     }
-    
+
     {
         g.setOpacity(0.6);
-        
+
         double bpm = _proc.get_bpm();
         std::int32_t time_sig_denominator = _proc.get_time_sig_denominator();
         double ppq_pos = _proc.get_ppq_position();
         double note_time_len = 60. / bpm;
         float ppq_time = _cur_time - ppq_pos * note_time_len;
-        
+
         float y1 = _pitch_to_y(_pitch_up);
         float y2 = _pitch_to_y(_pitch_down);
         double step_time = note_time_len;
-        
+
         for (float t = ppq_time; t < _time_right; t += step_time)
         {
             float x = _time_to_x(t);
@@ -793,13 +793,13 @@ void PluginGui::sliderValueChanged (Slider* sliderThatWasMoved)
     else if (sliderThatWasMoved == sliderMinLen.get())
     {
         //[UserSliderCode_sliderMinLen] -- add your slider handling code here..
-        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_SNAP_MIN_LENGHT, sliderThatWasMoved->getValue());
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_SNAP_MIN_LENGHT, sliderThatWasMoved->getValue() / 1000.);
         //[/UserSliderCode_sliderMinLen]
     }
     else if (sliderThatWasMoved == sliderMaxInterval.get())
     {
         //[UserSliderCode_sliderMaxInterval] -- add your slider handling code here..
-        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_SNAP_MAX_INTERVAL, sliderThatWasMoved->getValue());
+        _proc.set_parameter(AutotalentAudioProcessor::PARAMETER_ID_SNAP_MAX_INTERVAL, sliderThatWasMoved->getValue() / 1000.);
         //[/UserSliderCode_sliderMaxInterval]
     }
 
@@ -1214,7 +1214,7 @@ void PluginGui::mouseDrag (const MouseEvent& e)
         {
             return;
         }
-            
+
         if (_modify_tune == false && _new_tune == false && abs(e.getMouseDownX() - x) > 5)
         {
             _new_tune = true;
@@ -1310,7 +1310,7 @@ void PluginGui::mouseDrag (const MouseEvent& e)
 void PluginGui::mouseUp (const MouseEvent& e)
 {
     //[UserCode_mouseUp] -- Add your code here...
-    
+
     if (e.mods.isLeftButtonDown())
     {
         if (_modify_tune == false && _new_tune == false)
@@ -1627,8 +1627,8 @@ void PluginGui::_update_gui_parameter()
 
     }
 
-    sliderMinLen->setValue(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_SNAP_MIN_LENGHT), dontSendNotification);
-    sliderMaxInterval->setValue(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_SNAP_MAX_INTERVAL), dontSendNotification);
+    sliderMinLen->setValue(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_SNAP_MIN_LENGHT) * 1000, dontSendNotification);
+    sliderMaxInterval->setValue(_proc.get_parameter(AutotalentAudioProcessor::PARAMETER_ID_SNAP_MAX_INTERVAL) * 1000, dontSendNotification);
 }
 
 float PluginGui::_snap_pitch(float pitch)
@@ -2106,8 +2106,8 @@ BEGIN_JUCER_METADATA
          focusDiscardsChanges="0" fontname="Default font" fontsize="15.0"
          kerning="0.0" bold="0" italic="0" justification="33"/>
   <SLIDER name="new slider" id="1f530dc457b303af" memberName="sliderMinLen"
-          virtualName="" explicitFocusOrder="0" pos="88 432 40 24" min="0.0"
-          max="1.0" int="0.01" style="LinearBar" textBoxPos="TextBoxAbove"
+          virtualName="" explicitFocusOrder="0" pos="80 432 48 24" min="0.0"
+          max="1000.0" int="10.0" style="LinearBar" textBoxPos="TextBoxAbove"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1.0"
           needsCallback="1"/>
   <LABEL name="Interval" id="621be6075a1201a" memberName="label11" virtualName=""
@@ -2116,8 +2116,8 @@ BEGIN_JUCER_METADATA
          focusDiscardsChanges="0" fontname="Default font" fontsize="15.0"
          kerning="0.0" bold="0" italic="0" justification="33"/>
   <SLIDER name="new slider" id="b808f0a215270bf5" memberName="sliderMaxInterval"
-          virtualName="" explicitFocusOrder="0" pos="88 464 40 24" min="0.0"
-          max="1.0" int="0.01" style="LinearBar" textBoxPos="TextBoxAbove"
+          virtualName="" explicitFocusOrder="0" pos="80 464 48 24" min="0.0"
+          max="1000.0" int="10.0" style="LinearBar" textBoxPos="TextBoxAbove"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1.0"
           needsCallback="1"/>
   <TEXTBUTTON name="new button" id="900521ff5a75116a" memberName="textButtonSetting"
@@ -2138,3 +2138,4 @@ END_JUCER_METADATA
 
 //[EndFile] You can add extra defines here...
 //[/EndFile]
+

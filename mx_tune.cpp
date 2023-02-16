@@ -106,6 +106,10 @@ mx_tune::mx_tune(unsigned int sample_rate)
     , _det_gate(-60)
     , _track(false)
     , _auto_tune(false)
+    , _midi_note_on(false)
+    , _midi_note_off(false)
+    , _midi_note_on_time(0)
+    , _midi_note(0)
 {
     _detector->set_vthresh(_conf_detect_thresh);
     _detector->set_aref(_aref);
@@ -344,6 +348,63 @@ void mx_tune::run(float* in, float *out, std::int32_t n, float timestamp)
         }
         
         out[i] = _shifter->shifter(in[i]);
+    }
+}
+
+
+void mx_tune::record_midi_to_note(std::int32_t n, float timestamp,
+                                const std::list<midi_msg_node>& midi_list,
+                                float attack, float release, float amount)
+{
+    if (!_track)
+    {
+        return;
+    }
+    
+    float midi_note_off_time = 0;
+    for (auto& msg: midi_list)
+    {
+        if (_midi_note_on == false && msg.msg.is_note_on())
+        {
+            _midi_note_on = true;
+            _midi_note_off = false;
+            _midi_note = msg.msg.get_note();
+            _midi_note_on_time = timestamp + (float)msg.sample_position / (float)_sample_rate;
+        }
+        
+        if (_midi_note_off == false && msg.msg.is_note_off())
+        {
+            if (_midi_note_on && msg.msg.get_note() == _midi_note)
+            {
+                _midi_note_off = true;
+                midi_note_off_time = timestamp + (float)msg.sample_position / (float)_sample_rate;
+            }
+            else
+            {
+                _midi_note_on = false;
+                _midi_note_on_time = 0;
+            }
+        }
+        
+        if (_midi_note_on && _midi_note_off)
+        {
+            std::shared_ptr<manual_tune::tune_node> tune(new manual_tune::tune_node());
+            tune->time_start = _midi_note_on_time;
+            tune->time_end = midi_note_off_time;
+            tune->pitch_start = _midi_note - 69;
+            tune->pitch_end = _midi_note - 69;
+            tune->attack = attack;
+            tune->release = release;
+            tune->amount = amount;
+            _m_tune.disable_history();
+            _m_tune.add_tune(tune);
+            _m_tune.enable_history();
+            
+            _midi_note_on = false;
+            _midi_note_off = false;
+            _midi_note = 0;
+            _midi_note_on_time = 0;
+        }
     }
 }
 

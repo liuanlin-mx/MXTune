@@ -131,7 +131,8 @@ public:
 private:
     void _create_mxtune(std::uint32_t sample_rate);
     void _report_latency_samples();
-    
+    void _record_midi_to_note(MidiBuffer& midiMessages, std::int32_t num_samples, float timestamp);
+    void _output_midi_from_note(MidiBuffer& midiMessages, std::int32_t num_samples, float timestamp);
 private:
     std::mutex _mtx;
     std::shared_ptr<mx_tune> _mx_tune = 0;
@@ -159,6 +160,8 @@ private:
     float _det_gate = -60;
     float _det_min_freq = 70;
     float _det_max_freq = 800;
+    bool _midi_record = true;
+    bool _midi_output = true;
     
     /* name def is_boolean scale min max parameter */
     parameter_item _parameters[PARAMETER_ID_NUM] = {

@@ -80,8 +80,9 @@ PluginGui::PluginGui (AutotalentAudioProcessor& p)
 
     toggleButtonTrack->setBounds (712, 24, 64, 24);
 
-    toggleButtonAutoTune.reset (new ToggleButton ("AutoTune"));
+    toggleButtonAutoTune.reset (new ToggleButton ("AutoPitch"));
     addAndMakeVisible (toggleButtonAutoTune.get());
+    toggleButtonAutoTune->setButtonText (TRANS("Auto"));
     toggleButtonAutoTune->addListener (this);
 
     toggleButtonAutoTune->setBounds (16, 24, 96, 24);
@@ -1987,8 +1988,8 @@ BEGIN_JUCER_METADATA
   <TOGGLEBUTTON name="Track" id="96b9e7d23267fe2e" memberName="toggleButtonTrack"
                 virtualName="" explicitFocusOrder="0" pos="712 24 64 24" buttonText="Track"
                 connectedEdges="0" needsCallback="1" radioGroupId="0" state="0"/>
-  <TOGGLEBUTTON name="AutoTune" id="f4d4a673f50ff58f" memberName="toggleButtonAutoTune"
-                virtualName="" explicitFocusOrder="0" pos="16 24 96 24" buttonText="AutoTune"
+  <TOGGLEBUTTON name="AutoPitch" id="f4d4a673f50ff58f" memberName="toggleButtonAutoTune"
+                virtualName="" explicitFocusOrder="0" pos="16 24 96 24" buttonText="Auto"
                 connectedEdges="0" needsCallback="1" radioGroupId="0" state="0"/>
   <TOGGLEBUTTON name="A" id="379b4bb7d2fbcace" memberName="toggleButtonNoteA"
                 virtualName="" explicitFocusOrder="0" pos="24 216 48 24" buttonText="A"

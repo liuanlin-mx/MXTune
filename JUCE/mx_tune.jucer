@@ -16,6 +16,8 @@
             file="Source/PluginProcessor.cpp"/>
       <FILE id="J606ly" name="PluginProcessor.h" compile="0" resource="0"
             file="Source/PluginProcessor.h"/>
+      <FILE id="DpOMi0" name="SettingGui.cpp" compile="1" resource="0" file="Source/SettingGui.cpp"/>
+      <FILE id="bZGgo1" name="SettingGui.h" compile="0" resource="0" file="Source/SettingGui.h"/>
     </GROUP>
   </MAINGROUP>
   <EXPORTFORMATS>

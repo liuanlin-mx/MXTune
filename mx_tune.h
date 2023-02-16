@@ -109,6 +109,9 @@ public:
     
     void run(float *in, float *out, std::int32_t n, float timestamp  = 0.0);
     
+    void record_midi_to_note(std::int32_t n, float timestamp,
+                                const std::list<midi_msg_node>& midi_list,
+                                float attack = 0.02, float release = 0.02, float amount = 0.7);
     std::list<midi_msg_node> output_midi_from_note(std::int32_t n, float timestamp);
     
 private:
@@ -142,7 +145,13 @@ private:
     bool _auto_tune;
     
     std::int32_t _notes[12];
-
+    
+    
+    /* midi record */
+    bool _midi_note_on;
+    bool _midi_note_off;
+    float _midi_note_on_time;
+    std::int32_t _midi_note;
 };
 
 #endif

@@ -213,7 +213,6 @@ void AutotalentAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuf
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
     
-    midiMessages.clear();
 
     if (_is_bypassed)
     {
@@ -249,21 +248,8 @@ void AutotalentAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuf
         if (_mx_tune)
         {
             _mx_tune->run(channel_data, channel_data, num_samples, _cur_time);
-            
-            std::list<mx_tune::midi_msg_node> msg_list = _mx_tune->output_midi_from_note(num_samples, _cur_time);
-            for (auto& midi_msg: msg_list)
-            {
-                if (midi_msg.msg.is_note_on())
-                {
-                    MidiMessage msg = MidiMessage::noteOn(midi_msg.msg.get_channel(), midi_msg.msg.get_note(), (float)80);
-                    midiMessages.addEvent(msg, midi_msg.sample_position);
-                }
-                else if (midi_msg.msg.is_note_off())
-                {
-                    MidiMessage msg = MidiMessage::noteOff(midi_msg.msg.get_channel(), midi_msg.msg.get_note(), (float)80);
-                    midiMessages.addEvent(msg, midi_msg.sample_position);
-                }
-            }
+            _record_midi_to_note(midiMessages, num_samples, _cur_time);
+            _output_midi_from_note(midiMessages, num_samples, _cur_time);
         }
         
         for (int channel = 1; channel < totalNumInputChannels; ++channel)
@@ -892,6 +878,65 @@ void AutotalentAudioProcessor::_report_latency_samples()
     }
 }
 
+void AutotalentAudioProcessor::_record_midi_to_note(MidiBuffer& midiMessages, std::int32_t num_samples, float timestamp)
+{
+    if (_midi_record)
+    {
+        std::list<mx_tune::midi_msg_node> msg_list;
+        MidiBuffer::Iterator midi_iter(midiMessages);
+        MidiMessage result;
+        std::int32_t sample_position = 0;
+        while (midi_iter.getNextEvent(result, sample_position))
+        {
+            if (result.isNoteOn())
+            {
+                mx_tune::midi_msg_node node;
+                node.msg.note_on(1, result.getNoteNumber(), result.getVelocity());
+                node.sample_position = sample_position;
+                msg_list.push_back(node);
+            }
+            else if (result.isNoteOff())
+            {
+                mx_tune::midi_msg_node node;
+                node.msg.note_off(1, result.getNoteNumber(), result.getVelocity());
+                node.sample_position = sample_position;
+                msg_list.push_back(node);
+            }
+        }
+        
+        if (!msg_list.empty())
+        {
+            _mx_tune->record_midi_to_note(num_samples, timestamp, msg_list,
+                                            get_parameter(PARAMETER_ID_DEF_ATTACK),
+                                            get_parameter(PARAMETER_ID_DEF_RELEASE),
+                                            get_parameter(PARAMETER_ID_DEF_AMOUNT));
+        }
+    }
+            
+}
+    
+void AutotalentAudioProcessor::_output_midi_from_note(MidiBuffer& midiMessages, std::int32_t num_samples, float timestamp)
+{
+    if (_midi_output)
+    {
+        midiMessages.clear();
+        
+        std::list<mx_tune::midi_msg_node> msg_list = _mx_tune->output_midi_from_note(num_samples, timestamp);
+        for (auto& midi_msg: msg_list)
+        {
+            if (midi_msg.msg.is_note_on())
+            {
+                MidiMessage msg = MidiMessage::noteOn(midi_msg.msg.get_channel(), midi_msg.msg.get_note(), (float)60);
+                midiMessages.addEvent(msg, midi_msg.sample_position);
+            }
+            else if (midi_msg.msg.is_note_off())
+            {
+                MidiMessage msg = MidiMessage::noteOff(midi_msg.msg.get_channel(), midi_msg.msg.get_note(), (float)60);
+                midiMessages.addEvent(msg, midi_msg.sample_position);
+            }
+        }
+    }
+}
 
 //==============================================================================
 // This creates new instances of the plugin..

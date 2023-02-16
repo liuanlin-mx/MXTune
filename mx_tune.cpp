@@ -374,10 +374,10 @@ void mx_tune::record_midi_to_note(std::int32_t n, float timestamp,
         
         if (_midi_note_off == false && msg.msg.is_note_off())
         {
-            if (_midi_note_on && msg.msg.get_note() == _midi_note)
+            midi_note_off_time = timestamp + (float)msg.sample_position / (float)_sample_rate;
+            if (_midi_note_on && msg.msg.get_note() == _midi_note && midi_note_off_time > _midi_note_on_time)
             {
                 _midi_note_off = true;
-                midi_note_off_time = timestamp + (float)msg.sample_position / (float)_sample_rate;
             }
             else
             {

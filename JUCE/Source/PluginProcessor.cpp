@@ -78,7 +78,9 @@ AutotalentAudioProcessor::AutotalentAudioProcessor()
     
     _misc_param = "st.sequence_ms=16\n"
                     "st.seekwindow_ms=4\n"
-                    "st.overlap_ms=4\n";
+                    "st.overlap_ms=4\n"
+                    "midi.record=0\n"
+                    "midi.export=0\n";
                     
     _create_mxtune(_sample_rate);
 }
@@ -548,6 +550,7 @@ void AutotalentAudioProcessor::setStateInformation (const void* data, int sizeIn
             }
             _misc_param = misc.toString().toStdString();
             _mx_tune->set_misc_param(_misc_param);
+            _apply_misc_param();
             _report_latency_samples();
         }
     }
@@ -675,6 +678,7 @@ void AutotalentAudioProcessor::setStateInformation (const void* data, int sizeIn
                 _misc_param.push_back(kvbuf_get_int8(kvbuf_get_array_item(misc, i)));
             }
             _mx_tune->set_misc_param(_misc_param);
+            _apply_misc_param();
             _report_latency_samples();
         }
         kvbuf_free(&hooks, kv_root);
@@ -840,6 +844,7 @@ void AutotalentAudioProcessor::set_misc_param(const std::string& misc_param)
     if (_mx_tune)
     {
         _mx_tune->set_misc_param(_misc_param);
+        _apply_misc_param();
     }
 }
 
@@ -917,7 +922,7 @@ void AutotalentAudioProcessor::_record_midi_to_note(MidiBuffer& midiMessages, st
     
 void AutotalentAudioProcessor::_output_midi_from_note(MidiBuffer& midiMessages, std::int32_t num_samples, float timestamp)
 {
-    if (_midi_output)
+    if (_midi_export)
     {
         midiMessages.clear();
         
@@ -938,6 +943,12 @@ void AutotalentAudioProcessor::_output_midi_from_note(MidiBuffer& midiMessages, 
     }
 }
 
+void AutotalentAudioProcessor::_apply_misc_param()
+{
+    _midi_record = _misc_param.find("midi.record=1") != _misc_param.npos;
+    _midi_export = _misc_param.find("midi.export=1") != _misc_param.npos;
+}
+    
 //==============================================================================
 // This creates new instances of the plugin..
 AudioProcessor* JUCE_CALLTYPE createPluginFilter()

@@ -6,6 +6,7 @@
 #include <list>
 #include <algorithm>
 #include <math.h>
+#include <float.h>
 #include "auto_tune.h"
 #include "undo_redo.h"
 
@@ -47,13 +48,13 @@ public:
         bool operator== (const tune_node& other)
         {
             return (is_manual == other.is_manual)
-                    && (std::fabs(time_start - other.time_start) < std::numeric_limits<float>::epsilon())
-                    && (std::fabs(time_end - other.time_end) < std::numeric_limits<float>::epsilon())
-                    && (std::fabs(pitch_start - other.pitch_start) < std::numeric_limits<float>::epsilon())
-                    && (std::fabs(pitch_end - other.pitch_end) < std::numeric_limits<float>::epsilon())
-                    && (std::fabs(attack - other.attack) < std::numeric_limits<float>::epsilon())
-                    && (std::fabs(release - other.release) < std::numeric_limits<float>::epsilon())
-                    && (std::fabs(amount - other.amount) < std::numeric_limits<float>::epsilon());
+                    && (std::fabs(time_start - other.time_start) < FLT_EPSILON)
+                    && (std::fabs(time_end - other.time_end) < FLT_EPSILON)
+                    && (std::fabs(pitch_start - other.pitch_start) < FLT_EPSILON)
+                    && (std::fabs(pitch_end - other.pitch_end) < FLT_EPSILON)
+                    && (std::fabs(attack - other.attack) < FLT_EPSILON)
+                    && (std::fabs(release - other.release) < FLT_EPSILON)
+                    && (std::fabs(amount - other.amount) < FLT_EPSILON);
         }
         
         bool is_manual = false;

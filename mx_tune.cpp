@@ -364,25 +364,56 @@ void mx_tune::record_midi_to_note(std::int32_t n, float timestamp,
     float midi_note_off_time = 0;
     for (auto& msg: midi_list)
     {
-        if (_midi_note_on == false && msg.msg.is_note_on())
+        if (msg.msg.is_note_on())
         {
-            _midi_note_on = true;
-            _midi_note_off = false;
-            _midi_note = msg.msg.get_note();
-            _midi_note_on_time = timestamp + (float)msg.sample_position / (float)_sample_rate;
+            if (_midi_note_on == false)
+            {
+                _midi_note_on = true;
+                _midi_note_off = false;
+                _midi_note = msg.msg.get_note();
+                _midi_note_on_time = timestamp + (float)msg.sample_position / (float)_sample_rate;
+            }
+            else
+            {
+                midi_note_off_time = timestamp + (float)msg.sample_position / (float)_sample_rate;
+                if (_midi_note_on_time > midi_note_off_time)
+                {
+                    _midi_note_on = false;
+                    _midi_note_off = false;
+                    _midi_note_on_time = 0;
+                }
+                else
+                {
+                    std::shared_ptr<manual_tune::tune_node> tune(new manual_tune::tune_node());
+                    tune->time_start = _midi_note_on_time;
+                    tune->time_end = midi_note_off_time;
+                    tune->pitch_start = _midi_note - 69;
+                    tune->pitch_end = _midi_note - 69;
+                    tune->attack = attack;
+                    tune->release = release;
+                    tune->amount = amount;
+                    _m_tune.disable_history();
+                    _m_tune.add_tune(tune);
+                    _m_tune.enable_history();
+                    
+                    _midi_note_off = false;
+                    _midi_note = msg.msg.get_note();
+                    _midi_note_on_time = midi_note_off_time;
+                }
+            }
         }
         
         if (_midi_note_off == false && msg.msg.is_note_off())
         {
             midi_note_off_time = timestamp + (float)msg.sample_position / (float)_sample_rate;
-            if (_midi_note_on && msg.msg.get_note() == _midi_note && midi_note_off_time > _midi_note_on_time)
-            {
-                _midi_note_off = true;
-            }
-            else
+            if (_midi_note_on_time > midi_note_off_time)
             {
                 _midi_note_on = false;
                 _midi_note_on_time = 0;
+            }
+            else if (_midi_note_on && msg.msg.get_note() == _midi_note)
+            {
+                _midi_note_off = true;
             }
         }
         

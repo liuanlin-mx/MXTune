@@ -109,39 +109,41 @@ set ( C_SRCS
 set ( CXX_SRCS
     ${CMAKE_CURRENT_LIST_DIR}/JUCE/Source/PluginGui.cpp
     ${CMAKE_CURRENT_LIST_DIR}/JUCE/Source/SettingGui.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/manual_tune.cpp
     ${CMAKE_CURRENT_LIST_DIR}/mx_tune.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/manual_tune.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/pitch_shifter_rb.cpp
     ${CMAKE_CURRENT_LIST_DIR}/ring_buffer.cpp
     ${CMAKE_CURRENT_LIST_DIR}/pitch_shifter_st.cpp
     ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_plugin_client_Unity.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_plugin_client_VST2.cpp
     ${CMAKE_CURRENT_LIST_DIR}/pitch_detector_aubio.cpp
     ${CMAKE_CURRENT_LIST_DIR}/JUCE/Source/KeyDetectGui.cpp
     ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_gui_extra.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_plugin_client_VST3.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/pitch_shifter_smb.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/smbPitchShift.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/pitch_detector_talent.cpp
     ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_core.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/JUCE/Source/PluginProcessor.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/auto_tune.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/smbPitchShift.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/pitch_shifter_smb.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/pitch_detector_talent.cpp
     ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_processors.cpp
     ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_plugin_client_RTAS_2.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/undo_redo.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_plugin_client_VST2.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_plugin_client_VST3.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/JUCE/Source/PluginProcessor.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/auto_tune.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/midi_msg.cpp
     ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_plugin_client_RTAS_4.cpp
     ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_data_structures.cpp
     ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_gui_basics.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/pitch_shifter_rb.cpp
     ${CMAKE_CURRENT_LIST_DIR}/pitch_shifter_talent.cpp
     ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_events.cpp
     ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_plugin_client_RTAS_1.cpp
     ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_plugin_client_utils.cpp
     ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_plugin_client_Standalone.cpp
     ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_plugin_client_RTAS_utils.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_plugin_client_RTAS_3.cpp
     ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_basics.cpp
     ${CMAKE_CURRENT_LIST_DIR}/JUCE/Source/PluginParameter.cpp
     ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_graphics.cpp
     ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_plugin_client_AAX.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_plugin_client_RTAS_3.cpp
 )
 
 set_source_files_properties(

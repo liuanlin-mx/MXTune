@@ -159,7 +159,7 @@ private:
     std::uint32_t _sft_alg = 0;
     float _conf_thresh = 0.9;
     float _afreq = 440;
-    float _det_gate = -60;
+    float _det_gate = 60;
     float _det_min_freq = 70;
     float _det_max_freq = 800;
     bool _midi_record = false;

@@ -7,6 +7,7 @@
 #include "auto_tune.h"
 #include "manual_tune.h"
 #include "midi_msg.h"
+#include "delay.h"
 
 class text_readline
 {
@@ -80,7 +81,7 @@ public:
     void set_at_amount(float amount);
     void set_at_scwarp(int scwarp);
     
-    float get_latency() { return _shifter->get_latency(); }
+    float get_latency() { return _shifter->get_latency() + _delay.get_delay(); }
     float get_inpitch() { return _inpitch; }
     
     float get_conf() { return _conf; }
@@ -128,6 +129,8 @@ private:
     std::shared_ptr<pitch_detector> _detector;
     std::uint32_t _shifter_type;
     std::shared_ptr<pitch_shifter> _shifter;
+    
+    delay _delay;
     
     float _aref;
     std::string _misc;

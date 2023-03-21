@@ -93,6 +93,7 @@ mx_tune::mx_tune(unsigned int sample_rate)
     , _detector(new pitch_detector_aubio(sample_rate, "yinfast"))
     , _shifter_type(SHIFTER_TYPE_SOUND_TOUCH)
     , _shifter(new pitch_shifter_st(sample_rate))
+    , _delay(sample_rate)
     , _aref(440)
     , _misc()
     , _sample_rate(sample_rate)
@@ -347,7 +348,7 @@ void mx_tune::run(float* in, float *out, std::int32_t n, float timestamp)
             _shifter->update_shifter_variables(inpitch, outpitch);
         }
         
-        out[i] = _shifter->shifter(in[i]);
+        out[i] = _delay.process(_shifter->shifter(in[i]));
     }
 }
 
@@ -580,6 +581,12 @@ void mx_tune::_apply_misc_param()
         }
         if (_shifter->set_misc_param(v_str[0].c_str(), v_str[1].c_str()))
         {
+            continue;
+        }
+        
+        if (v_str[0] == "delay")
+        {
+            _delay.set_delay(std::atoi(v_str[1].c_str()));
             continue;
         }
     }

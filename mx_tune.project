@@ -46,6 +46,8 @@
     </VirtualDirectory>
   </VirtualDirectory>
   <VirtualDirectory Name="mx_tune">
+    <File Name="delay.h"/>
+    <File Name="delay.cpp"/>
     <File Name="midi_msg.h"/>
     <File Name="midi_msg.cpp"/>
     <File Name="undo_redo.h"/>

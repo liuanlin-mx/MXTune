@@ -29,7 +29,6 @@ modify: JUCE/modules/juce_audio_plugin_client/VST/juce_VST_Wrapper.cpp:2442
     {
         if (reason == DLL_PROCESS_ATTACH)
             Process::setCurrentModuleInstanceHandle (instance);
-
         return true;
     }
 */

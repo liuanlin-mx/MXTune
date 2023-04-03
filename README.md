@@ -77,7 +77,7 @@ make install
 ```
 python3 /mingw64/bin/waf configure --enable-fftw3f --disable-tests --disable-examples --disable-wavread --disable-wavwrite --prefix=/mingw64
 python /mingw64/bin/waf install -j4
-``
+```
 
 ### build MXTune
 
@@ -86,8 +86,8 @@ cd build-cmake
 cmake .. -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc -G "Unix Makefiles"
 make -j4
 
-
 ## macOS
+
 Prerequisites:
 CMake
 Git

@@ -98,7 +98,7 @@ make -j4
 - Install Xcode command-line tools: `xcode-select --install`
 
 - Install Homebrew:
-    - `ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+    - `ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
 
 - Update Homebrew: `brew update`
 - Install Git: `brew install git`

@@ -76,7 +76,7 @@ make install
 ```
 python3 /mingw64/bin/waf configure --enable-fftw3f --disable-tests --disable-examples --disable-wavread --disable-wavwrite --prefix=/mingw64
 python /mingw64/bin/waf install -j4
-``
+```
 
 ### build MXTune
 

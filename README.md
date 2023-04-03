@@ -87,12 +87,12 @@ make -j4
 ```
 
 ## macOS
-### Prerequisites:
-- CMake
-- Git
-- Xcode
-- Xcode command-line tools
-- Homebrew
+- Prerequisites:
+    - CMake
+    - Git
+    - Xcode
+    - Xcode command-line tools
+    - Homebrew
 
 - Install Xcode from Mac App Store
 - Install Xcode command-line tools: `xcode-select --install`
@@ -108,7 +108,7 @@ make -j4
 
 ## linux
 
-- `sudo apt install libfftw3-dev
+- `sudo apt install libfftw3-dev`
 
 ### build SoundTouch
 ```

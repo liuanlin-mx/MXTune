@@ -22,22 +22,22 @@ pacman -S make cmake autoconf automake-wrapper libtool mingw-w64-x86_64-python3 
 
 ### JUCE
 - Download Juce (https://github.com/juce-framework/JUCE  5.4.7)
-- modify: JUCE/modules/juce_audio_plugin_client/VST/juce_VST_Wrapper.cpp:2442
-```
-/*
-    extern "C" BOOL WINAPI DllMain (HINSTANCE instance, DWORD reason, LPVOID)
-    {
-        if (reason == DLL_PROCESS_ATTACH)
-            Process::setCurrentModuleInstanceHandle (instance);
-        return true;
-    }
-*/
-```
+    - modify: `JUCE/modules/juce_audio_plugin_client/VST/juce_VST_Wrapper.cpp:2442`
+        ```
+        /*
+            extern "C" BOOL WINAPI DllMain (HINSTANCE instance, DWORD reason, LPVOID)
+            {
+                if (reason == DLL_PROCESS_ATTACH)
+                    Process::setCurrentModuleInstanceHandle (instance);
+                return true;
+            }
+        */
+        ```
 
-- modify: JUCE/modules/juce_audio_plugin_client/VST3/juce_VST3_Wrapper.cpp:3174
-```
-extern "C" __declspec (dllexport) IPluginFactory* GetPluginFactory()
-```
+    - modify: `JUCE/modules/juce_audio_plugin_client/VST3/juce_VST3_Wrapper.cpp:3174`
+        ```
+        extern "C" __declspec (dllexport) IPluginFactory* GetPluginFactory()
+        ```
 
 - run Projucer.exe
 - File->Open MXTune/JUCE/mx_tune.jucer
@@ -54,16 +54,16 @@ extern "C" __declspec (dllexport) IPluginFactory* GetPluginFactory()
 - modify:
 
     - VST3_SDK\base\source\fstring.cpp:226
-    ```
-    #define vsnprintf _vsnprintf
-    ->
-    //#define vsnprintf _vsnprintf
-    ```
+        ```
+        #define vsnprintf _vsnprintf
+        ->
+        //#define vsnprintf _vsnprintf
+        ```
 
     - VST3_SDK\pluginterfaces\base\ipluginbase.h:423
-    ```
-    extern "C" __declspec (dllexport) Steinberg::IPluginFactory*  GetPluginFactory ();
-    ```
+        ```
+        extern "C" __declspec (dllexport) Steinberg::IPluginFactory*  GetPluginFactory ();
+        ```
 ### build SoundTouch
 ```
 ./bootstrap 
@@ -87,12 +87,12 @@ make -j4
 ```
 
 ## macOS
-Prerequisites:
-    - CMake
-    - Git
-    - Xcode
-    - Xcode command-line tools
-    - Homebrew.
+### Prerequisites:
+- CMake
+- Git
+- Xcode
+- Xcode command-line tools
+- Homebrew
 
 - Install Xcode from Mac App Store
 - Install Xcode command-line tools: `xcode-select --install`

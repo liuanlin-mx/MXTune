@@ -61,7 +61,6 @@ VST3_SDK\base\source\fstring.cpp:226
 VST3_SDK\pluginterfaces\base\ipluginbase.h:423
 ```
 extern "C" __declspec (dllexport) Steinberg::IPluginFactory*  GetPluginFactory ();
-
 ```
 ### build SoundTouch
 
@@ -88,22 +87,22 @@ make -j4
 
 ## macOS
 Prerequisites:
-CMake
-Git
-Xcode
-Xcode command-line tools
-Homebrew.
+    - CMake
+    - Git
+    - Xcode
+    - Xcode command-line tools
+    - Homebrew.
 
-Install Xcode from Mac App Store
-Install Xcode command-line tools: xcode-select --install
+- Install Xcode from Mac App Store
+- Install Xcode command-line tools: xcode-select --install
 
-Install Homebrew:
-ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+- Install Homebrew:
+    - ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
-Update Homebrew: brew update
-Install Git: brew install git
-Install CMake: brew install cmake
-Install wxWidgets: brew install wxmac --dev --use-llvm
+- Update Homebrew: brew update
+- Install Git: brew install git
+- Install CMake: brew install cmake
+- Install wxWidgets: brew install wxmac --dev --use-llvm
 
 
 ## linux
@@ -124,7 +123,7 @@ Download waf (https://waf.io/)
 ./waf configure --enable-fftw3f --disable-tests --notests --disable-examples --disable-wavread --disable-wavwrite CFLAGS='-fvisibility=hidden -fdata-sections -ffunction-sections'
 ./waf build --disable-tests --notests --disable-examples
 sudo ./waf install --disable-tests --notests --disable-examples
-``
+```
 
 ### build libsamplerate
 ```

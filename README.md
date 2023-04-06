@@ -2,8 +2,10 @@
 ## hot key
 alt+mouse wheel: x zoom
 ctrl+mouse wheel: y zoom
-(mouse wheel) or (W, S): y move
-(shift+mouse wheel) or (A, D): x move
+mouse wheel: y move
+shift+mouse wheel: x move
+left button drag: add note
+right button : delete note
 
 
 (pitch_detector_talent.cpp,pitch_shifter_talent.cpp,auto_tune.cpp)The core algorithm comes from Tom Baran's Autotalent(http://web.mit.edu/tbaran/www/autotalent.html) and  TalentedHack(http://code.google.com/p/talentledhack/)
@@ -21,7 +23,7 @@ pacman -S make cmake autoconf automake-wrapper libtool mingw-w64-x86_64-python3 
 ```
 
 ### JUCE
-Download Juce (https://github.com/juce-framework/JUCE  5.4.7)
+Download Juce (https://github.com/juce-framework/JUCE  7.0.5)
 modify: JUCE/modules/juce_audio_plugin_client/VST/juce_VST_Wrapper.cpp:2442
 ```
 /*
@@ -77,7 +79,7 @@ make install
 ```
 python3 /mingw64/bin/waf configure --enable-fftw3f --disable-tests --disable-examples --disable-wavread --disable-wavwrite --prefix=/mingw64
 python /mingw64/bin/waf install -j4
-``
+```
 
 ### build MXTune
 
@@ -110,6 +112,21 @@ Install wxWidgets: brew install wxmac --dev --use-llvm
 ## linux
 
 sudo apt install libfftw3-dev
+
+
+### JUCE
+Download Juce (https://github.com/juce-framework/JUCE 7.0.5)
+run Projucer.exe
+File->Open MXTune/JUCE/mx_tune.jucer
+File->Global Paths   modify "Path to JUCE" and "JUCE Modules"
+File->Save All
+
+
+### VST SDK
+Download the VST SDK (http://www.steinberg.net/en/company/developers.html)
+copy vstsdk2.4/pluginterfaces to VST_SDK/VST3_SDK/
+copy VST_SDK/VST3_SDK to MXTune/
+
 
 ### build SoundTouch
 ```

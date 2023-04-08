@@ -57,7 +57,7 @@ include_directories(
 # Compiler options
 add_definitions(-Os)
 add_definitions(-O2)
-add_definitions(-std=c++14)
+add_definitions(-std=c++17)
 add_definitions(-fpermissive)
 add_definitions(-fPIC)
 add_definitions(-Wextra)
@@ -85,6 +85,10 @@ add_definitions(-Wdisabled-optimization)
 add_definitions(-Wdelete-non-virtual-dtor)
 add_definitions(-Wno-non-virtual-dtor)
 add_definitions(-Wno-unused-parameter)
+add_definitions(
+    -DJUCE_MODAL_LOOPS_PERMITTED=1
+)
+
 
 # Linker options
 set(LINK_OPTIONS -s)
@@ -115,6 +119,7 @@ set ( CXX_SRCS
     ${CMAKE_CURRENT_LIST_DIR}/ring_buffer.cpp
     ${CMAKE_CURRENT_LIST_DIR}/pitch_shifter_st.cpp
     ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_plugin_client_Unity.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_processors.cpp
     ${CMAKE_CURRENT_LIST_DIR}/pitch_detector_aubio.cpp
     ${CMAKE_CURRENT_LIST_DIR}/JUCE/Source/KeyDetectGui.cpp
     ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_gui_extra.cpp
@@ -122,24 +127,19 @@ set ( CXX_SRCS
     ${CMAKE_CURRENT_LIST_DIR}/smbPitchShift.cpp
     ${CMAKE_CURRENT_LIST_DIR}/pitch_shifter_smb.cpp
     ${CMAKE_CURRENT_LIST_DIR}/pitch_detector_talent.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_processors.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_plugin_client_RTAS_2.cpp
     ${CMAKE_CURRENT_LIST_DIR}/undo_redo.cpp
     ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_plugin_client_VST2.cpp
     ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_plugin_client_VST3.cpp
     ${CMAKE_CURRENT_LIST_DIR}/JUCE/Source/PluginProcessor.cpp
     ${CMAKE_CURRENT_LIST_DIR}/auto_tune.cpp
     ${CMAKE_CURRENT_LIST_DIR}/midi_msg.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_plugin_client_RTAS_4.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/delay.cpp
     ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_data_structures.cpp
     ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_gui_basics.cpp
     ${CMAKE_CURRENT_LIST_DIR}/pitch_shifter_talent.cpp
     ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_events.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_plugin_client_RTAS_1.cpp
     ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_plugin_client_utils.cpp
     ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_plugin_client_Standalone.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_plugin_client_RTAS_utils.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_plugin_client_RTAS_3.cpp
     ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_basics.cpp
     ${CMAKE_CURRENT_LIST_DIR}/JUCE/Source/PluginParameter.cpp
     ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_graphics.cpp
@@ -148,7 +148,7 @@ set ( CXX_SRCS
 
 set_source_files_properties(
     ${CXX_SRCS} PROPERTIES COMPILE_FLAGS 
-    " -Os -O2 -std=c++14 -fpermissive -fPIC -Wextra -Weffc++ -Woverloaded-virtual -Wreorder -Wsign-promo -Wstrict-null-sentinel -Wfloat-equal -Wreturn-type -Wsign-compare -Wsizeof-pointer-memaccess -Woverflow -Wshadow -Wsequence-point -Wswitch-default -Wunused-but-set-parameter -Wunused-but-set-variable -Wunused-function -Wunused-label -Wunused-variable -Wmaybe-uninitialized -Wuninitialized -Wdisabled-optimization -Wdelete-non-virtual-dtor -Wno-non-virtual-dtor")
+    " -Os -O2 -std=c++17 -fpermissive -fPIC -Wextra -Weffc++ -Woverloaded-virtual -Wreorder -Wsign-promo -Wstrict-null-sentinel -Wfloat-equal -Wreturn-type -Wsign-compare -Wsizeof-pointer-memaccess -Woverflow -Wshadow -Wsequence-point -Wswitch-default -Wunused-but-set-parameter -Wunused-but-set-variable -Wunused-function -Wunused-label -Wunused-variable -Wmaybe-uninitialized -Wuninitialized -Wdisabled-optimization -Wdelete-non-virtual-dtor -Wno-non-virtual-dtor")
 
 set_source_files_properties(
     ${C_SRCS} PROPERTIES COMPILE_FLAGS 

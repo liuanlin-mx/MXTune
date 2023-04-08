@@ -4,6 +4,8 @@
 - ctrl+mouse wheel: y zoom
 - (mouse wheel) or (W, S): y move
 - (shift+mouse wheel) or (A, D): x move
+- left button drag: add note
+- right button : delete note
 
 ## attribution
 - The core algorithm comes from Tom Baran's Autotalent(http://web.mit.edu/tbaran/www/autotalent.html) (pitch_detector_talent.cpp,pitch_shifter_talent.cpp,auto_tune.cpp) 
@@ -44,6 +46,7 @@ pacman -S make cmake autoconf automake-wrapper libtool mingw-w64-x86_64-python3 
 - File->Global Paths 
     - modify "Path to JUCE" and "JUCE Modules"
 - File->Save All
+
 
 
 ### VST SDK
@@ -109,6 +112,21 @@ make -j4
 ## linux
 
 - `sudo apt install libfftw3-dev`
+
+
+### JUCE
+Download Juce (https://github.com/juce-framework/JUCE 7.0.5)
+run Projucer.exe
+File->Open MXTune/JUCE/mx_tune.jucer
+File->Global Paths   modify "Path to JUCE" and "JUCE Modules"
+File->Save All
+
+
+### VST SDK
+Download the VST SDK (http://www.steinberg.net/en/company/developers.html)
+copy vstsdk2.4/pluginterfaces to VST_SDK/VST3_SDK/
+copy VST_SDK/VST3_SDK to MXTune/
+
 
 ### build SoundTouch
 ```

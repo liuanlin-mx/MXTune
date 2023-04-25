@@ -7,8 +7,8 @@ class pitch_detector
 protected:
     enum
     {
-        MIN_PITCH = -30,
-        MAX_PITCH = 26,
+        MIN_PITCH = -48, //27.5Hz
+        MAX_PITCH = 39, //4186Hz
     };
     
 public:

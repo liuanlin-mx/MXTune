@@ -103,8 +103,8 @@ private:
     int _draw_h = 0;
     float _margin = 24;
 
-    const float _pitch_max = 36.;
-    const float _pitch_min = -36.;
+    const float _pitch_max = 39.;
+    const float _pitch_min = -48.;
     float _pitch_up = 0 - 9 + 12;
     float _pitch_down = 0 - 9 - 12;
 

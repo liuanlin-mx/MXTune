@@ -526,7 +526,7 @@ void PluginGui::paint (Graphics& g)
             float y = round(_pitch_to_y(i)) + 0.5;
             if ((i + 12 * 8) % 12 == 3)
             {
-                std::int32_t n = (i + 9 + 12 * 3) / 12;
+                std::int32_t n = (i + 9 + 12 * 4) / 12;
                 char name[32];
                 sprintf(name, "%s%d", node_name[(unsigned)(i + 12 * 8) % 12], n);
                 g.drawText(name, _draw_x - 24, y - 12, 24, 24, juce::Justification::centred, true);

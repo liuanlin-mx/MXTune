@@ -164,12 +164,20 @@ endif(WIN32)
 
 #{{{{ User Code 2
 # Place your code here
+
+OPTION(MXTUNE_USE_STATIC_LIB "use static library" OFF)
+
 IF (WIN32)
     set(LINK_OPTIONS ${LINK_OPTIONS} "-static -lrubberband -lSoundTouch -laubio -lfftw3f -lfftw3 -lsamplerate")
 ELSEIF (UNIX)
     set(CMAKE_C_FLAGS "-fvisibility=hidden -I/usr/include/freetype2 -I/usr/include/libpng16")
     set(CMAKE_CXX_FLAGS "-fvisibility=hidden -I/usr/include/freetype2 -I/usr/include/libpng16")
-    set(LINK_OPTIONS ${LINK_OPTIONS} "-s -lGL -lpthread -ldl -lX11 -lXext -lfreetype -Wl,--no-undefined -Wl,-Bsymbolic -Wl,-Bstatic -lrubberband -lSoundTouch -laubio -lfftw3f -lsamplerate -Wl,-Bdynamic -Wl,--gc-sections -Wl,--as-needed -Wl,--strip-all -Wl,--exclude-libs,ALL -fPIC")
+    
+    IF (NOT MXTUNE_USE_STATIC_LIB)
+        set(LINK_OPTIONS ${LINK_OPTIONS} "-s -lGL -lpthread -ldl -lX11 -lXext -lfreetype -Wl,--no-undefined -Wl,-Bsymbolic -Wl,-Bstatic -lrubberband -lSoundTouch -laubio -lfftw3f -lsamplerate -Wl,-Bdynamic -Wl,--gc-sections -Wl,--as-needed -Wl,--strip-all -Wl,--exclude-libs,ALL -fPIC")
+    ELSE ()
+        set(LINK_OPTIONS ${LINK_OPTIONS} "-s -lGL -lpthread -ldl -lX11 -lXext -lfreetype -Wl,--no-undefined -Wl,-Bsymbolic -lrubberband -lSoundTouch -laubio -lfftw3f -lsamplerate -Wl,--gc-sections -Wl,--as-needed -Wl,--strip-all -Wl,--exclude-libs,ALL -fPIC")
+    ENDIF ()
 ENDIF ()
 #}}}}
 

@@ -1,6 +1,6 @@
 /*****************************************************************************
 *                                                                            *
-*  Copyright (C) 2019 Liu Min.                                               *
+*  Copyright (C) 2019 Liu An Lin.                                            *
 *                                                                            *
 *  Licensed under the Apache License, Version 2.0 (the "License");           *
 *  you may not use this file except in compliance with the License.          *

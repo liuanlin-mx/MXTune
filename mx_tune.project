@@ -41,6 +41,7 @@
     </VirtualDirectory>
   </VirtualDirectory>
   <VirtualDirectory Name="mx_tune">
+    <File Name="LICENSE"/>
     <File Name="delay.h"/>
     <File Name="delay.cpp"/>
     <File Name="midi_msg.h"/>
@@ -79,7 +80,6 @@
     <File Name="ring_buffer.cpp"/>
     <File Name="pitch_detector.h"/>
     <File Name="manifest.ttl"/>
-    <File Name="lv2.h"/>
   </VirtualDirectory>
   <Description/>
   <Dependencies/>

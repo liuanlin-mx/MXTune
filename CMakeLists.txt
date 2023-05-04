@@ -41,6 +41,36 @@ set(WORKSPACE_PATH "${CMAKE_CURRENT_LIST_DIR}/")
 
 #{{{{ User Code 1
 # Place your code here
+
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "")
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "")
+
+IF (UNIX)
+    find_package(PkgConfig REQUIRED)
+    pkg_check_modules(AUBIO REQUIRED IMPORTED_TARGET aubio)
+    pkg_check_modules(SOUNDTOUCH REQUIRED soundtouch)
+    pkg_check_modules(RUBBERBAND REQUIRED rubberband)
+    pkg_check_modules(SAMPLERATE REQUIRED samplerate)
+    pkg_check_modules(X11 REQUIRED x11)
+    pkg_check_modules(FFTW3F REQUIRED fftw3f)
+    pkg_check_modules(FREETYPE REQUIRED freetype2)
+
+    set(MX_TUNE_LIBRARIES, "")
+    set(MX_TUNE_CFLAGS, "")
+
+    foreach(list ${AUBIO_LIBRARIES} ${SOUNDTOUCH_LIBRARIES} ${RUBBERBAND_LIBRARIES} ${SAMPLERATE_LIBRARIES} ${X11_LIBRARIES} ${FFTW3F_LIBRARIES})
+        set(MX_TUNE_LIBRARIES ${MX_TUNE_LIBRARIES} " -l${list}" )
+    endforeach(list)
+    
+    foreach(list ${AUBIO_CFLAGS} ${SOUNDTOUCH_CFLAGS} ${RUBBERBAND_CFLAGS} ${SAMPLERATE_CFLAGS} ${FFTW3F_CFLAGS} ${X11_CFLAGS} ${FREETYPE_CFLAGS})
+        set(MX_TUNE_CFLAGS ${MX_TUNE_CFLAGS} " ${list}" )
+    endforeach(list)
+
+    string(REPLACE ";" " " MX_TUNE_LIBRARIES ${MX_TUNE_LIBRARIES})
+    string(REPLACE ";" " " MX_TUNE_CFLAGS ${MX_TUNE_CFLAGS})
+
+ENDIF ()
 #}}}}
 
 include_directories(
@@ -170,13 +200,15 @@ OPTION(MXTUNE_USE_STATIC_LIB "use static library" OFF)
 IF (WIN32)
     set(LINK_OPTIONS ${LINK_OPTIONS} "-static -lrubberband -lSoundTouch -laubio -lfftw3f -lfftw3 -lsamplerate")
 ELSEIF (UNIX)
-    set(CMAKE_C_FLAGS "-fvisibility=hidden -I/usr/include/freetype2 -I/usr/include/libpng16")
-    set(CMAKE_CXX_FLAGS "-fvisibility=hidden -I/usr/include/freetype2 -I/usr/include/libpng16")
+    set(CMAKE_C_FLAGS "-fvisibility=hidden ${MX_TUNE_CFLAGS}")
+    set(CMAKE_CXX_FLAGS "-fvisibility=hidden ${MX_TUNE_CFLAGS}")
     
-    IF (NOT MXTUNE_USE_STATIC_LIB)
-        set(LINK_OPTIONS ${LINK_OPTIONS} "-s -lGL -lpthread -ldl -lX11 -lXext -lfreetype -Wl,--no-undefined -Wl,-Bsymbolic -Wl,-Bstatic -lrubberband -lSoundTouch -laubio -lfftw3f -lsamplerate -Wl,-Bdynamic -Wl,--gc-sections -Wl,--as-needed -Wl,--strip-all -Wl,--exclude-libs,ALL -fPIC")
+    #message(STATUS "xxxxxxxxxx=${AUBIO_CFLAGS} ${SOUNDTOUCH_CFLAGS} ${RUBBERBAND_CFLAGS} ${SAMPLERATE_CFLAGS} ${FFTW3F_CFLAGS} ${X11_CFLAGS} ${FREETYPE_CFLAGS}")
+    
+    IF (MXTUNE_USE_STATIC_LIB)
+        set(LINK_OPTIONS ${LINK_OPTIONS} "-s -lGL -lpthread -ldl -lX11 -lXext ${FREETYPE_LDFLAGS} -Wl,--no-undefined -Wl,-Bsymbolic -Wl,-Bstatic ${MX_TUNE_LIBRARIES} -Wl,-Bdynamic -Wl,--gc-sections -Wl,--as-needed -Wl,--strip-all -Wl,--exclude-libs,ALL -fPIC")
     ELSE ()
-        set(LINK_OPTIONS ${LINK_OPTIONS} "-s -lGL -lpthread -ldl -lX11 -lXext -lfreetype -Wl,--no-undefined -Wl,-Bsymbolic -lrubberband -lSoundTouch -laubio -lfftw3f -lsamplerate -Wl,--gc-sections -Wl,--as-needed -Wl,--strip-all -Wl,--exclude-libs,ALL -fPIC")
+        set(LINK_OPTIONS ${LINK_OPTIONS} "-s -lGL -lpthread -ldl -lX11 -lXext ${FREETYPE_LDFLAGS} -Wl,--no-undefined -Wl,-Bsymbolic ${MX_TUNE_LIBRARIES} -Wl,--gc-sections -Wl,--as-needed -Wl,--strip-all -Wl,--exclude-libs,ALL -fPIC")
     ENDIF ()
 ENDIF ()
 #}}}}

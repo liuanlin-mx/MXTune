@@ -116,11 +116,12 @@
         <IncludePath Value="VST3_SDK"/>
         <Preprocessor Value="JUCE_MODAL_LOOPS_PERMITTED=1"/>
       </Compiler>
-      <Linker Options="-framework CoreFoundation;-framework CoreServices;-framework CoreGraphics;-framework ImageIO;-framework MapKit;-framework CoreText;-framework AudioToolbox;-framework CoreAudio;-framework CoreVideo;-framework IOKit;-framework AppKit;-framework Accelerate;-framework QuartzCore;-framework Metal" Required="yes">
+      <Linker Options="-static -framework CoreFoundation;-framework CoreServices;-framework CoreGraphics;-framework ImageIO;-framework MapKit;-framework CoreText;-framework AudioToolbox;-framework CoreAudio;-framework CoreVideo;-framework IOKit;-framework AppKit;-framework Accelerate;-framework QuartzCore;-framework Metal" Required="yes">
         <Library Value="fftw3f"/>
         <Library Value="aubio"/>
         <Library Value="SoundTouch"/>
         <Library Value="rubberband"/>
+        <Library Value="System"/>
       </Linker>
       <ResourceCompiler Options="" Required="no"/>
       <General OutputFile="$(IntermediateDirectory)/$(ProjectName).dylib" IntermediateDirectory="$(ConfigurationName)" Command="$(OutputFile)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="" PauseExecWhenProcTerminates="yes" IsGUIProgram="no" IsEnabled="yes"/>

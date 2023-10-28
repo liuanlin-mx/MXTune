@@ -5,7 +5,7 @@
               pluginManufacturer="liuanlin-mx" pluginVSTNumMidiInputs="1" pluginVSTNumMidiOutputs="1"
               pluginName="MXTune" pluginDesc="pitch correction" pluginVST3Category="Fx,Pitch Shift,Stereo"
               pluginVSTCategory="kPlugCategEffect" version="1.1.2" jucerFormatVersion="1"
-              defines="JUCE_MODAL_LOOPS_PERMITTED=1">
+              defines="JUCE_MODAL_LOOPS_PERMITTED=1" displaySplashScreen="1">
   <MAINGROUP id="ok7jMT" name="MXTune">
     <GROUP id="{F13C5646-EBC5-7FEE-A7A0-D2D433F1E308}" name="Source">
       <FILE id="J25HH7" name="KeyDetectGui.cpp" compile="1" resource="0"

@@ -17,7 +17,7 @@
 
 
 #include <stdio.h>
-#include <malloc.h>
+#include <stdlib.h>
 #include <math.h>
 
 #include "pitch_shifter_rb.h"

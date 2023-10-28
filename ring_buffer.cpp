@@ -16,7 +16,7 @@
  */
 
 
-#include <malloc.h>
+#include <stdlib.h>
 #include "ring_buffer.h"
 
 ring_buffer::ring_buffer(unsigned int sample_rate)

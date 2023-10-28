@@ -51,10 +51,12 @@ IF (UNIX)
     pkg_check_modules(AUBIO REQUIRED IMPORTED_TARGET aubio)
     pkg_check_modules(SOUNDTOUCH REQUIRED soundtouch)
     pkg_check_modules(RUBBERBAND REQUIRED rubberband)
+    pkg_check_modules(FFTW3F REQUIRED fftw3f)
+IF (NOT APPLE)
     pkg_check_modules(SAMPLERATE REQUIRED samplerate)
     pkg_check_modules(X11 REQUIRED x11)
-    pkg_check_modules(FFTW3F REQUIRED fftw3f)
     pkg_check_modules(FREETYPE REQUIRED freetype2)
+ENDIF ()
 
     set(MX_TUNE_LIBRARIES, "")
     set(MX_TUNE_CFLAGS, "")
@@ -87,7 +89,6 @@ include_directories(
 # Compiler options
 add_definitions(-Os)
 add_definitions(-O2)
-add_definitions(-std=c++17)
 add_definitions(-fpermissive)
 add_definitions(-fPIC)
 add_definitions(-Wextra)
@@ -121,7 +122,6 @@ add_definitions(
 
 
 # Linker options
-set(LINK_OPTIONS -s)
 set(LINK_OPTIONS ${LINK_OPTIONS} -fPIC)
 
 
@@ -148,32 +148,23 @@ set ( CXX_SRCS
     ${CMAKE_CURRENT_LIST_DIR}/pitch_shifter_rb.cpp
     ${CMAKE_CURRENT_LIST_DIR}/ring_buffer.cpp
     ${CMAKE_CURRENT_LIST_DIR}/pitch_shifter_st.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_plugin_client_Unity.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_processors.cpp
     ${CMAKE_CURRENT_LIST_DIR}/pitch_detector_aubio.cpp
     ${CMAKE_CURRENT_LIST_DIR}/JUCE/Source/KeyDetectGui.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_gui_extra.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_core.cpp
     ${CMAKE_CURRENT_LIST_DIR}/smbPitchShift.cpp
     ${CMAKE_CURRENT_LIST_DIR}/pitch_shifter_smb.cpp
     ${CMAKE_CURRENT_LIST_DIR}/pitch_detector_talent.cpp
     ${CMAKE_CURRENT_LIST_DIR}/undo_redo.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_plugin_client_VST2.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_plugin_client_VST3.cpp
     ${CMAKE_CURRENT_LIST_DIR}/JUCE/Source/PluginProcessor.cpp
     ${CMAKE_CURRENT_LIST_DIR}/auto_tune.cpp
     ${CMAKE_CURRENT_LIST_DIR}/midi_msg.cpp
     ${CMAKE_CURRENT_LIST_DIR}/delay.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_data_structures.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_gui_basics.cpp
     ${CMAKE_CURRENT_LIST_DIR}/pitch_shifter_talent.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_events.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/JUCE/Source/PluginParameter.cpp
     ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_plugin_client_utils.cpp
     ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_plugin_client_Standalone.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_basics.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/JUCE/Source/PluginParameter.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_graphics.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_plugin_client_AAX.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_plugin_client_VST2.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_plugin_client_VST3.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_plugin_client_Unity.cpp
 )
 
 set_source_files_properties(
@@ -197,13 +188,41 @@ endif(WIN32)
 
 OPTION(MXTUNE_USE_STATIC_LIB "use static library" OFF)
 
+IF (APPLE)
+set (CXX_SRCS ${CXX_SRCS}
+    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_events.mm
+    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_basics.mm
+    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_data_structures.mm
+    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_gui_basics.mm
+    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_processors.mm
+    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_gui_extra.mm
+    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_core.mm
+    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_graphics.mm
+    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_plugin_client_VST_utils.mm
+    
+)
+ELSE ()
+set (CXX_SRCS ${CXX_SRCS}
+    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_events.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_basics.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_data_structures.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_gui_basics.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_audio_processors.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_gui_extra.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_core.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/JUCE/JuceLibraryCode/include_juce_graphics.cpp
+)
+ENDIF ()
+
 IF (WIN32)
     set(LINK_OPTIONS ${LINK_OPTIONS} "-static -lrubberband -lSoundTouch -laubio -lfftw3f -lfftw3 -lsamplerate")
+ELSEIF (APPLE)
+    set(LINK_OPTIONS ${LINK_OPTIONS} "-framework CoreFoundation -framework CoreServices -framework CoreGraphics -framework ImageIO -framework MapKit -framework CoreText -framework AudioToolbox -framework CoreAudio -framework CoreVideo -framework IOKit -framework AppKit -framework Accelerate -framework QuartzCore -framework Metal -L/usr/local/lib ${MX_TUNE_LIBRARIES} -lrubberband -lSoundTouch -laubio -lfftw3f")
+    set(CMAKE_C_FLAGS "-fvisibility=hidden ${MX_TUNE_CFLAGS}")
+    set(CMAKE_CXX_FLAGS "-fvisibility=hidden -std=c++17  ${MX_TUNE_CFLAGS}")
 ELSEIF (UNIX)
     set(CMAKE_C_FLAGS "-fvisibility=hidden ${MX_TUNE_CFLAGS}")
     set(CMAKE_CXX_FLAGS "-fvisibility=hidden ${MX_TUNE_CFLAGS}")
-    
-    #message(STATUS "xxxxxxxxxx=${AUBIO_CFLAGS} ${SOUNDTOUCH_CFLAGS} ${RUBBERBAND_CFLAGS} ${SAMPLERATE_CFLAGS} ${FFTW3F_CFLAGS} ${X11_CFLAGS} ${FREETYPE_CFLAGS}")
     
     IF (MXTUNE_USE_STATIC_LIB)
         set(LINK_OPTIONS ${LINK_OPTIONS} "-s -lGL -lpthread -ldl -lX11 -lXext ${FREETYPE_LDFLAGS} -Wl,--no-undefined -Wl,-Bsymbolic -Wl,-Bstatic ${MX_TUNE_LIBRARIES} -Wl,-Bdynamic -Wl,--gc-sections -Wl,--as-needed -Wl,--strip-all -Wl,--exclude-libs,ALL -fPIC")
@@ -252,4 +271,3 @@ ELSEIF (UNIX)
     )
 ENDIF ()
 #}}}}
-

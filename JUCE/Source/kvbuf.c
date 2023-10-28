@@ -19,7 +19,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <malloc.h>
+#include <stdlib.h>
 #include "kvbuf.h"
 
 
@@ -102,7 +102,6 @@ static inline void set_v(unsigned char *data, unsigned int v, int len)
             data[0] = v & 0xff;
             break;
         default:
-            clog_err("%s:%d: len:%d\n", __FUNCTION__, __LINE__, len);
             break;
     }
 #pragma GCC diagnostic warning "-Wimplicit-fallthrough"

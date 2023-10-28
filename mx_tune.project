@@ -2,27 +2,37 @@
 <CodeLite_Project Name="mx_tune" Version="11000" InternalType="">
   <Plugins>
     <Plugin Name="qmake">
-      <![CDATA[00150001N0005Debug0000000000000001N0005cmake0000000000000001N0010lv2_plugin0000000000000001N0006plugin0000000000000001N0011vst2_plugin0000000000000001N0018vst2_plugin(32bit)0000000000000001N0018vst2_plugin(64bit)0000000000000001N0026vst3_plugin(windows_32bit)0000000000000001N0015vst_linux_64bit0000000000000001N0023vst_plugin(linux_64bit)0000000000000001N0025vst_plugin(windows 32bit)0000000000000001N0025vst_plugin(windows 64bit)0000000000000001N0025vst_plugin(windows_32bit)0000000000000001N0025vst_plugin(windows_64bit)0000000000000001N0006winexe000000000000]]>
+      <![CDATA[00160001N0005Debug0000000000000001N0005MacOS0000000000000001N0005cmake0000000000000001N0010lv2_plugin0000000000000001N0006plugin0000000000000001N0011vst2_plugin0000000000000001N0018vst2_plugin(32bit)0000000000000001N0018vst2_plugin(64bit)0000000000000001N0026vst3_plugin(windows_32bit)0000000000000001N0015vst_linux_64bit0000000000000001N0023vst_plugin(linux_64bit)0000000000000001N0025vst_plugin(windows 32bit)0000000000000001N0025vst_plugin(windows 64bit)0000000000000001N0025vst_plugin(windows_32bit)0000000000000001N0025vst_plugin(windows_64bit)0000000000000001N0006winexe000000000000]]>
     </Plugin>
     <Plugin Name="CppCheck"/>
   </Plugins>
   <VirtualDirectory Name="JUCE">
     <VirtualDirectory Name="JuceLibraryCode">
+      <File Name="JUCE/JuceLibraryCode/include_juce_gui_extra.mm" ExcludeProjConfig="cmake;"/>
+      <File Name="JUCE/JuceLibraryCode/include_juce_gui_basics.mm" ExcludeProjConfig="cmake;"/>
+      <File Name="JUCE/JuceLibraryCode/include_juce_graphics.mm" ExcludeProjConfig="cmake;"/>
+      <File Name="JUCE/JuceLibraryCode/include_juce_events.mm" ExcludeProjConfig="cmake;"/>
+      <File Name="JUCE/JuceLibraryCode/include_juce_data_structures.mm" ExcludeProjConfig="cmake;"/>
+      <File Name="JUCE/JuceLibraryCode/include_juce_core.mm" ExcludeProjConfig="cmake;"/>
+      <File Name="JUCE/JuceLibraryCode/include_juce_audio_processors.mm" ExcludeProjConfig="cmake;"/>
+      <File Name="JUCE/JuceLibraryCode/include_juce_audio_plugin_client_VST_utils.mm" ExcludeProjConfig="cmake;"/>
+      <File Name="JUCE/JuceLibraryCode/include_juce_audio_plugin_client_LV2.mm" ExcludeProjConfig="cmake;MacOS;"/>
+      <File Name="JUCE/JuceLibraryCode/include_juce_audio_basics.mm" ExcludeProjConfig="cmake;"/>
       <File Name="JUCE/JuceLibraryCode/JuceHeader.h"/>
-      <File Name="JUCE/JuceLibraryCode/include_juce_gui_extra.cpp"/>
-      <File Name="JUCE/JuceLibraryCode/include_juce_gui_basics.cpp"/>
-      <File Name="JUCE/JuceLibraryCode/include_juce_graphics.cpp"/>
-      <File Name="JUCE/JuceLibraryCode/include_juce_events.cpp"/>
-      <File Name="JUCE/JuceLibraryCode/include_juce_data_structures.cpp"/>
-      <File Name="JUCE/JuceLibraryCode/include_juce_core.cpp"/>
-      <File Name="JUCE/JuceLibraryCode/include_juce_audio_processors.cpp"/>
+      <File Name="JUCE/JuceLibraryCode/include_juce_gui_extra.cpp" ExcludeProjConfig="cmake;MacOS;"/>
+      <File Name="JUCE/JuceLibraryCode/include_juce_gui_basics.cpp" ExcludeProjConfig="cmake;MacOS;"/>
+      <File Name="JUCE/JuceLibraryCode/include_juce_graphics.cpp" ExcludeProjConfig="cmake;MacOS;"/>
+      <File Name="JUCE/JuceLibraryCode/include_juce_events.cpp" ExcludeProjConfig="cmake;MacOS;"/>
+      <File Name="JUCE/JuceLibraryCode/include_juce_data_structures.cpp" ExcludeProjConfig="cmake;MacOS;"/>
+      <File Name="JUCE/JuceLibraryCode/include_juce_core.cpp" ExcludeProjConfig="cmake;MacOS;"/>
+      <File Name="JUCE/JuceLibraryCode/include_juce_audio_processors.cpp" ExcludeProjConfig="cmake;MacOS;"/>
       <File Name="JUCE/JuceLibraryCode/include_juce_audio_plugin_client_VST3.cpp" ExcludeProjConfig=""/>
       <File Name="JUCE/JuceLibraryCode/include_juce_audio_plugin_client_VST2.cpp" ExcludeProjConfig="vst3_plugin(windows_32bit);"/>
-      <File Name="JUCE/JuceLibraryCode/include_juce_audio_plugin_client_utils.cpp"/>
-      <File Name="JUCE/JuceLibraryCode/include_juce_audio_plugin_client_Unity.cpp"/>
-      <File Name="JUCE/JuceLibraryCode/include_juce_audio_plugin_client_Standalone.cpp"/>
-      <File Name="JUCE/JuceLibraryCode/include_juce_audio_plugin_client_AAX.cpp"/>
-      <File Name="JUCE/JuceLibraryCode/include_juce_audio_basics.cpp"/>
+      <File Name="JUCE/JuceLibraryCode/include_juce_audio_plugin_client_utils.cpp" ExcludeProjConfig=""/>
+      <File Name="JUCE/JuceLibraryCode/include_juce_audio_plugin_client_Unity.cpp" ExcludeProjConfig=""/>
+      <File Name="JUCE/JuceLibraryCode/include_juce_audio_plugin_client_Standalone.cpp" ExcludeProjConfig=""/>
+      <File Name="JUCE/JuceLibraryCode/include_juce_audio_plugin_client_AAX.cpp" ExcludeProjConfig="cmake;MacOS;"/>
+      <File Name="JUCE/JuceLibraryCode/include_juce_audio_basics.cpp" ExcludeProjConfig="cmake;MacOS;"/>
       <File Name="JUCE/JuceLibraryCode/AppConfig.h"/>
     </VirtualDirectory>
     <VirtualDirectory Name="Source">
@@ -64,13 +74,13 @@
     <File Name="pitch_detector_aubio.cpp"/>
     <File Name="pitch_detector_talent.h"/>
     <File Name="pitch_detector_talent.cpp"/>
-    <File Name="mx_tune_lv2.cpp" ExcludeProjConfig="vst_linux_64bit;vst_plugin(linux_64bit);cmake;vst_plugin(windows_32bit);vst_plugin(windows_64bit);"/>
+    <File Name="mx_tune_lv2.cpp" ExcludeProjConfig="MacOS;vst_plugin(windows_64bit);vst_plugin(windows_32bit);cmake;vst_plugin(linux_64bit);vst_linux_64bit;"/>
     <File Name="mx_tune.ttl"/>
     <File Name="mx_tune.cpp"/>
     <File Name="mx_tune.h"/>
     <File Name="manual_tune.h"/>
     <File Name="manual_tune.cpp"/>
-    <File Name="main.cpp" ExcludeProjConfig="vst_linux_64bit;vst_plugin(windows_64bit);vst3_plugin(windows_32bit);plugin;vst_plugin(linux_64bit);vst2_plugin(32bit);vst_plugin(windows_32bit);vst_plugin(windows 32bit);cmake;"/>
+    <File Name="main.cpp" ExcludeProjConfig="MacOS;vst2_plugin(32bit);cmake;vst_plugin(windows_32bit);plugin;vst3_plugin(windows_32bit);vst_plugin(windows 32bit);vst_plugin(windows_64bit);vst_plugin(linux_64bit);vst_linux_64bit;"/>
     <File Name="net_log.h"/>
     <File Name="mat_helper.h"/>
     <File Name="pitch_shifter.h"/>
@@ -97,8 +107,59 @@
       </Linker>
       <ResourceCompiler Options=""/>
     </GlobalSettings>
+    <Configuration Name="MacOS" CompilerType="GCC" DebuggerType="GNU gdb debugger" Type="Dynamic Library" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-g;-Os;-O2;-std=c++17;-fPIC;-fvisibility=hidden" C_Options="-g;-fPIC;-Os;-O2;-fvisibility=hidden" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
+        <IncludePath Value="."/>
+        <IncludePath Value="JUCE/JuceLibraryCode"/>
+        <IncludePath Value="JUCE/Source"/>
+        <IncludePath Value="JUCE/JuceLibraryCode/modules"/>
+        <IncludePath Value="VST3_SDK"/>
+        <Preprocessor Value="JUCE_MODAL_LOOPS_PERMITTED=1"/>
+      </Compiler>
+      <Linker Options="-framework CoreFoundation;-framework CoreServices;-framework CoreGraphics;-framework ImageIO;-framework MapKit;-framework CoreText;-framework AudioToolbox;-framework CoreAudio;-framework CoreVideo;-framework IOKit;-framework AppKit;-framework Accelerate;-framework QuartzCore;-framework Metal" Required="yes">
+        <Library Value="fftw3f"/>
+        <Library Value="aubio"/>
+        <Library Value="SoundTouch"/>
+        <Library Value="rubberband"/>
+      </Linker>
+      <ResourceCompiler Options="" Required="no"/>
+      <General OutputFile="$(IntermediateDirectory)/$(ProjectName).dylib" IntermediateDirectory="$(ConfigurationName)" Command="$(OutputFile)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="" PauseExecWhenProcTerminates="yes" IsGUIProgram="no" IsEnabled="yes"/>
+      <BuildSystem Name="Default"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
+        <![CDATA[]]>
+      </Environment>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="" IsExtended="no">
+        <DebuggerSearchPaths/>
+        <PostConnectCommands/>
+        <StartupCommands/>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild>
+        <Command Enabled="yes">cp $(IntermediateDirectory)/$(ProjectName).dylib /Library/Audio/Plug-Ins/VST/mx_tune.vst</Command>
+      </PostBuild>
+      <CustomBuild Enabled="no">
+        <RebuildCommand/>
+        <CleanCommand/>
+        <BuildCommand/>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName/>
+        <WorkingDirectory/>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild/>
+      </AdditionalRules>
+      <Completion EnableCpp11="no" EnableCpp14="no">
+        <ClangCmpFlagsC/>
+        <ClangCmpFlags/>
+        <ClangPP/>
+        <SearchPaths/>
+      </Completion>
+    </Configuration>
     <Configuration Name="cmake" CompilerType="GCC" DebuggerType="GNU gdb debugger" Type="Dynamic Library" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="-Os;-O2;-std=c++17;-fpermissive;-fPIC;-Wextra;-Weffc++;-Woverloaded-virtual;-Wreorder;-Wsign-promo;-Wstrict-null-sentinel;-Wfloat-equal;-Wreturn-type;-Wsign-compare;-Wsizeof-pointer-memaccess;-Woverflow;-Wshadow;-Wsequence-point;-Wswitch-default;-Wunused-but-set-parameter;-Wunused-but-set-variable;-Wunused-function;-Wunused-label;-Wunused-variable;-Wmaybe-uninitialized;-Wuninitialized;-Wdisabled-optimization;-Wdelete-non-virtual-dtor;-Wno-non-virtual-dtor" C_Options="-Os;-O2;-fpermissive;-fPIC;-Wno-unused-parameter;-Wfloat-equal;-Wreturn-type;-Wsign-compare;-Wsizeof-pointer-memaccess;-Woverflow;-Wshadow;-Wsequence-point;-Wswitch-default;-Wunused-but-set-parameter;-Wunused-but-set-variable;-Wunused-function;-Wunused-label;-Wunused-variable;-Wmaybe-uninitialized;-Wuninitialized;-Wdisabled-optimization" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
+      <Compiler Options="-Os;-O2;-fpermissive;-fPIC;-Wextra;-Weffc++;-Woverloaded-virtual;-Wreorder;-Wsign-promo;-Wstrict-null-sentinel;-Wfloat-equal;-Wreturn-type;-Wsign-compare;-Wsizeof-pointer-memaccess;-Woverflow;-Wshadow;-Wsequence-point;-Wswitch-default;-Wunused-but-set-parameter;-Wunused-but-set-variable;-Wunused-function;-Wunused-label;-Wunused-variable;-Wmaybe-uninitialized;-Wuninitialized;-Wdisabled-optimization;-Wdelete-non-virtual-dtor;-Wno-non-virtual-dtor" C_Options="-Os;-O2;-fpermissive;-fPIC;-Wno-unused-parameter;-Wfloat-equal;-Wreturn-type;-Wsign-compare;-Wsizeof-pointer-memaccess;-Woverflow;-Wshadow;-Wsequence-point;-Wswitch-default;-Wunused-but-set-parameter;-Wunused-but-set-variable;-Wunused-function;-Wunused-label;-Wunused-variable;-Wmaybe-uninitialized;-Wuninitialized;-Wdisabled-optimization" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
         <IncludePath Value="."/>
         <IncludePath Value="JUCE/JuceLibraryCode"/>
         <IncludePath Value="JUCE/Source"/>

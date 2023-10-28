@@ -8,16 +8,16 @@
   </Plugins>
   <VirtualDirectory Name="JUCE">
     <VirtualDirectory Name="JuceLibraryCode">
-      <File Name="JUCE/JuceLibraryCode/include_juce_gui_extra.mm" ExcludeProjConfig="cmake;"/>
-      <File Name="JUCE/JuceLibraryCode/include_juce_gui_basics.mm" ExcludeProjConfig="cmake;"/>
-      <File Name="JUCE/JuceLibraryCode/include_juce_graphics.mm" ExcludeProjConfig="cmake;"/>
-      <File Name="JUCE/JuceLibraryCode/include_juce_events.mm" ExcludeProjConfig="cmake;"/>
-      <File Name="JUCE/JuceLibraryCode/include_juce_data_structures.mm" ExcludeProjConfig="cmake;"/>
-      <File Name="JUCE/JuceLibraryCode/include_juce_core.mm" ExcludeProjConfig="cmake;"/>
-      <File Name="JUCE/JuceLibraryCode/include_juce_audio_processors.mm" ExcludeProjConfig="cmake;"/>
-      <File Name="JUCE/JuceLibraryCode/include_juce_audio_plugin_client_VST_utils.mm" ExcludeProjConfig="cmake;"/>
-      <File Name="JUCE/JuceLibraryCode/include_juce_audio_plugin_client_LV2.mm" ExcludeProjConfig="cmake;MacOS;"/>
-      <File Name="JUCE/JuceLibraryCode/include_juce_audio_basics.mm" ExcludeProjConfig="cmake;"/>
+      <File Name="JUCE/JuceLibraryCode/include_juce_gui_extra.mm" ExcludeProjConfig="vst_linux_64bit;cmake;"/>
+      <File Name="JUCE/JuceLibraryCode/include_juce_gui_basics.mm" ExcludeProjConfig="vst_linux_64bit;cmake;"/>
+      <File Name="JUCE/JuceLibraryCode/include_juce_graphics.mm" ExcludeProjConfig="vst_linux_64bit;cmake;"/>
+      <File Name="JUCE/JuceLibraryCode/include_juce_events.mm" ExcludeProjConfig="vst_linux_64bit;cmake;"/>
+      <File Name="JUCE/JuceLibraryCode/include_juce_data_structures.mm" ExcludeProjConfig="vst_linux_64bit;cmake;"/>
+      <File Name="JUCE/JuceLibraryCode/include_juce_core.mm" ExcludeProjConfig="vst_linux_64bit;cmake;"/>
+      <File Name="JUCE/JuceLibraryCode/include_juce_audio_processors.mm" ExcludeProjConfig="vst_linux_64bit;cmake;"/>
+      <File Name="JUCE/JuceLibraryCode/include_juce_audio_plugin_client_VST_utils.mm" ExcludeProjConfig="vst_linux_64bit;cmake;"/>
+      <File Name="JUCE/JuceLibraryCode/include_juce_audio_plugin_client_LV2.mm" ExcludeProjConfig="vst_linux_64bit;MacOS;cmake;"/>
+      <File Name="JUCE/JuceLibraryCode/include_juce_audio_basics.mm" ExcludeProjConfig="vst_linux_64bit;cmake;"/>
       <File Name="JUCE/JuceLibraryCode/JuceHeader.h"/>
       <File Name="JUCE/JuceLibraryCode/include_juce_gui_extra.cpp" ExcludeProjConfig="cmake;MacOS;"/>
       <File Name="JUCE/JuceLibraryCode/include_juce_gui_basics.cpp" ExcludeProjConfig="cmake;MacOS;"/>
@@ -31,7 +31,7 @@
       <File Name="JUCE/JuceLibraryCode/include_juce_audio_plugin_client_utils.cpp" ExcludeProjConfig=""/>
       <File Name="JUCE/JuceLibraryCode/include_juce_audio_plugin_client_Unity.cpp" ExcludeProjConfig=""/>
       <File Name="JUCE/JuceLibraryCode/include_juce_audio_plugin_client_Standalone.cpp" ExcludeProjConfig=""/>
-      <File Name="JUCE/JuceLibraryCode/include_juce_audio_plugin_client_AAX.cpp" ExcludeProjConfig="cmake;MacOS;"/>
+      <File Name="JUCE/JuceLibraryCode/include_juce_audio_plugin_client_AAX.cpp" ExcludeProjConfig="vst_linux_64bit;MacOS;cmake;"/>
       <File Name="JUCE/JuceLibraryCode/include_juce_audio_basics.cpp" ExcludeProjConfig="cmake;MacOS;"/>
       <File Name="JUCE/JuceLibraryCode/AppConfig.h"/>
     </VirtualDirectory>

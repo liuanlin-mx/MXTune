@@ -99,14 +99,60 @@ make -j4
 
 - Install Xcode from Mac App Store
 - Install Xcode command-line tools: `xcode-select --install`
+```
 
-- Install Homebrew:
-    - `ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
+```
+brew install pkg-config
+brew install autoconf
+brew install automake
+brew install libtool
+brew install cmake
+```
 
-- Update Homebrew: `brew update`
-- Install Git: `brew install git`
-- Install CMake: `brew install cmake`
-- Install wxWidgets: `brew install wxmac --dev --use-llvm`
+### JUCE
+Download Juce (https://github.com/juce-framework/JUCE 7.0.5)
+run Projucer
+File->Open MXTune/JUCE/mx_tune.jucer
+File->Global Paths   modify "Path to JUCE" and "JUCE Modules"
+File->Save All
+
+
+### VST SDK
+Download the VST SDK (http://www.steinberg.net/en/company/developers.html)
+copy vstsdk2.4/pluginterfaces to VST_SDK/VST3_SDK/
+copy VST_SDK/VST3_SDK to MXTune/
+
+
+### build Audio
+```
+./configure --enable-static --enable-float --enable-single
+./waf configure --enable-fftw3f --disable-tests --disable-examples --disable-wavread --disable-wavwrite --notest
+sudo ./waf install
+```
+
+### build SoundTouch
+```
+make CXXFLAGS="-DSOUNDTOUCH_PREVENT_CLICK_AT_RATE_CROSSOVER=1 -fdata-sections -ffunction-sections"
+sudo make install
+```
+
+### build rubberband
+```
+make -f otherbuilds/Makefile.macos
+sudo cp -R rubberband /usr/local/include 
+sudo cp lib/* /usr/local/lib
+sudo cp build/meson-private/rubberband.pc /usr/local/lib/pkgconfig/
+```
+
+
+### build MXTune
+```
+mkdir build-cmake
+cd build-cmake
+cmake ..
+make -j6
+sudo cp libmx_tune.dylib /Library/Audio/Plug-Ins/VST/mx_tune.vst
+```
 
 
 ## linux

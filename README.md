@@ -55,7 +55,6 @@ pacman -S make cmake autoconf automake-wrapper libtool mingw-w64-x86_64-python3 
 - copy VST_SDK/VST3_SDK to MXTune/
 
 - modify:
-
     - VST3_SDK\base\source\fstring.cpp:226
         ```
         #define vsnprintf _vsnprintf
@@ -67,6 +66,7 @@ pacman -S make cmake autoconf automake-wrapper libtool mingw-w64-x86_64-python3 
         ```
         extern "C" __declspec (dllexport) Steinberg::IPluginFactory*  GetPluginFactory ();
         ```
+        
 ### build SoundTouch
 ```
 ./bootstrap 
@@ -157,57 +157,5 @@ sudo cp libmx_tune.dylib /Library/Audio/Plug-Ins/VST/mx_tune.vst
 
 ## linux
 
-- `sudo apt install libfftw3-dev`
-
-
-### JUCE
-Download Juce (https://github.com/juce-framework/JUCE 7.0.5)
-run Projucer.exe
-File->Open MXTune/JUCE/mx_tune.jucer
-File->Global Paths   modify "Path to JUCE" and "JUCE Modules"
-File->Save All
-
-
-### VST SDK
-Download the VST SDK (http://www.steinberg.net/en/company/developers.html)
-copy vstsdk2.4/pluginterfaces to VST_SDK/VST3_SDK/
-copy VST_SDK/VST3_SDK to MXTune/
-
-
-### build SoundTouch
-```
-./bootstrap 
-./configure --enable-static --disable-shared
-make CXXFLAGS="-DSOUNDTOUCH_PREVENT_CLICK_AT_RATE_CROSSOVER=1 -fvisibility=hidden -fdata-sections -ffunction-sections -fPIC" LDFLAGS="-fPIC"
-sudo make install
-```
-
-### build aubio
-- Download waf (https://waf.io/)
-```
-./waf configure --enable-fftw3f --disable-tests --notests --disable-examples --disable-wavread --disable-wavwrite CFLAGS='-fvisibility=hidden -fdata-sections -ffunction-sections'
-./waf build --disable-tests --notests --disable-examples
-sudo ./waf install --disable-tests --notests --disable-examples
-```
-
-### build libsamplerate
-```
-./configure CFLAGS=-fPIC LDFLAGS=-fPIC
-make -j4
-sudo make install
-```
-
-### build rubberband
-```
-make -f otherbuilds/Makefile.linux
-sudo cp -rf rubberband /usr/local/include/ 
-sudo cp -rf lib/* /usr/local/lib/
-```
-
-### build MXTune
-```
-mkdir build-cmake
-cd build-cmake
-cmake .. -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc -G "Unix Makefiles"
-make -j4
-```
+- ```sudo apt install libfftw3-dev```
+- ```./build_linux.sh```

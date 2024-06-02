@@ -51,6 +51,7 @@
     </VirtualDirectory>
   </VirtualDirectory>
   <VirtualDirectory Name="mx_tune">
+    <File Name="build_linux.sh"/>
     <File Name="LICENSE"/>
     <File Name="delay.h"/>
     <File Name="delay.cpp"/>
